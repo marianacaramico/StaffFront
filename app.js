@@ -10,6 +10,9 @@ var lessMiddleware = require('less-middleware');
 var index = require('./routes/index');
 var task = require('./routes/task');
 var user = require('./routes/user');
+var profile = require('./routes/profile');
+var login = require('./routes/login');
+var signup = require('./routes/signup');
 
 var app = express();
 
@@ -29,6 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/task', task);
 app.use('/user', user);
+app.use('/profile', profile);
+app.use('/login', login);
+app.use('/signup', signup);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
