@@ -5,7 +5,8 @@
 #sign-up-form {
 	margin-top: 3%;
 	margin-bottom: 0%;
-	border: 10px solid #8659A3;
+	border: 2px solid #572073;
+	border-radius: 8px;
 	padding: 10% 17%;
 	background-color: #8659A3;
 	color: #fff;
@@ -28,6 +29,10 @@
 	color: #8659A3;
 	cursor: pointer;
 	box-shadow: none;
+}
+
+#sign-up-form .form-control:focus {
+	border-color:#fff;
 }
 
 #texto-intro p {
