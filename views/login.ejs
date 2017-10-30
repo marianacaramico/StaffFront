@@ -76,27 +76,32 @@
     <section id="texto-intro">
       <div class="container text-left">
         <br/>
-        <p class="lead">
-          Preencha os campos abaixo para entrar na sua conta. Se ainda não tiver um cadastro, <a href="/signup">clique aqui</a>.
-        </p>
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6 text-center">
+            <p class="lead">
+              Preencha os campos abaixo para entrar na sua conta. Se ainda não tiver um cadastro, <a href="/signup">clique aqui</a>.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
     
     <section id="formulario">
-    <div class="container text-left col-md-4">
-    <form action="/login" method="post">
-      <div class="form-group">
-        <label for="inputEmail">E-mail</label>
-        <input type="email" class="form-control" id="inputEmail" placeholder="Seu e-mail">
+      <div class="container text-left col-md-4">
+        <form action="/login" method="post">
+          <div class="form-group">
+            <label for="inputEmail">E-mail</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="Seu e-mail" />
+          </div>
+          <div class="form-group">
+            <label for="inputSenha">Senha</label>
+            <input type="password" class="form-control" id="inputSenha" placeholder="Sua senha" />
+          </div>
+          <button type="submit" class="btn btn-primary">Entrar</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="inputSenha">Senha</label>
-        <input type="password" class="form-control" id="inputSenha" placeholder="Escolha uma senha">
-      </div>
-      <button type="submit" class="btn btn-primary">Entrar</button>
-    </form>
-    </div>
-    <br/><br/>
+      <br/><br/>
     </section>
 
    
