@@ -74,21 +74,15 @@
     <!-- Header -->
     
     <section id="texto-intro">
-      <div class="container text-left">
-        <br/>
-        <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6 text-center">
-            <p class="lead">
-              Preencha os campos abaixo para entrar na sua conta. Se ainda não tiver um cadastro, <a href="/signup">clique aqui</a>.
-            </p>
-          </div>
-        </div>
+      <div class="container col-md-6 text-center">
+          <p class="lead">
+            Preencha os campos abaixo para entrar na sua conta. Se ainda não tiver um cadastro, <a href="/signup">clique aqui</a>.
+          </p>
       </div>
     </section>
     
     <section id="formulario">
-      <div class="container text-left col-md-4">
+      <div class="container text-left col-md-6">
         <form action="/login" method="post">
           <div class="form-group">
             <label for="inputEmail">E-mail</label>
@@ -96,7 +90,14 @@
           </div>
           <div class="form-group">
             <label for="inputSenha">Senha</label>
-            <input type="password" class="form-control" name="inputSenha" id="inputSenha" placeholder="Sua senha" />
+            <span class="form-row">
+              <span class="col-11" style="">
+                <input type="password" class="form-control" name="inputSenha" id="inputSenha" placeholder="Sua senha" />
+              </span>
+              <span class="col-1 align-middle">
+                <i style="padding-top: 10%; font-size: 1.8em;" class="fa fa-eye" id="btnShowPassword" aria-hidden="true"></i>
+              </span>
+            </span>
           </div>
           <button type="submit" class="btn btn-primary">Entrar</button>
         </form>
@@ -148,6 +149,7 @@
 
     <!-- Custom scripts for this template -->
     <script src="/js/stylish-portfolio.js"></script>
+    <script src="/js/script.js"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108862038-1"></script>

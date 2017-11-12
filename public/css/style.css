@@ -1,38 +1,5 @@
-.myClass {
+.bg-purple-default {
 	background-color: #8659A3;
-}
-
-#sign-up-form {
-	margin-top: 3%;
-	margin-bottom: 0%;
-	border: 2px solid #572073;
-	border-radius: 8px;
-	padding: 10% 17%;
-	background-color: #8659A3;
-	color: #fff;
-}
-
-#sign-up-form button {
-	color: #fff;
-    background-color: #572073;
-    border-color: #572073;
-}
-
-#sign-up-form button:hover {
-	background-color: #fff;
-	color: #8659A3;
-	cursor: pointer;
-}
-
-#sign-up-form button:focus {
-	background-color: #fff;
-	color: #8659A3;
-	cursor: pointer;
-	box-shadow: none;
-}
-
-#sign-up-form .form-control:focus {
-	border-color:#fff;
 }
 
 #texto-intro p {

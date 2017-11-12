@@ -74,88 +74,83 @@
     <!-- Header -->
     
     <section id="texto-intro">
-      <div class="container">
-        <br/>
-        <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6 text-center">
+      <div class="container col-md-6 text-center">
             <p class="lead">
               Preencha os campos abaixo para ter acesso a lista de tarefas disponíveis, e para solicitar que alguém faça uma tarefa.<br/>
               Caso já tenha um cadastro, <a href="/login">clique aqui</a>.
             </p>
           </div>
-        </div>
       </div>
     </section>
     
     <section id="formulario">
-    <div class="container text-left col-md-8">
-    <form id="sign-up-form" action="/signup" method="post">
-      <div class="form-group">
-        <label for="inputNome">Nome</label>
-        <input type="text" class="form-control" id="inputNome" placeholder="Seu nome">
+      <div class="container text-left col-md-6">
+        <form id="sign-up-form" action="/signup" method="post">
+          <div class="form-group">
+            <label for="inputNome">Nome</label>
+            <input type="text" class="form-control" id="inputNome" placeholder="Seu nome">
+          </div>
+          <div class="form-group">
+            <label for="inputEmail">E-mail</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="Seu e-mail">
+          </div>
+          <div class="form-group">
+            <label for="inputSenha">Senha</label>
+            <span class="form-row">
+              <span class="col-11" style="">
+                <input type="password" class="form-control" id="inputSenha" placeholder="Escolha uma senha" />
+              </span>
+              <span class="col-1 align-middle">
+                <i style="padding-top: 10%; font-size: 1.8em;" class="fa fa-eye" id="btnShowPassword" aria-hidden="true"></i>
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="inputCPF">CPF</label>
+            <input type="text" class="form-control" id="inputCPF" placeholder="Seu CPF, só números" maxlength="11">
+          </div>
+          <p><strong>Endereço</strong></p>
+          <div class="form-group">
+            <label for="inputCEP">CEP</label>
+            <input type="text" class="form-control" id="inputCEP" placeholder="CEP">
+          </div>
+          <div class="form-group">
+            <label for="inputRua">Rua</label>
+            <input type="text" class="form-control" id="inputRua" placeholder="Rua">
+          </div>
+          <div class="form-group">
+            <label for="inputNumero">Número</label>
+            <input type="text" class="form-control" id="inputNumero" placeholder="Número">
+          </div>
+          <div class="form-group">
+            <label for="inputBairro">Bairro</label>
+            <input type="text" class="form-control" id="inputBairro" placeholder="Bairro">
+          </div>
+          <div class="form-group">
+            <label for="inputCidade">Cidade</label>
+            <input type="text" class="form-control" id="inputCidade" placeholder="Cidade">
+          </div>
+          <div class="form-group">
+            <label for="selectEstado">Estado</label>
+            <select class="form-control" id="selectEstado">
+              <option value="SP">São Paulo</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PR">Paraná</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="RS">Rio Grande do Sul</option>
+            </select>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input">
+              Concordo com os termos e condições de uso do site
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary">Gravar</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="inputEmail">E-mail</label>
-        <input type="email" class="form-control" id="inputEmail" placeholder="Seu e-mail">
-      </div>
-      <div class="form-group">
-        <label for="inputSenha">Senha</label>
-        <span class="row">
-          <span class="col-sm-11" style="">
-            <input type="password" class="form-control" id="inputSenha" placeholder="Escolha uma senha" />
-          </span>
-          <span style="padding: 0; overflow: hidden; border: 1px solid white;" class="col-sm-1 align-middle">
-            <i style="padding-top: 10%; font-size: 1.8em;" class="fa fa-eye" aria-hidden="true"></i>
-          </span>
-        </span>
-      </div>
-      <div class="form-group">
-        <label for="inputCPF">CPF</label>
-        <input type="text" class="form-control" id="inputCPF" placeholder="Seu CPF, só números" maxlength="11">
-      </div>
-      <p><strong>Endereço</strong></p>
-      <div class="form-group">
-        <label for="inputCEP">CEP</label>
-        <input type="text" class="form-control" id="inputCEP" placeholder="CEP">
-      </div>
-      <div class="form-group">
-        <label for="inputRua">Rua</label>
-        <input type="text" class="form-control" id="inputRua" placeholder="Rua">
-      </div>
-      <div class="form-group">
-        <label for="inputNumero">Número</label>
-        <input type="text" class="form-control" id="inputNumero" placeholder="Número">
-      </div>
-      <div class="form-group">
-        <label for="inputBairro">Bairro</label>
-        <input type="text" class="form-control" id="inputBairro" placeholder="Bairro">
-      </div>
-      <div class="form-group">
-        <label for="inputCidade">Cidade</label>
-        <input type="text" class="form-control" id="inputCidade" placeholder="Cidade">
-      </div>
-      <div class="form-group">
-        <label for="selectEstado">Estado</label>
-        <select class="form-control" id="selectEstado">
-          <option value="SP">São Paulo</option>
-          <option value="RJ">Rio de Janeiro</option>
-          <option value="MG">Minas Gerais</option>
-          <option value="PR">Paraná</option>
-          <option value="SC">Santa Catarina</option>
-          <option value="RS">Rio Grande do Sul</option>
-        </select>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="checkbox" class="form-check-input">
-          Concordo com os termos e condições de uso do site
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">Gravar</button>
-    </form>
-    </div>
-    <br/><br/>
+      <br/><br/>
     </section>
 
    
@@ -202,6 +197,7 @@
 
     <!-- Custom scripts for this template -->
     <script src="/js/stylish-portfolio.js"></script>
+    <script src="/js/script.js"></script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108862038-1"></script>

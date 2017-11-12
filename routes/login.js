@@ -5,6 +5,11 @@ router.get('/', function (req, res, next) {
     res.render('login');
 });
 
+router.get('/teste', (req, res, next) => {
+    var sess = req.session;
+    res.send(sess);
+});
+
 router.post('/', function (req, res, next) {
 
     var Connection = require('tedious').Connection;
@@ -25,51 +30,37 @@ router.post('/', function (req, res, next) {
     
     var connection = new Connection(config);
     
-    connection.on('connect', function(err) {
-    
-        if(err) {
-         
-            console.log('DEU UM ERRO!');
-            console.log(err);   
-            return;
-            
-        } else {
-            
-            console.log('DEU CERTO!');
-
-            if((typeof username === "undefined") || (typeof password === "undefined")) {
-                
-                console.log('NAO MANDOU USER OU SENHA, MANÉ');
-                res.render('erro-login');
-                
+        connection.on('connect', function(err) {
+        
+            if (err) {
+                console.log('DEU UM ERRO!');
+                console.log(err);   
+                return;
             } else {
-
-                var query = "SELECT * FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
+                console.log('DEU CERTO!');
     
-                var request = new Request(query, function(err, rowCount) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            
-                            if(rowCount>0) {
-                            
-                                res.render('home');  
-                                
+                if((username == null) || (password == null)) {
+                    console.log('NAO MANDOU USER OU SENHA, MANÉ');
+                    res.render('erro-login');
+                } else {
+                    var query = "SELECT * FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
+        
+                    var request = new Request(query, function(err, rowCount) {
+                            if (err) {
+                                console.log(err);
                             } else {
-                                
-                                res.render('erro-login');
+                                if (rowCount > 0) {
+                                    res.render('home');
+                                } else {
+                                    res.render('erro-login');
+                                }
                             }
-                            
-                        }
-                    });
-                                        
-                    connection.execSql(request);
+                        });
+                                            
+                        connection.execSql(request);
+                    }
                 }
-                
-            }
-
-    }
-    );
+        });
 
 
 
