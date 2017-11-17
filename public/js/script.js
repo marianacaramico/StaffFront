@@ -8,6 +8,7 @@ $(document).ready(() => {
 	}
 });
 
+
 function isNull(element) {
 	return element == null || element === false || (typeof element == "object" && element.length === 0);
 }
