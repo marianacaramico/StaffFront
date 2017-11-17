@@ -3,5 +3,45 @@
 }
 
 #texto-intro p {
-	margin-top: 18px;
+	margin-top: 80px;
+}
+
+.buttonSubmit {
+	background-color: #8659A3;
+	border: 1px solid #8659A3;		
+}
+
+.buttonSubmit:hover {
+	background-color: #fff;
+	color: #8659A3;
+	border: 1px solid #8659A3;
+	cursor: pointer;
+}
+
+.buttonSubmit:focus {
+	outline: 0;
+}
+
+#texto-intro a {
+	color: #8659A3;
+}
+
+#texto-intro a:hover {
+	color: #8659A3;
+}
+
+#logoff {
+	height: 60px;
+	width: 60px;
+	margin-top: 67px;
+	margin-left: 12px;
+}
+
+#logostaff {
+	height: 40px;
+	width: 40px;
+}
+
+footer {
+	padding-bottom: 5px;
 }
