@@ -85,7 +85,7 @@
     
     <section id="formulario">
       <div class="container text-left col-md-6">
-        <form id="sign-up-form" action="/signup" method="post">
+        <form id="sign-up-form" action="javascript:signup()">
           <div class="form-group">
             <label for="inputNome">Nome</label>
             <input type="text" class="form-control" id="inputNome" placeholder="Seu nome">
@@ -107,12 +107,12 @@
           </div>
           <div class="form-group">
             <label for="inputCPF">CPF</label>
-            <input type="text" class="form-control" id="inputCPF" placeholder="Seu CPF, só números" maxlength="11">
+            <input type="text" class="form-control" id="inputCPF" data-inputmask="'mask': '999.999.999-99'" placeholder="Seu CPF, só números" maxlength="14">
           </div>
           <p><strong>Endereço</strong></p>
           <div class="form-group">
             <label for="inputCEP">CEP</label>
-            <input type="text" class="form-control" id="inputCEP" placeholder="CEP">
+            <input type="text" class="form-control" id="inputCEP" data-inputmask="'mask': '99999-999'" placeholder="CEP" maxlength="9">
           </div>
           <div class="form-group">
             <label for="inputRua">Rua</label>
@@ -120,7 +120,7 @@
           </div>
           <div class="form-group">
             <label for="inputNumero">Número</label>
-            <input type="text" class="form-control" id="inputNumero" placeholder="Número">
+            <input type="text" class="form-control" id="inputNumero" data-inputmask-regex="\d*" placeholder="Número">
           </div>
           <div class="form-group">
             <label for="inputBairro">Bairro</label>
@@ -134,20 +134,20 @@
             <label for="selectEstado">Estado</label>
             <select class="form-control" id="selectEstado">
               <option value="SP">São Paulo</option>
-              <option value="RJ">Rio de Janeiro</option>
               <option value="MG">Minas Gerais</option>
               <option value="PR">Paraná</option>
-              <option value="SC">Santa Catarina</option>
+              <option value="RJ">Rio de Janeiro</option>
               <option value="RS">Rio Grande do Sul</option>
+              <option value="SC">Santa Catarina</option>
             </select>
           </div>
           <div class="form-check">
             <label class="form-check-label">
-              <input type="checkbox" class="form-check-input">
+              <input type="checkbox" id="inputAgree" class="form-check-input">
               Concordo com os termos e condições de uso do site
             </label>
           </div>
-          <button type="submit" class="btn btn-primary buttonSubmit">Registrar</button>
+          <button disabled type="submit" class="btn btn-primary buttonSubmit">Registrar</button>
         </form>
       </div>
       <br/><br/>
@@ -195,6 +195,7 @@
 
     <!-- Plugin JavaScript -->
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>
 
     <!-- Custom scripts for this template -->
     <script src="/js/stylish-portfolio.js"></script>
