@@ -14,6 +14,8 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 
 04. Realizador - usuario que realiza uma tarefa
 
+(incluir img do diagrama de atores)
+
 
 # Casos de uso
 
@@ -36,3 +38,41 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 09. Editar dados cadastrais - permite a um usuario logado alterar seus dados cadastrais
 
 10. Solicitar realizacao de tarefa - permite cadastrar uma nova tarefa disponivel para que um usuario realizador estime
+
+(incluir img do diagrama de casos de uso)
+
+
+# Sitemap
+
+01. Home - pagina inicial
+
+02. Login - formulario de login
+
+03. Home logada - apresenta um dashboard do usuario logado
+
+04. Cadastro - formulario de cadastro
+
+05. Lista de tarefas - visualizacao da relacao de tarefas disponiveis
+
+06. Solicitar tarefa - formulario para solicitacao de nova tarefa
+
+07. Estimar tarefa - formulario para o usuario realizador estimar esforco e preco para realizar uma tarefa disponivel
+
+08. Pagar pela realizacao - formulario com dados financeiros e confirmacao do pagamento para realizacao de uma tarefa
+
+09. Aprovar uma tarefa - formulario para aprovacao da realizacao de uma tarefa
+
+10. Avaliar tarefa - formulario para avaliacao de uma tarefa realizada
+
+(incluir img do diagrama de robustness)
+
+
+# Classes / modelo
+
+USER
+TASK
+EVALUATION
+PAYMENT
+TASKESTIMATE
+
+(incluir img do diagrama de classes)
