@@ -6,7 +6,7 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 
 # Cronograma
 
-(https://github.com/marianacaramico/StaffFront/blob/master/cronograma.jpeg)
+(https://github.com/marianacaramico/StaffFront/blob/master/cronograma.png)
 
 
 # Atores
