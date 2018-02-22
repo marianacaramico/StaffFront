@@ -4,6 +4,11 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 
 # DOCUMENTACAO INICIAL
 
+# Cronograma
+
+(https://github.com/marianacaramico/StaffFront/blob/master/cronograma.jpeg)
+
+
 # Atores
 
 01. Usuario - designacao generica para comportamentos que podem ser realizados por qualquer tipo de usuario
