@@ -14,7 +14,7 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 
 04. Realizador - usuario que realiza uma tarefa
 
-(incluir img do diagrama de atores)
+(https://github.com/marianacaramico/StaffFront/blob/master/diagrama-atores.jpeg)
 
 
 # Casos de uso
