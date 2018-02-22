@@ -39,7 +39,7 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 
 10. Solicitar realizacao de tarefa - permite cadastrar uma nova tarefa disponivel para que um usuario realizador estime
 
-(incluir img do diagrama de casos de uso)
+(https://github.com/marianacaramico/StaffFront/blob/master/diagrama-casos-de-uso.jpeg)
 
 
 # Sitemap
@@ -64,7 +64,7 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 
 10. Avaliar tarefa - formulario para avaliacao de uma tarefa realizada
 
-(incluir img do diagrama de robustness)
+(https://github.com/marianacaramico/StaffFront/blob/master/diagrama-robustness.jpeg)
 
 
 # Classes / modelo
@@ -75,4 +75,4 @@ EVALUATION
 PAYMENT
 TASKESTIMATE
 
-(incluir img do diagrama de classes)
+(https://github.com/marianacaramico/StaffFront/blob/master/diagrama-classes.jpeg)
