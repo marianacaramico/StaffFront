@@ -75,9 +75,13 @@ This project has the front-end portion of the Staff App. It is a React app, crea
 # Classes / modelo
 
 USER
+
 TASK
+
 EVALUATION
+
 PAYMENT
+
 TASKESTIMATE
 
 (https://github.com/marianacaramico/StaffFront/blob/master/diagrama-classes.jpeg)
