@@ -1,91 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-  <head>
-    
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-       
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/logo16x16.png">
-    <!--link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
-    <link rel="manifest" href="/manifest/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/img/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff"-->
-
-    <title>Cadastre-se para utilizar o Staff</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
-
-    <!-- Custom CSS -->
-    <link href="/css/stylish-portfolio.css" rel="stylesheet" />
-    <link href="/css/style.css" rel="stylesheet" />
-
-  </head>
+  <% include shared/header.ejs %>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/"><img title="Staff" src="/img/logo.png" id="logostaff" />&nbsp;&nbsp;&nbsp;Staff</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Entrar</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signup">Cadastre-se</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#about">O que é o Staff?</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#services">Diferenciais</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#map">Localização</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <!-- Navbar -->
+    <% include shared/navbar.ejs %>
 
-    <!-- Header -->
-    
+    <!-- Content -->
     <section id="texto-intro">
       <div class="container col-md-6 text-center">
-            <p class="lead">
-              Preencha os campos abaixo para ter acesso a lista de tarefas disponíveis, e para solicitar que alguém faça uma tarefa.<br/>
-              Caso já tenha um cadastro, <a href="/login">clique aqui</a>.
-            </p>
-          </div>
+        <p class="lead">
+          Preencha os campos abaixo para ter acesso a lista de tarefas disponíveis, e para solicitar que alguém faça uma tarefa.<br/>
+          Caso já tenha um cadastro, <a href="/login">clique aqui</a>.
+        </p>
       </div>
     </section>
-    
     <section id="formulario">
       <div class="container text-left col-md-6">
-        <form id="sign-up-form" action="javascript:signup()">
+        <form id="sign-up-form">
           <div class="form-group">
             <label for="inputNome">Nome</label>
             <input type="text" class="form-control" id="inputNome" placeholder="Seu nome">
@@ -98,7 +31,7 @@
             <label for="inputSenha">Senha</label>
             <span class="form-row">
               <span class="col-11" style="">
-                <input type="password" class="form-control" id="inputSenha" placeholder="Escolha uma senha" />
+                <input type="password" class="form-control" id="inputSenha" placeholder="Escolha uma senha" autocomplete="off" />
               </span>
               <span class="col-1 align-middle">
                 <i style="padding-top: 10%; font-size: 1.8em; color: #8659A3;" class="fa fa-eye" id="btnShowPassword" aria-hidden="true"></i>
@@ -153,65 +86,8 @@
       <br/><br/>
     </section>
 
-   
     <!-- Footer -->
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-10 mx-auto text-center">
-            <h4>
-              <strong>Staff</strong>
-            </h4>
-            <p>Rua Haddock Lobo, 595
-              <br>São Paulo - SP</p>
-            <ul class="list-unstyled">
-                <i class="fa fa-envelope-o fa-fw"></i>
-                <a style="color:#8659A3" href="mailto:staff.firstfive@gmail.com">staff.firstfive@gmail.com</a>
-              </li>
-            </ul>
-            <br>
-            <ul class="list-inline">
-              <li class="list-inline-item">
-                <a href="https://facebook.com/stafirstfive">
-                  <i class="fa fa-facebook fa-fw fa-3x" style="color:#8659A3"></i>
-                </a>
-              </li>
-            </ul>
-            <hr class="small">
-            <p class="text-muted">Copyright &copy; FirstFive 2017</p>
-          </div>
-        </div>
-      </div>
-      <a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
-        <i class="fa fa-chevron-up fa-fw fa-1x"></i>
-      </a>
-      <img src="/img/logoff.jpeg" title="FirstFive" id="logoff" />
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="/vendor/jquery/jquery.min.js"></script>
-    <script src="/vendor/popper/popper.min.js"></script>
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="/vendor/jquery-inputmask/jquery.inputmask.bundle.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="/js/stylish-portfolio.js"></script>
-    <script src="/js/script.js"></script>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108862038-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'UA-108862038-1');
-      
-    </script>
+    <% include shared/footer.ejs %>
 
   </body>
-
 </html>

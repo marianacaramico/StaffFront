@@ -11,7 +11,7 @@ var config = {
     }
 };
 
-var myFunc =  function(err) {
+var myFunc = function myFunc(err) {
     if (err) {
         console.log(err);
     } else {

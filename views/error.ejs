@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-
 <html>
-	<head>
-		<title>Erro</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-   		<link rel="icon" type="image/png" sizes="16x16" href="/img/logo16x16.png">
-	</head>
+	<% include shared/header.ejs %>
+		
 	<body>
-		<h2>Erro 404 - :)</h2>
-		<p>Página não encontrada</p>
+		<!-- Navbar -->
+		<% include shared/navbar.ejs %>
 		
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108862038-1"></script>
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
+		<!-- Content -->
+		<div class="container-fluid">
+			<div class="row">
+				<div style="padding-top: 20px; margin: auto;">
+					<h2>Erro 404 - :)</h2>
+					<p>Página não encontrada</p>
+				</div>
+			</div>
+		</div>
 		
-		  gtag('config', 'UA-108862038-1');
-		</script>
-
+		<!-- Footer -->
+		<% include shared/footer.ejs %>
 	</body>
 </html>

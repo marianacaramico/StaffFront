@@ -1,47 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 
-  <head>
-    
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/logo16x16.png">
-    <!--link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">    
-    <link rel="manifest" href="/manifest/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/img/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff"-->
-
-    <title>Staff - Uma nova maneira de recrutar seu staff</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <!-- Custom CSS -->
-    <link href="/css/stylish-portfolio.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-
-  </head>
+  <% include shared/header.ejs %>
 
   <body>
-    <!-- Navigation -->
+  <!-- Navigation -->
     <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle">
       <i class="fa fa-bars"></i>
     </a>
@@ -61,6 +24,9 @@
         </li>
         <li>
           <a class="js-scroll-trigger" href="/#about">O que é o Staff?</a>
+        </li>
+        <li>
+          <a class="js-scroll-trigger" href="/#howWorks">Como funciona?</a>
         </li>
         <li>
           <a class="js-scroll-trigger" href="/#services">Diferenciais</a>
@@ -85,15 +51,32 @@
     <section id="about" class="about">
       <div class="container text-center">
         <h2>O que é o Staff?</h2>
-        <p class="lead">Um jeito inovador de encontrar pessoas para fazerem parte do seu "Staff"</p>
+        <p class="lead">Um jeito inovador de encontrar pessoas para fazerem parte<br> do seu "Staff": gente com o tempo que você não tem!</p>
         <br/>
+      </div>
+    </section>
+    <section id="howWorks" class="howWorks">
+      <div class="container text-center">
         <h2>Como funciona?</h2>
-        <p class="lead">
-        1. Cadastre-se<br/>
-        2. Informe a tarefa que você quer que alguém faça<br/>
-        3. Receba uma cotação e aprove<br/>
-        4. Avalie a tarefa realizada<br/>
-        </p>
+        <a class="btn btn-default btnCadastro" href="/signup">1. Cadastre-se</a>
+        <div class="row">
+	       <div class="col-md-6">
+		      <p class="lead">
+            <strong> Precisa de uma tarefa realizada?</strong><br>
+              2. Informe a tarefa que você quer que alguém faça<br>
+              3. Receba uma cotação e aprove<br>
+              4. Avalie a tarefa realizada<br>
+        	</p>
+	       </div>
+	       <div class="col-md-6">
+		       <p class="lead">
+              <strong> Precisa de $$ e sabe fazer algo?</strong><br>
+                2. Informe a tarefa que você fará<br>
+                3. Informe uma cotação e tenha a mesma aprovada<br>
+                4. Seja avaliado por sua tarefa realizada<br>
+        	 </p>
+	       </div>
+        </div>
       </div>
       <!-- /.container -->
     </section>
@@ -112,7 +95,7 @@
                     <i class="fa fa-search fa-stack-1x"></i>
                   </span>
                   <h4>
-                    <strong>Fácil de encontrar</strong>
+                    <strong>Fácil de encontrar e ser encontrado</strong>
                   </h4>
                   <p>Encontre rapidamente um profissional para realizar<br/> sua tarefa.</p>
                 </div>
@@ -123,7 +106,7 @@
                     <i class="fa fa-id-card-o fa-stack-1x"></i>
                   </span>
                   <h4>
-                    <strong>Fácil de contratar</strong>
+                    <strong>Fácil de contratar e ser contratado</strong>
                   </h4>
                   <p>Defina o valor e feche a execução sem burocracia.</p>
                 </div>
@@ -161,20 +144,15 @@
       <!-- /.container -->
     </section>
 
-    <!-- Callout -->
-    <aside class="callout">
-      <div class="text-vertical-center">
-        <h1>Staff</h1>
-      </div>
-    </aside>
+    
 
    
     <!-- Call to Action -->
-    <aside class="call-to-action text-white bg-purple-default">
+    <aside class="call-to-action comeceAgora">
       <div class="container text-center">
         <h3>Comece agora mesmo!</h3>
-        <a href="/signup" class="btn btn-lg btn-light">Cadastre-se</a>
-        <a href="/login" class="btn btn-lg btn-dark">Entre na sua conta</a>
+        <a href="/signup" class="btn btn-lg btnEntre">Cadastre-se</a>
+        <a href="/login" class="btn btn-lg btnEntre">Entre na sua conta</a>
       </div>
     </aside>
 
@@ -185,60 +163,7 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-10 mx-auto text-center">
-            <h4>
-              <strong>Staff</strong>
-            </h4>
-            <p>Rua Haddock Lobo, 595
-              <br>São Paulo - SP</p>
-            <ul class="list-unstyled">
-                <i class="fa fa-envelope-o fa-fw"></i>
-                <a style="color:#8659A3" href="mailto:staff.firstfive@gmail.com">staff.firstfive@gmail.com</a>
-              </li>
-            </ul>
-            <br>
-            <ul class="list-inline">
-              <li class="list-inline-item">
-                <a href="https://facebook.com/stafirstfive">
-                  <i class="fa fa-facebook fa-fw fa-3x" style="color:#8659A3"></i>
-                </a>
-              </li>
-            </ul>
-            <hr class="small">
-            <p class="text-muted">Copyright &copy; FirstFive 2017</p>
-          </div>
-        </div>
-      </div>
-      <a id="to-top" href="#top" class="btn btn-dark btn-lg js-scroll-trigger">
-        <i class="fa fa-chevron-up fa-fw fa-1x"></i>
-      </a>      
-      <img src="/img/logoff.jpeg" title="FirstFive" id="logoff" />
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="/vendor/jquery/jquery.min.js"></script>
-    <script src="/vendor/popper/popper.min.js"></script>
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="/js/stylish-portfolio.js"></script>
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108862038-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'UA-108862038-1');
-    </script>
+    <% include shared/footer.ejs %>
 
   </body>
-
 </html>
