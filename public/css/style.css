@@ -1,5 +1,5 @@
 .bg-purple-default {
-	background-color: #8659A3;
+	background-color: #8659a3;
 }
 
 #texto-intro p {
@@ -7,8 +7,14 @@
 }
 
 .buttonSubmit {
-	background-color: #8659A3;
-	border: 1px solid #8659A3;		
+	background-color: #8659a3;
+	border: 1px solid #8659a3;		
+}
+
+.buttonSubmit:disabled {
+	background-color: #ccc !important;
+    border-color: #8659a3 !important;
+    color: #fff !important;
 }
 
 .buttonSubmit:hover {
@@ -44,4 +50,47 @@
 
 footer {
 	padding-bottom: 5px;
+}
+
+.btnCadastro {
+	background-color: #8659A3;
+	color: #fff;
+	margin-bottom: 30px;
+	margin-top: 15px;
+}
+
+.btnCadastro:hover {
+	background-color: #fff;
+	color: #8659A3;
+	border: 1px solid #8659A3;
+	cursor: pointer;
+}
+
+.about {
+	background-color: #8659A3;
+	color: #fff;
+}
+
+.howWorks {
+	padding: 50px 0;
+}
+
+.comeceAgora {
+	background-color: #fff;
+}
+
+.btnEntre {
+	background-color: #fff;
+	color: #8659A3;
+	border: 1px solid #8659A3;
+	cursor: pointer;
+}
+
+.btnEntre:hover {
+	color: green;
+	border-color: green;
+}
+
+#btnShowPassword {
+	padding-top: 10%; font-size: 1.8em; color: #8659a3;
 }

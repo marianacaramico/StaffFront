@@ -2,12 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function (req, res, next) {
-    res.render('login');
-});
-
-router.get('/teste', (req, res, next) => {
-    var sess = req.session;
-    res.send(sess);
+    res.render('login', {
+        title: 'Entre em sua conta para usar o Staff'
+    });
 });
 
 router.post('/', function (req, res, next) {
@@ -27,11 +24,11 @@ router.post('/', function (req, res, next) {
             encrypt: true
         }
     };
-    
+
     var connection = new Connection(config);
     
         connection.on('connect', function(err) {
-        
+
             if (err) {
                 console.log('DEU UM ERRO!');
                 console.log(err);   
@@ -41,22 +38,28 @@ router.post('/', function (req, res, next) {
     
                 if((username == null) || (password == null)) {
                     console.log('NAO MANDOU USER OU SENHA, MANÉ');
-                    res.render('erro-login');
+                    res.render('erro-login', {
+                        title: 'Ops, não conseguimos fazer o login'
+                    });
                 } else {
                     var query = "SELECT * FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
-        
+
                     var request = new Request(query, function(err, rowCount) {
                             if (err) {
                                 console.log(err);
                             } else {
                                 if (rowCount > 0) {
-                                    res.render('home');
+                                    res.render('home', {
+                                        title: 'Área logada - Staff'
+                                    });
                                 } else {
-                                    res.render('erro-login');
+                                    res.render('erro-login', {
+                                        title: 'Ops, não conseguimos fazer o login'
+                                    });
                                 }
                             }
                         });
-                                            
+
                         connection.execSql(request);
                     }
                 }

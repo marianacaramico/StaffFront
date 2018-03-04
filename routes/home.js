@@ -4,7 +4,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('home');
+    res.render('home', {
+        title: 'Área logada - Staff'
+    });
 });
 
 module.exports = router;
