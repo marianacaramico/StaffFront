@@ -36,4 +36,3 @@ function queryDatabase(query) {
     
     connection.execSql(request);
 }
-
