@@ -24,12 +24,20 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(session({ secret: 'first5secret' })); // TODO
+// app.use(session({ secret: 'first5secret' })); // TODO
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('*', function(req, res, next) {
+  if (req.secure || !req.headers['x-forwarded-proto']) {
+    res.redirect('https://' + req.headers.host + req.url);
+  } else {
+    next();
+  }
+});
 
 app.use('/', index);
 app.use('/task', task);
@@ -53,7 +61,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {
+    title: 'Erro'
+  });
 });
 
 module.exports = app;
