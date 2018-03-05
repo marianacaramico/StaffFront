@@ -29,11 +29,18 @@ router.get('/:id', function (req, res, next) {
             result = mateus;
             break;
         default:
-            res.status(404);
+            next();
             break;
     }
 
-    res.send(result);
+    res.json(result);
+});
+
+router.get('*', function(req, res, next) {
+    res.status(404);
+    res.render('error', {
+        title: 'Erro'
+    });
 });
 
 module.exports = router;
