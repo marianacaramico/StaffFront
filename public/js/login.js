@@ -19,10 +19,5 @@
       $("helpBlockSenha").hide();
     }
 
-    $(document).ready(() => {
-      $("#helpBlockEmail").hide();
-      $("#helpBlockSenha").hide();
-    });
-
   });
 })();
