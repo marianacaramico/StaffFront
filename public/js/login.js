@@ -4,24 +4,24 @@
     if ($("#inputEmail").val() === "") {
       e.preventDefault();
       $("#inputEmail").addClass("textBoxError");
-      $("#helpBLockEmail").show();
+      $("#helpBlockEmail").show();
     } else {
       $("#inputEmail").removeClass("textBoxError");
-      $("#helpBLockEmail").hide();
+      $("#helpBlockEmail").hide();
     }
 
     if ($("#inputSenha").val() === "") {
       e.preventDefault();
       $("#inputSenha").addClass("textBoxError");
-      $("#helpBLockSenha").show();
+      $("#helpBlockSenha").show();
     } else {
       $("#inputSenha").removeClass("textBoxError");
-      $("helpBLockSenha").hide();
+      $("helpBlockSenha").hide();
     }
 
     $(document).ready(() => {
-      $("#helpBLockEmail").hide();
-      $("#helpBLockSenha").hide();
+      $("#helpBlockEmail").hide();
+      $("#helpBlockSenha").hide();
     });
 
   });
