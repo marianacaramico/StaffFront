@@ -8,7 +8,7 @@
 
 .buttonSubmit {
 	background-color: #8659a3;
-	border: 1px solid #8659a3;		
+	border: 1px solid #8659a3;
 }
 
 .buttonSubmit:disabled {
@@ -93,4 +93,8 @@ footer {
 
 #btnShowPassword {
 	padding-top: 10%; font-size: 1.8em; color: #8659a3;
+}
+
+.textBoxError {
+	 border-color: red;
 }
