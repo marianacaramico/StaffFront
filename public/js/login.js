@@ -16,13 +16,7 @@
       $("#helpBlockSenha").show();
     } else {
       $("#inputSenha").removeClass("textBoxError");
-      $("helpBlockSenha").hide();
-    }
-
-    $(document).ready(() => {
-      $("#helpBlockEmail").hide();
       $("#helpBlockSenha").hide();
-    });
-
+    }
   });
 })();
