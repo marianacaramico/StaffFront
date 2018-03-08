@@ -1,6 +1,6 @@
 "use strict";
 (function() {
-  $("#loginButton").click((e) => {
+  $("#loginForm").submit((e) => {
     if (isNull($("#inputEmail"))) {
       $("#inputEmail").addClass("textBoxError");
       $("#helpBLockEmail").text("Digite o seu email");
