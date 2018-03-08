@@ -1,18 +1,18 @@
 "use strict";
 (function() {
   $("#loginForm").submit((e) => {
-    var ret = true;
-    if (isNull($("#inputEmail").text())) {
+    var passed = true;
+    if ($("#inputEmail").val() === "") {
       $("#inputEmail").addClass("textBoxError");
       $("#helpBLockEmail").text("Digite o seu email");
       ret = false;
     } else {
       $("#inputEmail").removeClass("textBoxError");
       $("#helpBLockEmail").text();
-      ret = true;
+      ret = ret && true;
     }
 
-    if (isNull($("#inputSenha").text())) {
+    if ($("#inputSenha").val() === "") {
       $("#inputSenha").addClass("textBoxError");
       $("#helpBLockSenha").text("Digite a sua senha");
       e.preventDefault();
@@ -23,7 +23,9 @@
       ret = ret && true;
     }
 
-return ret;
+    if (!passed) {
+       e.preventDefault()
+    }
 
   });
 })();
