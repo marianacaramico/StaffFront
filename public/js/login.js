@@ -19,7 +19,7 @@
       $("helpBLockSenha").hide();
     }
 
-    $document.ready(() => {
+    $.ready(() => {
       $("#helpBLockEmail").hide();
       $("#helpBLockSenha").hide();
     });
