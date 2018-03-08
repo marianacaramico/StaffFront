@@ -7,7 +7,11 @@
       e.preventDefault();
     } else {
       $("#inputEmail").removeClass("textBoxError");
+<<<<<<< HEAD
       $("#helpBLockEmail").text("");
+=======
+      $("#helpBLockEmail").text();
+>>>>>>> fc31cf308cfad86d0ce31651612132577c6d66e3
     }
 
     if ($("#inputSenha").val() === "") {
@@ -16,7 +20,11 @@
       e.preventDefault();
     } else {
       $("#inputSenha").removeClass("textBoxError");
+<<<<<<< HEAD
       $("helpBLockSenha").text("");
+=======
+      $("helpBLockSenha").text();
+>>>>>>> fc31cf308cfad86d0ce31651612132577c6d66e3
     }
 
   });
