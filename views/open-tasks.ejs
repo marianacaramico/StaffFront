@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <% include shared/header.ejs %>
+
+<body>
+    <!-- Navbar -->
+    <% include shared/navbar.ejs %>
+
+    <section class="col-sm-12" id="openTaskWrapper">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-around">
+                <div class="col-sm-5 openTaskBox">
+                    <h4>Abertas por você:</h4>
+                    <hr />
+                    <div>
+                        <p>Procura-se pintor de parede</p>
+                        <p>$$ "Lorem ipsum dolor sit amet."</p>
+                    </div>
+                    <hr />
+                    <div>
+                        <p>Procura-se pintor de parede</p>
+                        <p>$$ "Lorem ipsum dolor sit amet."</p>
+                    </div>
+                    <hr />
+                </div>
+                <div class="col-sm-5 openTaskBox">
+                    <h4>Tarefas "com dono":</h4>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Procura-se pintor de parede</p>
+                            <p>$$ "Lorem ipsum dolor sit amet."</p>
+                        </div>
+                        <div class="ml-auto">
+                            <p>Status *****</p>
+                            <p><i class="fa fa-user" aria-hidden="true"></i></p>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="col-sm-12" id="recommendedTasksWrapper">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-around">
+                <div class="col-sm-11 openTaskBox">
+                    <h4>Abertas para você:</h4>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Procura-se pintor de parede</p>
+                            <p>$$ "Lorem ipsum dolor sit amet."</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button type="buton" class="btn btn-success">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Terminei
+                            </button>
+                            <p><i class="fa fa-user" aria-hidden="true"></i></p>
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <% include shared/footer.ejs %>
+</body>
+</html>

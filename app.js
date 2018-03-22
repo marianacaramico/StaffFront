@@ -32,11 +32,21 @@ app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('*', function(req, res, next) {
-  if (!(req.secure || req.headers['x-forwarded-proto'] == 'https')) {
-    res.redirect('https://' + req.headers.host + req.url);
+  if (req.app.get('env') !== 'development') {
+    if (!(req.secure || req.headers['x-forwarded-proto'] == 'https')) {
+      res.redirect('https://' + req.headers.host + req.url);
+    } else {
+      next();
+    }
   } else {
     next();
   }
+});
+
+app.use('/open-tasks', function (req, res, next) {
+  res.render('open-tasks', {
+    title: 'Tarefas em Aberto - Staff'
+  });
 });
 
 app.use('/', index);
