@@ -5,7 +5,7 @@
 
   <body>
     <!-- Navbar -->
-    <% include shared/navbar.ejs %>
+    <% include shared/navbarProfile.ejs %>
     
     <!-- Content -->
     <section id="texto-intro">
@@ -21,7 +21,52 @@
         </div>
       </div>
     </section>
-    
+	
+	<!-- Painel -->
+	<section class="content-section bg-primary text-white text-center" id="painel-home">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+            <span class="service-icon rounded-circle mx-auto mb-3">
+              <i class="fa fa-list-ol"></i>
+            </span>
+            <h4>
+              <strong>Pesquisar por tarefa</strong>
+            </h4>
+            <p class="text-faded mb-0">Pesquise pelas tarefas listadas.</p>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+            <span class="service-icon rounded-circle mx-auto mb-3">
+              <i class="fa fa-checked"></i>
+            </span>
+            <h4>
+              <strong>Tarefas em aberto</strong>
+            </h4>
+            <p class="text-faded mb-0">Aqui serão exibidas as tarefas em aberto.</p>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+            <span class="service-icon rounded-circle mx-auto mb-3">
+              <i class="fa fa-plus"></i>
+            </span>
+            <h4>
+              <strong>Tarefas concluídas</strong>
+            </h4>
+            <p class="text-faded mb-0">Clique aqui caso queira exibir tarefas concluídas.
+            </p>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <span class="service-icon rounded-circle mx-auto mb-3">
+              <i class="fa fa-search"></i>
+            </span>
+            <h4>
+              <strong>Solicitar nova tarefa</strong>
+            </h4>
+            <p class="text-faded mb-0">Para solicitar no tarefa clique nessa opção.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+	
     <!-- Footer -->
     <% include shared/footer.ejs %>
 
