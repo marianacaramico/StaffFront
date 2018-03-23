@@ -14,55 +14,31 @@
                 <div class="col-sm-5 openTaskBox">
                     <h4>Abertas por você:</h4>
                     <hr />
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-12">
-                                <p>Procura-se pintor de parede</p>
-                            </div>
-                            <div class="col-sm-12">
-                                <span class="col-sm-1">$$</span>
-                                <span class="col-sm-11">"Lorem ipsum dolor sit amet."</span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-12">
-                                <p>Procura-se pintor de parede</p>
-                            </div>
-                            <div class="col-sm-12">
-                                <span class="col-sm-1">$$</span>
-                                <span class="col-sm-11">"Lorem ipsum dolor sit amet."</span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-
+                    <div id="openTaskPersonal"></div>
                 </div>
 
                 <div class="col-sm-5 openTaskBox">
                     <h4>Tarefas "com dono":</h4>
                     <hr />
 
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <div class="col-sm-12">
-                                <p>Procura-se pintor de parede</p>
+                    <div id="openTaskTaken">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="col-sm-12">
+                                    <p>Procura-se pintor de parede</p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <span class="col-sm-1">$$</span>
+                                    <span class="col-sm-11">"Lorem ipsum dolor sit amet."</span>
+                                </div>
                             </div>
-                            <div class="col-sm-12">
-                                <span class="col-sm-1">$$</span>
-                                <span class="col-sm-11">"Lorem ipsum dolor sit amet."</span>
+                            <div class="col-sm-3">
+                                Status *****<br/>
+                                <i class="fa fa-user" aria-hidden="true"></i>
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            Status *****<br/>
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                        </div>
+                        <hr />
                     </div>
-                    <hr />
 
                 </div>
             </div>
@@ -76,27 +52,29 @@
                     <h4>Abertas para você:</h4>
                     <hr />
 
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <div class="col-sm-12">
-                                <p>Procura-se pintor de parede</p>
+                    <div id="recommendedTasks">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <div class="col-sm-12">
+                                    <p>Procura-se pintor de parede</p>
+                                </div>
+                                <div class="col-sm-12">
+                                    <span class="col-sm-2">$$</span>
+                                    <span class="col-sm-10">"Lorem ipsum dolor sit amet."</span>
+                                </div>
                             </div>
-                            <div class="col-sm-12">
-                                <span class="col-sm-2">$$</span>
-                                <span class="col-sm-10">"Lorem ipsum dolor sit amet."</span>
+                            <div class="col-sm-3">
+                                <div class="pull-right">
+                                    <button class="btn btn-success">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        Terminei
+                                    </button><br/>
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            <div class="pull-right">
-                                <button class="btn btn-success">
-                                    <i class="fa fa-check" aria-hidden="true"></i>
-                                    Terminei
-                                </button><br/>
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </div>
-                        </div>
+                        <hr />
                     </div>
-                    <hr />
                     
                 </div>
             </div>
@@ -105,5 +83,6 @@
 
     <!-- Footer -->
     <% include shared/footer.ejs %>
+    <script type="text/javascript" src="/js/tasks.js"></script>
 </body>
 </html>

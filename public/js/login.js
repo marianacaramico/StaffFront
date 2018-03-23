@@ -1,5 +1,5 @@
-"use strict";
-(function() {
+(function(window, document) {
+  "use strict";
   $("#loginForm").submit((e) => {
     if ($("#inputEmail").val() === "") {
       e.preventDefault();
@@ -19,4 +19,4 @@
       $("#helpBlockSenha").hide();
     }
   });
-})();
+})(window, document);
