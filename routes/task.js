@@ -35,6 +35,12 @@ router.get('/', function (req, res, next) {
     res.json(result);
 });
 
+router.get('/open', function (req, res, next) {
+    res.render('open-tasks', {
+        title: 'Tarefas em Aberto - Staff'
+    });
+});
+
 router.get('/:id', function (req, res, next) {
     var result = {};
     var id = Number(req.params.id);

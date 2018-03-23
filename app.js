@@ -43,12 +43,6 @@ app.use('*', function(req, res, next) {
   }
 });
 
-app.use('/open-tasks', function (req, res, next) {
-  res.render('open-tasks', {
-    title: 'Tarefas em Aberto - Staff'
-  });
-});
-
 app.use('/', index);
 app.use('/task', task);
 app.use('/user', user);
