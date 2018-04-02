@@ -50,7 +50,9 @@ router.post('/', function (req, res, next) {
                             } else {
                                 if (rowCount > 0) {
                                     res.render('home', {
-                                        title: 'Área logada - Staff'
+                                        title: 'Área logada - Staff',
+                                        script: 'home',
+                                        css: "home"
                                     });
                                 } else {
                                     res.render('erro-login', {

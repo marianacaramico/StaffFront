@@ -6,3 +6,12 @@
 .taskWrapper {
 	margin-top: 30px;
 }
+
+.service-icon {
+    height: 6rem;
+    width: 6rem;
+    display: block;
+    line-height: 6rem;
+    font-size: 2.25rem;
+    border: 1px solid #212529;
+}

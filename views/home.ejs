@@ -6,62 +6,55 @@
   <body>
     <!-- Navbar -->
     <% include shared/navbarProfile.ejs %>
-    
-    <!-- Content -->
-    <section id="texto-intro">
-      <div class="container text-left">
-        <br/>
-        <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6 text-center">
-            <p class="lead">
-              Você entrou na sua conta!
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
 	
-	<!-- Painel -->
-	<section class="content-section bg-primary text-white text-center" id="painel-home">
+	  <!-- Painel -->
+	  <section class="content-section text-center mt-5" id="painel-home">
       <div class="container">
         <div class="row">
-          <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-            <span class="service-icon rounded-circle mx-auto mb-3">
-              <i class="fa fa-list-ol"></i>
-            </span>
-            <h4>
-              <strong>Pesquisar por tarefa</strong>
-            </h4>
-            <p class="text-faded mb-0">Pesquise pelas tarefas listadas.</p>
+          <div class="col-sm-3">
+            <a href="#" class="serviceIconRoute">
+              <span class="service-icon rounded-circle mx-auto text-center">
+                <i class="fa fa-list-ol"></i>
+              </span>
+              <h4>
+                <strong>Pesquisar por tarefa</strong>
+              </h4>
+              <p>Pesquise pelas tarefas listadas.</p>
+            </a>
           </div>
-          <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-            <span class="service-icon rounded-circle mx-auto mb-3">
-              <i class="fa fa-checked"></i>
-            </span>
-            <h4>
-              <strong>Tarefas em aberto</strong>
-            </h4>
-            <p class="text-faded mb-0">Aqui serão exibidas as tarefas em aberto.</p>
+          <div class="col-sm-3">
+            <a href="/task/open" class="serviceIconRoute">
+              <span class="service-icon rounded-circle mx-auto text-center">
+                <i class="fa fa-check"></i>
+              </span>
+              <h4>
+                <strong>Tarefas em aberto</strong>
+              </h4>
+              <p>Aqui serão exibidas as tarefas em aberto.</p>
+            </a>
           </div>
-          <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-            <span class="service-icon rounded-circle mx-auto mb-3">
-              <i class="fa fa-plus"></i>
-            </span>
-            <h4>
-              <strong>Tarefas concluídas</strong>
-            </h4>
-            <p class="text-faded mb-0">Clique aqui caso queira exibir tarefas concluídas.
-            </p>
+          <div class="col-sm-3">
+            <a href="#" class="serviceIconRoute">
+              <span class="service-icon rounded-circle mx-auto text-center">
+                <i class="fa fa-plus"></i>
+              </span>
+              <h4>
+                <strong>Tarefas concluídas</strong>
+              </h4>
+              <p>Clique aqui caso queira exibir tarefas concluídas.
+              </p>
+            </a>
           </div>
-          <div class="col-lg-3 col-md-6">
-            <span class="service-icon rounded-circle mx-auto mb-3">
-              <i class="fa fa-search"></i>
-            </span>
-            <h4>
-              <strong>Solicitar nova tarefa</strong>
-            </h4>
-            <p class="text-faded mb-0">Para solicitar no tarefa clique nessa opção.</p>
+          <div class="col-sm-3">
+            <a href="#" class="serviceIconRoute">
+              <span class="service-icon rounded-circle mx-auto text-center">
+                <i class="fa fa-search"></i>
+              </span>
+              <h4>
+                <strong>Solicitar nova tarefa</strong>
+              </h4>
+              <p>Para solicitar no tarefa clique nessa opção.</p>
+            </a>
           </div>
         </div>
       </div>
