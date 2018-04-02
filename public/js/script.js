@@ -61,10 +61,6 @@
 		});
 	}
 	
-	function isNull(element) {
-		return element == null || element === false || (typeof element === typeof Object() && element.length === 0);
-	}
-	
 	function toggleViewPassword(element) {
 		if ( !isNull(element) && !isNull(element.attr("type")) ) {
 			switch (element.attr("type")) {

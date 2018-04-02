@@ -7,12 +7,14 @@
     <!-- Navbar -->
     <% include shared/navbar.ejs %>
 
-    <section class="col-sm-12" id="openTaskWrapper">
+    <section class="col-sm-12 taskWrapper" id="openTaskWrapper">
         <div class="container-fluid">
+            <div class="col-sm-12">
+                <h3>Abertas por você:</h3>
+            </div>
             <div class="row d-flex justify-content-around">
-
                 <div class="col-sm-5 openTaskBox">
-                    <h4>Abertas por você:</h4>
+                    <h4>Tarefas "sem dono":</h4>
                     <hr />
                     <div id="openTaskPersonal"></div>
                 </div>
@@ -20,9 +22,8 @@
                 <div class="col-sm-5 openTaskBox">
                     <h4>Tarefas "com dono":</h4>
                     <hr />
-
                     <div id="openTaskTaken">
-                        <div class="row">
+                        <div class="row"> <!-- TODO: call API when done -->
                             <div class="col-sm-9">
                                 <div class="col-sm-12">
                                     <p>Procura-se pintor de parede</p>
@@ -39,20 +40,22 @@
                         </div>
                         <hr />
                     </div>
-
                 </div>
+
             </div>
         </div>
     </section>
 
-    <section class="col-sm-12" id="recommendedTasksWrapper">
+    <section class="col-sm-12 taskWrapper" id="recommendedTasksWrapper">
         <div class="container-fluid">
+            <div class="col-sm-12">
+                <h3>Abertas para você:</h3>
+            </div>
             <div class="row d-flex justify-content-around">
                 <div class="col-sm-11 openTaskBox">
-                    <h4>Abertas para você:</h4>
-                    <hr />
-
                     <div id="recommendedTasks">
+                        <h4>Tarefas em aberto:</h4>
+                        <hr />
                         <div class="row">
                             <div class="col-sm-9">
                                 <div class="col-sm-12">
@@ -75,7 +78,6 @@
                         </div>
                         <hr />
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -83,6 +85,5 @@
 
     <!-- Footer -->
     <% include shared/footer.ejs %>
-    <script type="text/javascript" src="/js/tasks.js"></script>
 </body>
 </html>

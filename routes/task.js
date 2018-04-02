@@ -37,7 +37,9 @@ router.get('/', function (req, res, next) {
 
 router.get('/open', function (req, res, next) {
     res.render('open-tasks', {
-        title: 'Tarefas em Aberto - Staff'
+        title: 'Tarefas em Aberto - Staff',
+        script: "tasks",
+        css: "tasks"
     });
 });
 

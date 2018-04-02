@@ -95,11 +95,6 @@ footer {
 	padding-top: 10%; font-size: 1.8em; color: #8659a3;
 }
 
-.openTaskBox {
-	margin-top: 15px;
-	border: 1px solid black;
-}
-
 .textBoxError {
-	 border-color: red;
+	border-color: red;
 }
