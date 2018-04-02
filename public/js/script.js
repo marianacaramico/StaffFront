@@ -28,6 +28,35 @@
 				signup();
 			});
 		}
+
+		if ( !isNull($(".rateStars")) ) {
+			$(".rateStars").on("mouseover", "i", e => {
+				var _this = $(e.currentTarget);
+				_this.parent().children().each((index, value) => {
+					var element = $(value);
+					element.css("color", "yellow");
+					element.removeClass("fa-star-o");
+					element.addClass("fa-star");
+					if (_this[0] == value) {
+						return false;
+					}
+				});
+			}).on("mouseout", "i", e => {
+				var _this = $(e.currentTarget);
+				_this.parent().children().each((index, value) => {
+					var element = $(value);
+					element.css("color", "");
+					element.removeClass("fa-star");
+					element.addClass("fa-star-o");
+					if (_this[0] == value) {
+						return false;
+					}
+				});
+			}).on("click", e => {
+				e.preventDefault();
+				$(e.currentTarget).off("mouseout").off("mouseover").off("click");
+			});
+		}
 	});
 	
 	function signup() {
