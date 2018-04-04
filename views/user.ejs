@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <% include shared/header.ejs %>
+
+    <body>
+        <!-- Navbar -->
+        <% include shared/navbarProfile.ejs %>
+
+        <div class="container-fluid mt-5">
+            <!-- Header -->
+            <header class="row">
+                <div class="row mx-auto">
+                    <div class="mx-auto">
+                        <span class="service-icon rounded-circle text-center">
+                            <i class="fa fa-user"></i>
+                        </span>
+                    </div>
+                    <div class="mx-auto text-center">
+                        <h2><%= (locals.result || {}).name || "Anônimo" %></h2>
+                        <div class="rateStars">
+                            <% for (var i = 0; i < 5; i++) {
+                                %><i class="fa fa-2x fa-star-o" aria-hidden="true"></i><%
+                            } %>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tarefas Solicitadas -->
+            <section class="row mt-5">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <div>
+                        <h3>Tarefas solicitadas "sem dono":</h3>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-12" id="recommendedTasks">
+                            <h4>Título</h4>
+                            <hr />
+                            <div id="openTaskPersonal"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </section>
+
+            <!-- Tarefas Concluídas -->
+            <section class="row mt-5">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <div>
+                        <h3>Tarefas concluídas por <%= (locals.result || {}).name || "Anônimo" %>:</h3>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-12" id="recommendedTasks">
+                            <h4>Título</h4>
+                            <hr />
+                            <div id="closedTaskPersonal">
+                                <div class='row'>
+                                    <div class='col-sm-12'>
+                                        <div class='col-sm-12'><p>Título</p></div>
+                                        <div class='col-sm-12'>
+                                            <span class='col-sm-2'>R$ 250,00</span>
+                                            <span class='col-sm-10'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis, distinctio?</span>
+                                        </div>
+                                    </div>
+                                </div><hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <% include shared/footer.ejs %>
+
+    </body>
+
+</html>

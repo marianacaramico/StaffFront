@@ -2,7 +2,7 @@ var express = require('express');
 
 var router = express.Router();
 
-/* GET USER*/
+/* GET USER */
 router.get('/:id', function (req, res, next) {
     var pedro = {
         "id_user": 1,
@@ -33,7 +33,12 @@ router.get('/:id', function (req, res, next) {
             break;
     }
 
-    res.json(result);
+    res.render('user', {
+        title: result.name + " - Staff",
+        css: "user",
+        script: "tasks",
+        result: result
+    });
 });
 
 router.get('*', function(req, res, next) {
