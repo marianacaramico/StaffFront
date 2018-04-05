@@ -1,39 +1,29 @@
-var Connection = require('tedious').Connection;
-var Request = require('tedious').Request;
+var express = require('express');
+var router = express.Router();
+var TYPES = require('tedious').TYPES;
+var Database = require('./helpers/Database');
 
-var config = {
-    userName: 'firstfive',
-    password: 'MmP300rV50',
-    server: 'firstfive.database.windows.net',
-    options: {
-        database: 'firstfive',
-        encrypt: true
-    }
-};
-
-var myFunc = function myFunc(err) {
-    if (err) {
-        console.log(err);
-    } else {
-       queryDatabase("SELECT * FROM teste");
-    }
-};
-
-var connection = new Connection(config);
-connection.on('connect', myFunc);
-
-function queryDatabase(query) {
-    var request = new Request(query, function(err, rowCount, rows) {
-        console.log(rowCount + ' row(s) returned');
-        process.exit();
-    });
+router.get('/', function(req, res, next) {
+    var database = new Database();
+    var connection = database.connect();
     
-    request.on('row', function(columns) {
-        columns.forEach(function(column) {
-            console.log(column);
-        });
+    connection.on('connect', function(err) {
+        if (err) {
+            res.json(err);
+        } else {
+            var result = {};
+            var request = database.query("SELECT @username=username, @password=password FROM dbo.TB_USER WHERE username = 'mateus.larrubia99@gmail.com' AND password = '1234'");
+            request.addOutputParameter('username', TYPES.VarChar);
+            request.addOutputParameter('password', TYPES.VarChar);
+            request.on('returnValue', function(parameterName, value, metadata) {
+                result[parameterName] = value;
+            });
+            request.on('requestCompleted', function() {
+                res.json(result);
+            });
+            connection.execSql(request);
+        }
     });
-    
-    connection.execSql(request);
-}
+});
 
+module.exports = router;
