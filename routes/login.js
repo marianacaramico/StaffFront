@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var Database = require('../helpers/Database');
+var TYPES = require('tedious').TYPES;
 
 router.get('/', function (req, res, next) {
     res.render('login', {
@@ -8,64 +10,51 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-
-    var Connection = require('tedious').Connection;
-    var Request = require('tedious').Request;
+    var database = new Database();
 
     var username = req.body.inputEmail;
     var password = req.body.inputSenha;
 
-    var config = {
-        userName: 'firstfive',
-        password: 'MmP300rV50',
-        server: 'firstfive.database.windows.net',
-        options: {
-            database: 'firstfive',
-            encrypt: true
-        }
-    };
-
-    var connection = new Connection(config);
+    var connection = database.connect();
     
-        connection.on('connect', function(err) {
-
-            if (err) {
-                console.log('DEU UM ERRO!');
-                console.log(err);   
-                return;
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log('DEU UM ERRO!');
+            console.log(err);
+            return;
+        } else {
+            console.log('DEU CERTO!');
+            if((username == null) || (password == null)) {
+                console.log('NAO MANDOU USER OU SENHA, MANÉ');
+                res.render('erro-login', {
+                    title: 'Ops, não conseguimos fazer o login'
+                });
             } else {
-                console.log('DEU CERTO!');
-    
-                if((username == null) || (password == null)) {
-                    console.log('NAO MANDOU USER OU SENHA, MANÉ');
-                    res.render('erro-login', {
-                        title: 'Ops, não conseguimos fazer o login'
-                    });
-                } else {
-                    var query = "SELECT * FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
-
-                    var request = new Request(query, function(err, rowCount) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                if (rowCount > 0) {
-                                    res.render('home', {
-                                        title: 'Área logada - Staff',
-                                        script: 'home',
-                                        css: "home"
-                                    });
-                                } else {
-                                    res.render('erro-login', {
-                                        title: 'Ops, não conseguimos fazer o login'
-                                    });
-                                }
-                            }
+                var query = "SELECT id_user FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
+                var request = database.query(query, function(err, rowCount) {
+                    if (err) {
+                        console.log(err);
+                        res.render('erro-login', {
+                            title: 'Ops, não conseguimos fazer o login'
                         });
-
-                        connection.execSql(request);
+                    } else {
+                        if (rowCount > 0) {
+                            res.render('home', {
+                                title: 'Área logada - Staff',
+                                script: 'home',
+                                css: 'home'
+                            });
+                        } else {
+                            res.render('erro-login', {
+                                title: 'Ops, não conseguimos fazer o login'
+                            });
+                        }
                     }
-                }
-        });
+                });
+                connection.execSql(request);
+            }
+        }
+    });
 
 
 
