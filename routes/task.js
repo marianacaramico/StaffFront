@@ -3,6 +3,15 @@ var express = require('express');
 var router = express.Router();
 
 /* GET Task */
+router.get('*', function(req, res, next) {
+    if (!req.session.userid) {
+        var m = req.app.get('env') !== 'development' ? "https://" : "http://";
+        res.redirect(m + req.headers.host + "/login");
+    } else {
+        next();
+    }
+});
+
 router.get('/', function (req, res, next) {
     var result = {};
     result = {
@@ -46,7 +55,7 @@ router.get('/open', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
     var result = {};
     var id = Number(req.params.id);
-    
+
     switch(id) {
         case 1:
             result = {

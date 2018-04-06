@@ -4,9 +4,14 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('home', {
-        title: 'Área logada - Staff'
-    });
+    if (req.session.userid) {
+        res.render('home', {
+            title: 'Área logada - Staff'
+        });
+    } else {
+        var m = req.app.get('env') !== 'development' ? "https://" : "http://";
+        res.redirect(m + req.headers.host + "/login");
+    }
 });
 
 module.exports = router;
