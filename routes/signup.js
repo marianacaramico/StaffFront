@@ -48,32 +48,45 @@ router.post('/', function (req, res, next) {
                     result: "Dados inválidos"
                 });
             } else {
-                var result = {};
-                var query = "INSERT INTO dbo.TB_USER(name, username, password) VALUES (@name, @username, @password); SELECT @@identity";
-                var request = database.query(query, connection, function(err, rowCount, rows) {
-                    if (err) {
+                var queryVerify = "SELECT * FROM dbo.TB_USER WHERE username = @username";
+                var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
+                    if (!rowCount) {
+                        var query = "INSERT INTO dbo.TB_USER(name, username, password) VALUES (@name, @username, @password); SELECT @@identity";
+                        var request = database.query(query, connection, function(err, rowCount, rows) {
+                            if (err) {
+                                res.json({
+                                    code: 0,
+                                    result: err
+                                });
+                            } else {
+                                if (rowCount) {
+                                    res.json({
+                                        code: 1,
+                                        result: "Usuário cadastrado com sucesso"
+                                    });
+                                } else {
+                                    res.json({
+                                        code: 0,
+                                        result: "Algo deu errado!"
+                                    });
+                                }
+                            }
+                            connection.close();
+                        });
+                        request.addParameter('name', TYPES.VarChar, name);
+                        request.addParameter('username', TYPES.VarChar, username);
+                        request.addParameter('password', TYPES.VarChar, password);
+                        connection.execSql(request);
+                    } else {
+                        connection.close();
                         res.json({
                             code: 0,
-                            result: err
+                            result: "E-mail já cadastrado"
                         });
-                    } else {
-                        if (rowCount) {
-                            res.json({
-                                code: 1,
-                                result: "Usuário cadastrado com sucesso"
-                            });
-                        } else {
-                            res.json({
-                                code: 0,
-                                result: "Algo deu errado!"
-                            });
-                        }
                     }
                 });
-                request.addParameter('name', TYPES.VarChar, name);
-                request.addParameter('username', TYPES.VarChar, username);
-                request.addParameter('password', TYPES.VarChar, password);
-                connection.execSql(request);
+                requestVerify.addParameter("username", TYPES.VarChar, username);
+                connection.execSql(requestVerify);
             }
         }
     });

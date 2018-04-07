@@ -19,18 +19,18 @@ function Database() {
     var query = function query(queryString = "", connection, callback = defaultCallback) {
         return new Request(queryString, function(err, rowCount, rows) {
             if (typeof callback === "function") {
-                callback(err, rowCount, rows);
+                callback(err, rowCount, rows, connection);
             }
-            connection.close();
         });
     }
 
-    function defaultCallback(err, rowCount, rows) {
+    function defaultCallback(err, rowCount, rows, connection) {
         if (err) {
             console.log(err);
         } else {
             console.log(rowCount + ' row(s) returned');
         }
+        connection.close();
     }
 
     return {

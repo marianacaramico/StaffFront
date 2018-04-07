@@ -38,8 +38,10 @@ router.post('/', function (req, res, next) {
                     title: 'Ops, não conseguimos fazer o login'
                 });
             } else {
-                var query = "SELECT @id = id_user FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
+                var query = "SELECT @id = id_user FROM dbo.TB_USER WHERE username = @username AND password = @password";
                 var request = database.query(query, connection);
+                request.addParameter("username", TYPES.VarChar, username);
+                request.addParameter("password", TYPES.VarChar, password);
                 var result = {};
                 request.addOutputParameter('id', TYPES.Int);
                 request.on('returnValue', function(parameterName, value, metadata) {
@@ -49,6 +51,10 @@ router.post('/', function (req, res, next) {
                     if (result.id) {
                         req.session.userid = result.id;
                         res.redirect("/home");
+                    } else {
+                        res.render('erro-login', {
+                            title: 'Ops, não conseguimos fazer o login'
+                        });
                     }
                 });
                 connection.execSql(request);
