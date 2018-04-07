@@ -16,8 +16,13 @@ function Database() {
         return new Connection(config);
     }
 
-    var query = function query(queryString = "", callback = defaultCallback) {
-        return new Request(queryString, callback);
+    var query = function query(queryString = "", connection, callback = defaultCallback) {
+        return new Request(queryString, function(err, rowCount, rows) {
+            if (typeof callback === "function") {
+                callback(err, rowCount, rows);
+            }
+            connection.close();
+        });
     }
 
     function defaultCallback(err, rowCount, rows) {

@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
             res.json(err);
         } else {
             var result = {};
-            var request = database.query("SELECT @username=username, FROM dbo.TB_USER WHERE username = 'mateus.larrubia99@gmail.com' AND password = '1234'");
+            var request = database.query("SELECT @username=username, FROM dbo.TB_USER WHERE username = 'mateus.larrubia99@gmail.com' AND password = '1234'", connection);
             request.addOutputParameter('username', TYPES.VarChar);
             request.on('returnValue', function(parameterName, value, metadata) {
                 result[parameterName] = value;

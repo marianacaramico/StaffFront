@@ -5,8 +5,7 @@ var router = express.Router();
 /* GET Task */
 router.get('*', function(req, res, next) {
     if (!req.session.userid) {
-        var m = req.app.get('env') !== 'development' ? "https://" : "http://";
-        res.redirect(m + req.headers.host + "/login");
+        res.redirect("/login");
     } else {
         next();
     }

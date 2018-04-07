@@ -3,6 +3,14 @@ var router = express.Router();
 var Database = require('../helpers/Database');
 var TYPES = require('tedious').TYPES;
 
+router.get('*', function(req, res, next) {
+    if (req.session.userid) {
+        res.redirect("/home");
+    } else {
+        next();
+    }
+});
+
 router.get('/', function (req, res, next) {
     res.render('login', {
         title: 'Entre em sua conta para usar o Staff'
@@ -31,7 +39,7 @@ router.post('/', function (req, res, next) {
                 });
             } else {
                 var query = "SELECT @id = id_user FROM dbo.TB_USER WHERE username = '" + username + "' AND password = '" + password + "'";
-                var request = database.query(query);
+                var request = database.query(query, connection);
                 var result = {};
                 request.addOutputParameter('id', TYPES.Int);
                 request.on('returnValue', function(parameterName, value, metadata) {
@@ -40,11 +48,7 @@ router.post('/', function (req, res, next) {
                 request.on('requestCompleted', function() {
                     if (result.id) {
                         req.session.userid = result.id;
-                        res.render('home', {
-                            title: 'Área logada - Staff',
-                            script: 'home',
-                            css: 'home'
-                        });
+                        res.redirect("/home");
                     }
                 });
                 connection.execSql(request);

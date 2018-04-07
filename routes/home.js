@@ -6,11 +6,12 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     if (req.session.userid) {
         res.render('home', {
-            title: 'Área logada - Staff'
+            title: 'Área logada - Staff',
+            script: 'home',
+            css: 'home'
         });
     } else {
-        var m = req.app.get('env') !== 'development' ? "https://" : "http://";
-        res.redirect(m + req.headers.host + "/login");
+        res.redirect("/login");
     }
 });
 

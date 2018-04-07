@@ -60,34 +60,40 @@
 	});
 	
 	function signup() {
-		var user = {
-			name: $("#inputNome").val() || "",
-			email: $("#inputEmail").val() || "",
-			password: $("#inputSenha").val() || "",
-			cpf: $("#inputCPF").val() || "",
-			cep: $("#inputCEP").val() || "",
-			rua: $("#inputRua").val() || "",
-			numero: window.parseInt($("#inputNumero").val()) || 0,
-			bairro: $("#inputBairro").val() || "",
-			cidade: $("#inputCidade").val() || "",
-			estado: $("#selectEstado").val() || ""
-		};
-		
-		$.ajax({
-			url: '/signup',
-			method: 'post',
-			data: user,
-			dataType: 'json',
-			beforeSend: () => {
-				$("#sign-up-form").find("button[type='submit']").css('background-color', '#aaa');
-				$("#sign-up-form").find("button[type='submit']").prop('disabled', true);
-			}
-		}).done(result => {
-			$("#sign-up-form").find("button[type='submit']").removeAttr('style');
-			$("#sign-up-form").find("button[type='submit']").prop('disabled', false);
-		}).always(res => {
-			console.log(res);
-		});
+		if ($("#inputAgree").is(":checked")) {
+			var user = {
+				name: $("#inputNome").val() || "",
+				email: $("#inputEmail").val() || "",
+				password: $("#inputSenha").val() || "",
+				cpf: $("#inputCPF").val() || "",
+				cep: $("#inputCEP").val() || "",
+				rua: $("#inputRua").val() || "",
+				numero: window.parseInt($("#inputNumero").val()) || 0,
+				bairro: $("#inputBairro").val() || "",
+				cidade: $("#inputCidade").val() || "",
+				estado: $("#selectEstado").val() || ""
+			};
+
+			var buttonSubmit = $("#sign-up-form").find("button[type='submit']");
+			
+			$.ajax({
+				url: '/signup',
+				method: 'post',
+				data: user,
+				dataType: 'json',
+				beforeSend: () => {
+					buttonSubmit.css('background-color', '#aaa');
+					buttonSubmit.prop('disabled', true);
+				}
+			}).done(response => {
+				var { code, result } = response;
+				buttonSubmit.removeAttr('style');
+				buttonSubmit.prop('disabled', false);
+				if (Number(code) === 1) {
+					window.location.assign("/login");
+				}
+			});
+		}
 	}
 	
 	function toggleViewPassword(element) {

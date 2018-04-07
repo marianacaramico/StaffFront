@@ -3,6 +3,14 @@ var router = express.Router();
 var TYPES = require('tedious').TYPES;
 var Database = require('../helpers/Database');
 
+router.get('*', function (req, res, next) {
+    if (!req.session.userid) {
+        res.redirect('/login');
+    } else {
+        next();
+    }
+});
+
 /* GET USER */
 router.get('/:id', function (req, res, next) {
     var id = parseInt(req.params.id) || 0;
@@ -16,7 +24,7 @@ router.get('/:id', function (req, res, next) {
             next();
         } else {
             var queryString = "SELECT @id = id_user, @name = name, @username = username FROM dbo.TB_USER WHERE id_user = " + id;
-            var request = database.query(queryString);
+            var request = database.query(queryString, connection);
             request.addOutputParameter('id', TYPES.Int);
             request.addOutputParameter('name', TYPES.VarChar);
             request.addOutputParameter('username', TYPES.VarChar);

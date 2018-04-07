@@ -14,6 +14,7 @@ var user = require('./routes/user');
 var profile = require('./routes/profile');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
+var home = require('./routes/home');
 
 var app = express();
 
@@ -24,7 +25,7 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(session({ secret: 'first5secret' })); // TODO:
+app.use(session({ secret: 'first5secret' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -49,6 +50,12 @@ app.use('/user', user);
 app.use('/profile', profile);
 app.use('/login', login);
 app.use('/signup', signup);
+app.use('/home', home);
+
+app.use('/logout', function(req, res, next) {
+  req.session.userid = undefined;
+  res.redirect("/");
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
