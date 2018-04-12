@@ -12,11 +12,21 @@
             url: '/task/unassigned',
             dataType: 'json'
         }).done(result => {
-            var { tasks } = result;
+            var { code, tasks } = result;
+            if (Number(code) === 1) {
+                openTaskPersonal.empty();
+                tasks.forEach(task => {
+                    openTaskPersonal.append(getRowPersonalTask(task));
+                });
+                return true;
+            }
             openTaskPersonal.empty();
-            tasks.forEach(task => {
-                openTaskPersonal.append(getRowPersonalTask(task));
-            });
+            openTaskPersonal.append(getRowPersonalTask({
+                title: "Nenhuma tarefa encontrada",
+                value: 0.00,
+                description: "Nenhuma tarefa pôde ser encontrada."
+            }));
+            return false;
         }).fail(err => {
             console.log('ERRO');
             openTaskPersonal.empty();

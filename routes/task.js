@@ -50,6 +50,14 @@ router.get('/create', function (req, res, next) {
     });
 });
 
+router.post('/create', function (req, res, next) {
+    res.status(501);
+    res.json({
+        code: 0,
+        result: "Function not implemented"
+    });
+});
+
 router.get('/open', function (req, res, next) {
     res.render('open-tasks', {
         title: 'Tarefas em Aberto - Staff',
@@ -76,14 +84,32 @@ router.get('/unassigned', function(req, res, next) {
         } else {
             console.log('DEU CERTO!');
 
+            var result = [];
             var query = "SELECT @id_task_type = T.id_task_type, @id_user_owner = T.id_user_owner, " + 
                         "@title = T.title, @description = T.description, @creation_date = T.creation_date, " + 
                         "@due_date = T.due_date, @value = T.value, @status = T.status " + 
                         "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " + 
                         "WHERE (T.id_user_owner = @userid)";
-            var request = database.query(query, connection);
+            var request = database.query(query, connection, function (err, rowCount, rows) {
+                if (err) {
+                    console.log(err);
+                    next();
+                    return;
+                }
+                if (rowCount) {
+                    res.json({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    res.json({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+                connection.close();
+            });
             request.addParameter("userid", TYPES.Int, user_id);
-            var result = {};
             request.addOutputParameter('id_task_type', TYPES.Int);
             request.addOutputParameter('id_user_owner', TYPES.Int);
             request.addOutputParameter('title', TYPES.VarChar);
@@ -93,17 +119,13 @@ router.get('/unassigned', function(req, res, next) {
             request.addOutputParameter('value', TYPES.Int);
             request.addOutputParameter('status', TYPES.Char);
 
-            request.on('returnValue', function(parameterName, value, metadata) {
-                result[parameterName] = value;
-            });
-            request.on('requestCompleted', function() {
-                if (result.id_task_type) {
-                    res.json(result);
-                } else {
-                    res.render('erro-login', {
-                        title: 'Ops, não conseguimos fazer o login'
-                    });
-                }
+            request.on('row', function(columns) {
+                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                var obj = {};
+                columns.forEach(column => {
+                    obj[column.metadata.colName] = column.value;
+                });
+                result.push(obj);
             });
             connection.execSql(request);
         }
