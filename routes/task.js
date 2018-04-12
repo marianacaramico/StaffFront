@@ -1,6 +1,7 @@
 var express = require('express');
-
 var router = express.Router();
+var Database = require('../helpers/Database');
+var TYPES = require('tedious').TYPES;
 
 /* GET Task */
 router.get('*', function(req, res, next) {
@@ -52,6 +53,7 @@ router.get('/open', function (req, res, next) {
 });
 
 router.get('/unassigned', function(req, res, next) {
+    console
     var database = new Database();
 
     // definir como pegar o usuario corrente
@@ -79,7 +81,7 @@ router.get('/unassigned', function(req, res, next) {
             request.addOutputParameter('id_task_type', TYPES.Int);
             request.addOutputParameter('id_user_owner', TYPES.Int);
             request.addOutputParameter('title', TYPES.VarChar);
-            request.addOutputParameter('description', TYPES.Text);
+            request.addOutputParameter('description', TYPES.VarChar);
             request.addOutputParameter('creation_date', TYPES.DateTime);
             request.addOutputParameter('due_date', TYPES.DateTime);
             request.addOutputParameter('value', TYPES.Int);
@@ -90,15 +92,7 @@ router.get('/unassigned', function(req, res, next) {
             });
             request.on('requestCompleted', function() {
                 if (result.id_task_type) {
-                    req.session.id_task_type = result.id_task_type;
-                    req.session.id_user_owner = result.id_user_owner;
-                    req.session.title = result.title;
-                    req.session.description = result.description;
-                    req.session.creation_date = result.creation_date;
-                    req.session.due_date = result.due_date;
-                    req.session.value = result.value;
-                    req.session.status = result.status;
-                    res.redirect("/open");
+                    res.json(result);
                 } else {
                     res.render('erro-login', {
                         title: 'Ops, não conseguimos fazer o login'
