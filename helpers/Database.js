@@ -8,7 +8,9 @@ function Database() {
         server: 'firstfive.database.windows.net',
         options: {
             database: 'firstfive',
-            encrypt: true
+            encrypt: true,
+            rowCollectionOnDone: true,
+            rowCollectionOnRequestCompletion: true
         }
     };
 

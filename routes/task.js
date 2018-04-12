@@ -84,19 +84,23 @@ router.get('/unassigned', function(req, res, next) {
         } else {
             console.log('DEU CERTO!');
 
+            var query = "SELECT T.id_task_type, T.id_user_owner, " +
+            "T.title, T.description, T.creation_date, " +
+            "T.due_date, T.value, T.status " + 
+            "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " + 
+            "WHERE (T.id_user_owner = @userid)";
+            var request = database.query(query, connection);
             var result = [];
-            var query = "SELECT @id_task_type = T.id_task_type, @id_user_owner = T.id_user_owner, " + 
-                        "@title = T.title, @description = T.description, @creation_date = T.creation_date, " + 
-                        "@due_date = T.due_date, @value = T.value, @status = T.status " + 
-                        "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " + 
-                        "WHERE (T.id_user_owner = @userid)";
-            var request = database.query(query, connection, function (err, rowCount, rows) {
-                if (err) {
-                    console.log(err);
-                    next();
-                    return;
-                }
-                if (rowCount) {
+            request.addParameter("userid", TYPES.Int, user_id);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
                     res.json({
                         code: 1,
                         tasks: result
@@ -107,25 +111,6 @@ router.get('/unassigned', function(req, res, next) {
                         result: "Nenhum registro encontrado"
                     });
                 }
-                connection.close();
-            });
-            request.addParameter("userid", TYPES.Int, user_id);
-            request.addOutputParameter('id_task_type', TYPES.Int);
-            request.addOutputParameter('id_user_owner', TYPES.Int);
-            request.addOutputParameter('title', TYPES.VarChar);
-            request.addOutputParameter('description', TYPES.VarChar);
-            request.addOutputParameter('creation_date', TYPES.DateTime);
-            request.addOutputParameter('due_date', TYPES.DateTime);
-            request.addOutputParameter('value', TYPES.Int);
-            request.addOutputParameter('status', TYPES.Char);
-
-            request.on('row', function(columns) {
-                console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                var obj = {};
-                columns.forEach(column => {
-                    obj[column.metadata.colName] = column.value;
-                });
-                result.push(obj);
             });
             connection.execSql(request);
         }
