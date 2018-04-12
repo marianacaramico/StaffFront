@@ -21,17 +21,17 @@
         <form id="sign-up-form">
           <div class="form-group">
             <label for="inputNome">Nome</label>
-            <input type="text" class="form-control" id="inputNome" placeholder="Seu nome">
+            <input type="text" class="form-control" id="inputNome" name="inputNome" placeholder="Seu nome">
           </div>
           <div class="form-group">
             <label for="inputEmail">E-mail</label>
-            <input type="email" class="form-control" id="inputEmail" placeholder="Seu e-mail">
+            <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Seu e-mail">
           </div>
           <div class="form-group">
             <label for="inputSenha">Senha</label>
             <span class="form-row">
               <span class="col-11">
-                <input type="password" class="form-control" id="inputSenha" placeholder="Escolha uma senha" autocomplete="off" />
+                <input type="password" class="form-control" id="inputSenha" name="inputSenha" placeholder="Escolha uma senha" autocomplete="off" />
               </span>
               <span class="col-1 align-middle">
                 <i style="padding-top: 10%; font-size: 1.8em; color: #8659A3;" class="fa fa-eye" id="btnShowPassword" aria-hidden="true"></i>
@@ -40,32 +40,32 @@
           </div>
           <div class="form-group">
             <label for="inputCPF">CPF</label>
-            <input type="text" class="form-control" id="inputCPF" data-inputmask="'mask': '999.999.999-99'" placeholder="Seu CPF, só números" maxlength="14">
+            <input type="text" class="form-control" id="inputCPF" name="inputCPF" data-inputmask="'mask': '999.999.999-99'" placeholder="Seu CPF, só números" maxlength="14">
           </div>
           <p><strong>Endereço</strong></p>
           <div class="form-group">
             <label for="inputCEP">CEP</label>
-            <input type="text" class="form-control" id="inputCEP" data-inputmask="'mask': '99999-999'" placeholder="CEP" maxlength="9">
+            <input type="text" class="form-control" id="inputCEP" name="inputCEP" data-inputmask="'mask': '99999-999'" placeholder="CEP" maxlength="9">
           </div>
           <div class="form-group">
             <label for="inputRua">Rua</label>
-            <input type="text" class="form-control" id="inputRua" placeholder="Rua">
+            <input type="text" class="form-control" id="inputRua" name="inputRua" placeholder="Rua">
           </div>
           <div class="form-group">
             <label for="inputNumero">Número</label>
-            <input type="text" class="form-control" id="inputNumero" data-inputmask-regex="\d*" placeholder="Número">
+            <input type="text" class="form-control" id="inputNumero" name="inputNumero" data-inputmask-regex="\d*" placeholder="Número">
           </div>
           <div class="form-group">
             <label for="inputBairro">Bairro</label>
-            <input type="text" class="form-control" id="inputBairro" placeholder="Bairro">
+            <input type="text" class="form-control" id="inputBairro" name="inputBairro" placeholder="Bairro">
           </div>
           <div class="form-group">
             <label for="inputCidade">Cidade</label>
-            <input type="text" class="form-control" id="inputCidade" placeholder="Cidade">
+            <input type="text" class="form-control" id="inputCidade" name="inputCidade" placeholder="Cidade">
           </div>
           <div class="form-group">
             <label for="selectEstado">Estado</label>
-            <select class="form-control" id="selectEstado">
+            <select class="form-control" id="selectEstado" name="selectEstado">
               <option value="SP">São Paulo</option>
               <option value="MG">Minas Gerais</option>
               <option value="PR">Paraná</option>
@@ -76,7 +76,7 @@
           </div>
           <div class="form-check">
             <label class="form-check-label">
-              <input type="checkbox" id="inputAgree" class="form-check-input" required>
+              <input type="checkbox" id="inputAgree" name="inputAgree" class="form-check-input" required>
               Concordo com os termos e condições de uso do site
             </label>
           </div>

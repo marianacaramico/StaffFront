@@ -9,7 +9,7 @@
         var openTaskPersonal = $("#openTaskPersonal");
 
         return $.ajax({
-            url: '/task',
+            url: '/task/unassigned',
             dataType: 'json'
         }).done(result => {
             var { tasks } = result;
@@ -18,6 +18,7 @@
                 openTaskPersonal.append(getRowPersonalTask(task));
             });
         }).fail(err => {
+            console.log('ERRO');
             openTaskPersonal.empty();
             openTaskPersonal.append(getRowPersonalTask({
                 title: "Nenhuma tarefa encontrada",
