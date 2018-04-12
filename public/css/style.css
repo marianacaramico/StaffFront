@@ -105,7 +105,15 @@ footer {
     display: block;
     line-height: 7rem;
     font-size: 2.25rem;
-    border: 1px solid black;
+	border: 1px solid black;
+	background-color: #8659a3;
+	color: #fff;
+}
+
+.service-icon:hover {
+    border: 1px solid #8659a3;
+	background-color: #fff;
+	color: #8659a3;	
 }
 
 .rounded-circle {
