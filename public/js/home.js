@@ -2,9 +2,9 @@
     "use strict";
 
     if ( !isNull($("#painel-home")) ) {
-        $("#painel-home").on("mouseover", ".serviceIconRoute", e => {
+        $("#painel-home").on("mouseover", ".service-icon", e => {
             $(e.currentTarget).find("i").addClass("fa-lg");
-        }).on("mouseout", ".serviceIconRoute", e => {
+        }).on("mouseout", ".service-icon", e => {
             $(e.currentTarget).find("i").removeClass("fa-lg");
         });
     }
