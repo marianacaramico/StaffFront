@@ -43,6 +43,12 @@ router.get('/', function (req, res, next) {
     res.json(result);
 });
 
+router.get('/create', function (req, res, next) {
+    res.render('create-task', {
+        title: 'Staff - Solicitar Nova Tarefa'
+    });
+});
+
 router.get('/open', function (req, res, next) {
     res.render('open-tasks', {
         title: 'Tarefas em Aberto - Staff',
