@@ -46,7 +46,8 @@ router.get('/', function (req, res, next) {
 
 router.get('/create', function (req, res, next) {
     res.render('create-task', {
-        title: 'Staff - Solicitar Nova Tarefa'
+        title: 'Staff - Solicitar Nova Tarefa',
+        script: 'tasks'
     });
 });
 
@@ -71,7 +72,7 @@ router.get('/unassigned', function(req, res, next) {
     var database = new Database();
 
     // definir como pegar o usuario corrente
-    // req.session.userid 
+    // req.session.userid
     var user_id = 1;
 
     var connection = database.connect();
@@ -86,8 +87,8 @@ router.get('/unassigned', function(req, res, next) {
 
             var query = "SELECT T.id_task_type, T.id_user_owner, " +
             "T.title, T.description, T.creation_date, " +
-            "T.due_date, T.value, T.status " + 
-            "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " + 
+            "T.due_date, T.value, T.status " +
+            "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
             "WHERE (T.id_user_owner = @userid)";
             var request = database.query(query, connection);
             var result = [];

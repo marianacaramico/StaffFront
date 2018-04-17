@@ -3,6 +3,20 @@
 
     $(document).ready(() => {
         getTasks();
+
+        if ( !isNull($("#createTaskForm")) ) {
+            var form = $("#createTaskForm");
+            form.submit(e => {
+                e.preventDefault();
+                var data = {
+                    title: $("#inputTitle").val() || "",
+                    description: $("#inputDescription").val() || "",
+                    value: $("#inputPrice").val() || "",
+                    deadline: $("#inputDeadline").val() || ""
+                };
+                createTask(data);
+            });
+        }
     });
 
     function getTasks() {
@@ -35,6 +49,21 @@
                 value: 0.00,
                 description: "Nenhuma tarefa pôde ser encontrada."
             }));
+        });
+    }
+
+    function createTask(data = {}) {
+        return $.ajax({
+            url: "/task/create",
+            method: "POST",
+            dataType: "json",
+            data: data
+        }).done(response => {
+            var { code, result } = response;
+            window.alert(result || "Erro!");
+        }).fail(error => {
+            console.log(error);
+            window.alert("Erro!");
         });
     }
 
