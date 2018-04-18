@@ -13,7 +13,8 @@ router.get('*', function(req, res, next) {
 
 router.get('/', function (req, res, next) {
     res.render("signup", {
-        title: 'Cadastre-se para utilizar o Staff'
+        title: 'Cadastre-se para utilizar o Staff',
+        script: 'signup'
     });
 });
 
