@@ -22,34 +22,36 @@
     function getTasks() {
         var openTaskPersonal = $("#openTaskPersonal");
 
-        return $.ajax({
-            url: '/task/unassigned',
-            dataType: 'json'
-        }).done(result => {
-            var { code, tasks } = result;
-            if (Number(code) === 1) {
+        if (!isNull(openTaskPersonal)) {
+            return $.ajax({
+                url: '/task/unassigned',
+                dataType: 'json'
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    openTaskPersonal.empty();
+                    tasks.forEach(task => {
+                        openTaskPersonal.append(getRowPersonalTask(task));
+                    });
+                    return true;
+                }
                 openTaskPersonal.empty();
-                tasks.forEach(task => {
-                    openTaskPersonal.append(getRowPersonalTask(task));
-                });
-                return true;
-            }
-            openTaskPersonal.empty();
-            openTaskPersonal.append(getRowPersonalTask({
-                title: "Nenhuma tarefa encontrada",
-                value: 0.00,
-                description: "Nenhuma tarefa pôde ser encontrada."
-            }));
-            return false;
-        }).fail(err => {
-            console.log('ERRO');
-            openTaskPersonal.empty();
-            openTaskPersonal.append(getRowPersonalTask({
-                title: "Nenhuma tarefa encontrada",
-                value: 0.00,
-                description: "Nenhuma tarefa pôde ser encontrada."
-            }));
-        });
+                openTaskPersonal.append(getRowPersonalTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                openTaskPersonal.empty();
+                openTaskPersonal.append(getRowPersonalTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
     }
 
     function createTask(data = {}) {

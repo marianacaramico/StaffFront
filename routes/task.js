@@ -52,10 +52,78 @@ router.get('/create', function (req, res, next) {
 });
 
 router.post('/create', function (req, res, next) {
-    res.status(501);
-    res.json({
-        code: 0,
-        result: "Function not implemented"
+    var database = new Database();
+
+    var _deadline = new Date(req.body.deadline || "");
+
+    var title = req.body.title;
+    var description = req.body.description;
+    var value = parseFloat(req.body.value) || 0;
+    var deadline = _deadline.getDate() ? _deadline : new Date();
+    var userid = parseInt(req.session.userid) || 0;
+
+    var connection = database.connect();
+
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            if(title == null || description == null || value == null || deadline == null || userid <= 0) {
+                console.log(title, description, value, deadline, userid);
+                res.json({
+                    code: 0,
+                    result: "Dados inválidos"
+                });
+            } else {
+                var queryVerify = "SELECT id_user FROM dbo.TB_USER WHERE id_user = @userid";
+                var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
+                    if (rowCount) {
+                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (1, @userid, @title, @description, GETDATE(), GETDATE(), @value, 1); SELECT @id = @@identity";
+                        var responseJson = {
+                            code: 0,
+                            result: 'Function uninitialized'
+                        };
+                        var request = database.query(query, connection, function(err, rowCount, rows) {
+                            if (err) {
+                                responseJson.code = 0;
+                                responseJson.result = err;
+                                res.json(responseJson);
+                            } else {
+                                if (rowCount) {
+                                    responseJson.code = 1;
+                                    responseJson.result = "Tarefa cadastrada com sucesso";
+                                    res.json(responseJson);
+                                } else {
+                                    responseJson.code = 0;
+                                    responseJson.result = "Algo deu errado!";
+                                    res.json(responseJson);
+                                }
+                            }
+                            connection.close();
+                        });
+                        request.addParameter('userid', TYPES.Int, userid);
+                        request.addParameter('title', TYPES.VarChar, title);
+                        request.addParameter('description', TYPES.VarChar, description);
+                        // request.addParameter('deadline', TYPES.Date, description);
+                        request.addParameter('value', TYPES.Decimal, value);
+                        request.addOutputParameter('id', TYPES.Int);
+                        request.on('returnValue', function(parameterName, value, metadata) {
+                            responseJson[parameterName] = value;
+                        });
+                        connection.execSql(request);
+                    } else {
+                        connection.close();
+                        res.json({
+                            code: 0,
+                            result: "Usuário inválido"
+                        });
+                    }
+                });
+                requestVerify.addParameter("userid", TYPES.Int, userid);
+                connection.execSql(requestVerify);
+            }
+        }
     });
 });
 
@@ -86,10 +154,10 @@ router.get('/unassigned', function(req, res, next) {
             console.log('DEU CERTO!');
 
             var query = "SELECT T.id_task_type, T.id_user_owner, " +
-            "T.title, T.description, T.creation_date, " +
-            "T.due_date, T.value, T.status " +
-            "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-            "WHERE (T.id_user_owner = @userid)";
+                "T.title, T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner = @userid)";
             var request = database.query(query, connection);
             var result = [];
             request.addParameter("userid", TYPES.Int, user_id);
