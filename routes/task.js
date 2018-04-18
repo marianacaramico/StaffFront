@@ -79,7 +79,7 @@ router.post('/create', function (req, res, next) {
                 var queryVerify = "SELECT id_user FROM dbo.TB_USER WHERE id_user = @userid";
                 var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
                     if (rowCount) {
-                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (1, @userid, @title, @description, GETDATE(), GETDATE(), @value, 1); SELECT @id = @@identity";
+                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (1, @userid, @title, @description, GETDATE(), GETDATE(), @value, 'A'); SELECT @id = @@identity";
                         var responseJson = {
                             code: 0,
                             result: 'Function uninitialized'
