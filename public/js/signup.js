@@ -79,16 +79,16 @@
     errorElement: "div",
     submitHandler: function () {
       var user = {
-        name = $("#inputNome").val(),
-        username = $("#inputEmail").val(),
-        password = $("#inputSenha").val(),
-        cpf = $("#inputCPF").val(),
-        cep = $("#inputCEP").val(),
-        rua = $("#inputRua").val(),
-        numero = $("#inputNumero").val(),
-        cidade = $("#inputCidade").val(),
-        bairro = $("#inputBairro").val(),
-        estado = $("#selectEstado").val()
+        name: $("#inputNome").val(),
+        username: $("#inputEmail").val(),
+        password: $("#inputSenha").val(),
+        cpf: $("#inputCPF").val(),
+        cep: $("#inputCEP").val(),
+        rua: $("#inputRua").val(),
+        numero: $("#inputNumero").val(),
+        cidade: $("#inputCidade").val(),
+        bairro: $("#inputBairro").val(),
+        estado: $("#selectEstado").val()
       };
         $.ajax({
           url: '/signup',
@@ -126,4 +126,4 @@
 
 
 
-)();
+)(window, document);
