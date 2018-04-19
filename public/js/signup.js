@@ -108,7 +108,7 @@
           }
         });
       }
-    }
+    });
 
     $.validator.addMethod("nomeValido", function(value, element) {
       return !!value.trim();
@@ -122,8 +122,4 @@
       return true;
     });
 
-  });
-
-
-
-)(window, document);
+})(window, document);
