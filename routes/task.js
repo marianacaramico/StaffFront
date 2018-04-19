@@ -136,7 +136,7 @@ router.get('/open', function (req, res, next) {
 });
 
 router.get('/unassigned', function(req, res, next) {
-    console
+
     var database = new Database();
 
     // definir como pegar o usuario corrente
@@ -186,30 +186,148 @@ router.get('/unassigned', function(req, res, next) {
     });
 });
 
+router.get('/assigned', function(req, res, next) {
+
+    var database = new Database();
+
+    // definir como pegar o usuario corrente
+    // req.session.userid
+    var user_id = 1;
+
+    var connection = database.connect();
+
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log('DEU UM ERRO!');
+            console.log(err);
+            return;
+        } else {
+            console.log('DEU CERTO!');
+
+            var query = "SELECT T.id_task_type, T.id_user_owner, " +
+                "T.title, T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T INNER JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner = @userid)";
+            var request = database.query(query, connection);
+            var result = [];
+            request.addParameter("userid", TYPES.Int, user_id);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    res.json({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    res.json({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+});
+
+router.get('/types', function(req, res, next) {
+
+    var database = new Database();
+
+    var connection = database.connect();
+
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log('DEU UM ERRO!');
+            console.log(err);
+            return;
+        } else {
+            console.log('DEU CERTO!');
+
+            var query = "SELECT T.id_task_type, T.description FROM TB_TASK_TYPE T";
+            var request = database.query(query, connection);
+            var result = [];
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    res.json({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    res.json({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+});
+
 router.get('/:id', function (req, res, next) {
-    var result = {};
-    var id = Number(req.params.id);
+    var taskid = parseInt(req.params.id) || 0;
+    var database = new Database();
 
-    switch(id) {
-        case 1:
-            result = {
-                id_task: 1,
-                id_task_type: 1,
-                id_user_owner: 1,
-                title: "entregar um documento no centro de sao paulo",
-                description: "entregar um documento na rua sao bento, 10, ate as 14h de hoje",
-                creation_date: "2017-09-15 20:43:00",
-                due_date: "2017-09-15 21:43:00",
-                value: 150.90,
-                status: "open"
-            };
-            break;
-        default:
-            next();
-            break;
-    }
+    // definir como pegar o usuario corrente
+    // req.session.userid
+    var user_id = 1;
 
-    res.json(result);
+    var connection = database.connect();
+
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log('DEU UM ERRO!');
+            console.log(err);
+            return;
+        } else {
+            console.log('DEU CERTO!');
+
+            var query = "SELECT T.id_task, T.id_task_type, T.id_user_owner, " +
+                "T.title, T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T WHERE (T.id_task = @taskid)";
+            var request = database.query(query, connection);
+            var result = [];
+            request.addParameter("taskid", TYPES.Int, taskid);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    res.json({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    res.json({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+
 });
 
 router.get('*', function(req, res, next) {
