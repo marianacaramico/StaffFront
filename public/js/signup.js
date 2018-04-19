@@ -109,6 +109,19 @@
         });
       }
     }
+
+    $.validator.addMethod("nomeValido", function(value, element) {
+      return !!value.trim();
+    });
+
+    $.validator.addMethod("cpfValido", function(value, element) {
+      return value.match(/[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/);
+    });
+
+    $.validator.addMethod("cepValido", function(value, element) {
+      return true;
+    });
+
   });
 
 
