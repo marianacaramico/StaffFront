@@ -97,11 +97,15 @@
             dataType: "json",
             data: data
         }).done(response => {
-            var { code, result } = response;
-            window.alert(result || "Erro!");
+            var { code, result, id } = response;
+            if (id) {
+                window.location.assign("/task/" + id);
+            } else {
+                window.alert(result || "Erro!");
+            }
         }).fail(error => {
             console.log(error);
-            window.alert("Erro!");
+            window.alert("Erro na Requisição!");
         });
     }
 
