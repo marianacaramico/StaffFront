@@ -77,6 +77,7 @@
       }
     },
     errorElement: "div",
+    errorClass: "text-danger",
     submitHandler: function () {
       var user = {
         name: $("#inputNome").val(),

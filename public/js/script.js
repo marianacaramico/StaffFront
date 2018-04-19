@@ -22,13 +22,6 @@
 			});
 		}
 
-		if ( !isNull($("#sign-up-form")) ) {
-			$("#sign-up-form").submit(e => {
-				e.preventDefault();
-				signup();
-			});
-		}
-
 		if ( !isNull($(".rateStars")) ) {
 			$(".rateStars").on("mouseover", "i", e => {
 				var _this = $(e.currentTarget);
