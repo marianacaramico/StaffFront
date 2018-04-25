@@ -1,6 +1,7 @@
 .openTaskBox {
 	margin-top: 15px;
-	border: 1px solid black;
+	border: 1px solid #8659a3;
+	padding: 25px;
 }
 
 .taskWrapper {
@@ -8,15 +9,24 @@
 }
 
 .service-icon {
-    height: 6rem;
-    width: 6rem;
+    height: 3rem;
+    width: 3rem;
     display: block;
-    line-height: 6rem;
-    font-size: 2.25rem;
-    border: 1px solid #212529;
+    line-height: 3rem;
+    font-size: 1.25rem;
+    border: 1px solid #8659a3;
 }
 
 a.userProfileHyperlink {
     text-decoration: none;
     color: #212529;
+}
+
+.titleTarefas {
+	color: 8659a3;
+	font-weight: bold;
+}
+
+.rateStars {
+	margin-bottom: 10px;
 }

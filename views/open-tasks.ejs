@@ -14,13 +14,13 @@
             </div>
             <div class="row d-flex justify-content-around">
                 <div class="col-sm-5 openTaskBox">
-                    <h4>Tarefas "sem dono"</h4>
+                    <h4 class="titleTarefas">Tarefas "sem dono"</h4>
                     <hr />
                     <div id="openTaskPersonal"></div>
                 </div>
 
                 <div class="col-sm-5 openTaskBox">
-                    <h4>Tarefas "com dono"</h4>
+                    <h4 class="titleTarefas">Tarefas "com dono"</h4>
                     <hr />
                     <div id="openTaskTaken"></div>
                 </div>
@@ -37,7 +37,7 @@
             <div class="row d-flex justify-content-around">
                 <div class="col-sm-11 openTaskBox">
                     <div id="recommendedTasks">
-                        <h4>Tarefas em aberto</h4>
+                        <h4 class="titleTarefas">Tarefas em aberto</h4>
                         <hr />
                         <div id="myOpenTasks"> <!-- TODO: call API when done -->
                             <div class="row">
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="text-center">
-                                        <div>
+                                        <div style="margin-bottom:10px">
                                             <a href="#" class="btn btn-success mb-1">
                                                 <i class="fa fa-check" aria-hidden="true"></i>
                                                 Terminei
@@ -75,6 +75,6 @@
     </section>
 
     <!-- Footer -->
-    <% include shared/footer.ejs %>
+    <% include shared/footerProfile.ejs %>
 </body>
 </html>
