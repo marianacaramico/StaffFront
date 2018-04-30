@@ -105,7 +105,7 @@ router.post('/create', function (req, res, next) {
                         request.addParameter('userid', TYPES.Int, userid);
                         request.addParameter('title', TYPES.VarChar, title);
                         request.addParameter('description', TYPES.VarChar, description);
-                        // request.addParameter('deadline', TYPES.Date, description);
+                        // request.addParameter('deadline', TYPES.Date, deadline);
                         request.addParameter('value', TYPES.Decimal, value);
                         request.addOutputParameter('id', TYPES.Int);
                         request.on('returnValue', function(parameterName, value, metadata) {
