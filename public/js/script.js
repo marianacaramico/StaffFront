@@ -50,6 +50,8 @@
 				$(e.currentTarget).off("mouseout").off("mouseover").off("click");
 			});
 		}
+
+		
 	});
 
 	function toggleViewPassword(element) {

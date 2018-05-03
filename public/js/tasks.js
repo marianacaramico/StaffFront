@@ -7,15 +7,36 @@
 
         if ( !isNull($("#createTaskForm")) ) {
             var form = $("#createTaskForm");
-            form.submit(e => {
-                e.preventDefault();
-                var data = {
-                    title: $("#inputTitle").val() || "",
-                    description: $("#inputDescription").val() || "",
-                    value: $("#inputPrice").val() || "",
-                    deadline: $("#inputDeadline").val() || ""
-                };
-                createTask(data);
+            form.validate({
+                rules: {
+                    inputTitle: {
+                        required: true
+                    },
+                    inputPrice: {
+                        required: true,
+                        number: true
+                    },
+                    inputDeadline: {
+                        required: true,
+                        nextDateBr: true
+                    }
+                },
+                messages: {
+                    inputTitle: "Insira um título para sua tarefa!",
+                    inputPrice: "Insira o valor que será pago pela tarefa!",
+                    inputDeadline: "Insira o prazo máximo da tarefa!"
+                },
+                errorClass: "text-danger",
+                submitHandler: form => {
+                    var _deadline = ($("#inputDeadline").val() || "").split("/").reverse();
+                    var data = {
+                        title: $("#inputTitle").val() || "",
+                        description: $("#inputDescription").val() || "",
+                        value: $("#inputPrice").val() || "",
+                        deadline: _deadline.join("-")
+                    };
+                    createTask(data);
+                }
             });
         }
     });
@@ -151,5 +172,5 @@
                 + "</div>"
             + "</div><hr />"
         );
-    }    
+    }
 })(window, document);

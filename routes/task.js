@@ -69,7 +69,7 @@ router.post('/create', function (req, res, next) {
             console.log(err);
             return;
         } else {
-            if(title == null || description == null || value == null || deadline == null || userid <= 0) {
+            if(!(title && description && value && deadline && userid > 0)) {
                 console.log(title, description, value, deadline, userid);
                 res.json({
                     code: 0,
@@ -79,7 +79,7 @@ router.post('/create', function (req, res, next) {
                 var queryVerify = "SELECT id_user FROM dbo.TB_USER WHERE id_user = @userid";
                 var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
                     if (rowCount) {
-                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (1, @userid, @title, @description, GETDATE(), GETDATE(), @value, 'A'); SELECT @id = @@identity";
+                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (1, @userid, @title, @description, GETDATE(), @deadline, @value, 'A'); SELECT @id = @@identity";
                         var responseJson = {
                             code: 0,
                             result: 'Function uninitialized'
@@ -105,7 +105,7 @@ router.post('/create', function (req, res, next) {
                         request.addParameter('userid', TYPES.Int, userid);
                         request.addParameter('title', TYPES.VarChar, title);
                         request.addParameter('description', TYPES.VarChar, description);
-                        // request.addParameter('deadline', TYPES.Date, deadline);
+                        request.addParameter('deadline', TYPES.Date, deadline);
                         request.addParameter('value', TYPES.Decimal, value);
                         request.addOutputParameter('id', TYPES.Int);
                         request.on('returnValue', function(parameterName, value, metadata) {

@@ -28,28 +28,28 @@
           <div class="form-group">
             <div class="row">
               <div class="col-3">
-                <input type="text" class="form-control" id="inputPrice" name="inputPrice" placeholder="$$$">
+                <input type="text" class="form-control" id="inputPrice" name="inputPrice" placeholder="$$$" data-inputmask-regex="\d+" data-inputmask-placeholder="">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="inputDeadline" name="inputDeadline" placeholder="Prazo">
+                <input type="text" class="form-control" id="inputDeadline" name="inputDeadline" placeholder="Prazo" data-inputmask-mask="99/99/9999">
               </div>
             </div>
           </div>
           <div class="form-group">
             <span class="row">
               <div class="col">
-                <textarea class="form-control" id="inputDescription" rows="3" placeholder="Descrição da tarefa"></textarea>
+                <textarea class="form-control" id="inputDescription" name="inputDescription" placeholder="Descrição da tarefa" rows="3"></textarea>
               </div>
             </span>
           </div>
           <!-- <div class="form-group">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" id="inputCEP" data-inputmask="'mask': '99999-999'" placeholder="CEP" maxlength="9">
+                <input type="text" class="form-control" id="inputCEP" data-inputmask-mask="99999-999" placeholder="CEP" maxlength="9">
               </div>
             </div>
           </div> -->
-          <button type="submit" class="btn btn-primary buttonSubmit">Registrar</button>
+          <button type="submit" class="btn btn-primary buttonSubmit pull-right">Registrar</button>
         </form>
       </div>
       <br/><br/>
