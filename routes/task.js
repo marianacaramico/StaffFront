@@ -61,6 +61,7 @@ router.post('/create', function (req, res, next) {
     var value = parseFloat(req.body.value) || 0;
     var deadline = _deadline.getDate() ? _deadline : new Date();
     var userid = parseInt(req.session.userid) || 0;
+    var taskType = parseInt(req.body.taskType) || 0;
 
     var connection = database.connect();
 
@@ -69,8 +70,8 @@ router.post('/create', function (req, res, next) {
             console.log(err);
             return;
         } else {
-            if(!(title && description && value && deadline && userid > 0)) {
-                console.log(title, description, value, deadline, userid);
+            if(!(title && description && value >= 0 && deadline && userid > 0 && taskType > 0)) {
+                console.log(title, description, value, deadline, userid, taskType);
                 res.json({
                     code: 0,
                     result: "Dados inválidos"
@@ -79,7 +80,7 @@ router.post('/create', function (req, res, next) {
                 var queryVerify = "SELECT id_user FROM dbo.TB_USER WHERE id_user = @userid";
                 var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
                     if (rowCount) {
-                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (1, @userid, @title, @description, GETDATE(), @deadline, @value, 'A'); SELECT @id = @@identity";
+                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (@taskType, @userid, @title, @description, GETDATE(), @deadline, @value, 'A'); SELECT @id = @@identity";
                         var responseJson = {
                             code: 0,
                             result: 'Function uninitialized'
@@ -102,6 +103,7 @@ router.post('/create', function (req, res, next) {
                             }
                             connection.close();
                         });
+                        request.addParameter('taskType', TYPES.Int, taskType);
                         request.addParameter('userid', TYPES.Int, userid);
                         request.addParameter('title', TYPES.VarChar, title);
                         request.addParameter('description', TYPES.VarChar, description);

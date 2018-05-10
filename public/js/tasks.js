@@ -14,7 +14,7 @@
                     },
                     inputPrice: {
                         required: true,
-                        number: true
+                        money: true
                     },
                     inputDeadline: {
                         required: true,
@@ -32,10 +32,26 @@
                     var data = {
                         title: $("#inputTitle").val() || "",
                         description: $("#inputDescription").val() || "",
-                        value: $("#inputPrice").val() || "",
+                        value: Number.parseFloat($("#inputPrice").val().replace(",", ".") || ""),
                         deadline: _deadline.join("-")
                     };
                     createTask(data);
+                }
+            });
+            $.ajax({
+                url: '/task/types',
+                dataType: 'json'
+            }).done(result => {
+                var { code, tasks } = result;
+                var taskTypeSelect = $("select#taskType");
+                taskTypeSelect.empty().append("<option value='' selected disabled>Selecione...</option>");
+                if (Number(code) === 1) {
+                    tasks.forEach(value => {
+                        var id = Number(value.id_task_type) || 0;
+                        if (id) {
+                            taskTypeSelect.append("<option value='" + id + "'>" + value.description + "</option>");
+                        }
+                    });
                 }
             });
         }
