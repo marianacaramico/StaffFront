@@ -89,18 +89,16 @@ router.post('/create', function (req, res, next) {
                             if (err) {
                                 responseJson.code = 0;
                                 responseJson.result = err;
-                                res.json(responseJson);
                             } else {
                                 if (rowCount) {
                                     responseJson.code = 1;
                                     responseJson.result = "Tarefa cadastrada com sucesso";
-                                    res.json(responseJson);
                                 } else {
                                     responseJson.code = 0;
                                     responseJson.result = "Algo deu errado!";
-                                    res.json(responseJson);
                                 }
                             }
+                            res.json(responseJson);
                             connection.close();
                         });
                         request.addParameter('taskType', TYPES.Int, taskType);
@@ -108,7 +106,7 @@ router.post('/create', function (req, res, next) {
                         request.addParameter('title', TYPES.VarChar, title);
                         request.addParameter('description', TYPES.VarChar, description);
                         request.addParameter('deadline', TYPES.Date, deadline);
-                        request.addParameter('value', TYPES.Decimal, value);
+                        request.addParameter('value', TYPES.Float, value);
                         request.addOutputParameter('id', TYPES.Int);
                         request.on('returnValue', function(parameterName, value, metadata) {
                             responseJson[parameterName] = value;

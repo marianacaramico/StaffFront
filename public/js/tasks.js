@@ -19,21 +19,25 @@
                     inputDeadline: {
                         required: true,
                         nextDateBr: true
+                    },
+                    taskType: {
+                        required: true
                     }
                 },
                 messages: {
                     inputTitle: "Insira um título para sua tarefa!",
                     inputPrice: "Insira o valor que será pago pela tarefa!",
-                    inputDeadline: "Insira o prazo máximo da tarefa!"
+                    inputDeadline: "Insira o prazo máximo da tarefa!",
+                    taskType: "Selecione o tipo da tarefa!"
                 },
                 errorClass: "text-danger",
                 submitHandler: form => {
-                    var _deadline = ($("#inputDeadline").val() || "").split("/").reverse();
                     var data = {
                         title: $("#inputTitle").val() || "",
                         description: $("#inputDescription").val() || "",
                         value: Number.parseFloat($("#inputPrice").val().replace(",", ".") || ""),
-                        deadline: _deadline.join("-")
+                        deadline: ($("#inputDeadline").val() || "").split("/").reverse().join("-"),
+                        taskType: Number.parseInt($("#taskType").val()) || 0
                     };
                     createTask(data);
                 }
@@ -163,7 +167,7 @@
     function getRowAssignedTask(task = {}) {
         return (
             "<div class='row'>"
-                + "<div class='col-sm-12'>"
+                + "<div class='col-sm-9'>"
                     + "<div class='col-sm-12'><p>" + (task.title || "") + "</p></div>"
                     + "<div class='col-sm-12'>"
                         + "<span class='col-sm-2'>R$ " + (task.value || 0).formatBrl() + "</span>"

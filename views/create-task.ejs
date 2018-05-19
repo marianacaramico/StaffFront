@@ -28,7 +28,7 @@
           <div class="form-group">
             <div class="row">
               <div class="col-3">
-                <input type="text" class="form-control" id="inputPrice" name="inputPrice" placeholder="$$$" data-inputmask-regex="^\d+(?:,\d{1,2})?$">
+                <input type="text" class="form-control" id="inputPrice" name="inputPrice" placeholder="$$$" data-inputmask-placeholder="" data-inputmask-regex="^\d+(?:,\d{1,2})?$">
               </div>
               <div class="col">
                 <input type="text" class="form-control" id="inputDeadline" name="inputDeadline" placeholder="Prazo" data-inputmask-mask="99/99/9999">
@@ -45,7 +45,7 @@
           <div class="form-group">
             <span class="row">
               <div class="col">
-                <textarea class="form-control" id="inputDescription" name="inputDescription" placeholder="Descrição da tarefa" rows="3"></textarea>
+                <textarea class="form-control" id="inputDescription" name="inputDescription" placeholder="Descrição da tarefa" rows="3" maxlength="8000"></textarea>
               </div>
             </span>
           </div>
