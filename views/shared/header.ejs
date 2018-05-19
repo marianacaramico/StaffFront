@@ -36,7 +36,13 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="/css/stylish-portfolio.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <% if (locals.css) { %>
-        <link rel="stylesheet" type="text/css" href="/css/<%= css %>.css" />
-    <% } %>
+    <% if (locals.css) {
+        if (Array.isArray(locals.css)) {
+            locals.css.forEach(value => { %>
+                <link rel="stylesheet" type="text/css" href="/css/<%= value %>.css" />
+    <%      });
+        } else { %>
+            <link rel="stylesheet" type="text/css" href="/css/<%= css %>.css" />
+    <%  }
+    } %>
 </head>

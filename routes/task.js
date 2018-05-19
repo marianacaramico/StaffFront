@@ -157,7 +157,7 @@ router.get('/unassigned', function(req, res, next) {
                 "T.title, T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner = @userid)";
+                "WHERE (T.id_user_owner = @userid) AND A.id_task IS NULL";
             var request = database.query(query, connection);
             var result = [];
             request.addParameter("userid", TYPES.Int, user_id);

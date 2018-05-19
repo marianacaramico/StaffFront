@@ -46,9 +46,15 @@
 <script src="/js/stylish-portfolio.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/script.js"></script>
-<% if (locals.script) { %>
-  <script type="text/javascript" src="/js/<%= script %>.js"></script>
-<% } %>
+<% if (locals.script) {
+  if (Array.isArray(locals.script)) {
+    locals.script.forEach(value => { %>
+      <script type="text/javascript" src="/js/<%= value %>.js"></script>
+<%  });
+  } else { %>
+    <script type="text/javascript" src="/js/<%= script %>.js"></script>
+<%  }
+} %>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108862038-1"></script>
