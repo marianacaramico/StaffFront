@@ -37,6 +37,7 @@
 }
 
 #logoff {
+	bottom: 0;
 	height: 54px;
 	width: 54px;
 	margin-top: 67px;
@@ -97,6 +98,10 @@ footer {
 
 .textBoxError {
 	border-color: red;
+}
+
+.service-margin-bottom {
+	margin-bottom: 19px;
 }
 
 .service-icon {
