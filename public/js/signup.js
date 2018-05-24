@@ -78,7 +78,8 @@
     },
     errorElement: "div",
     errorClass: "text-danger",
-    submitHandler: function () {
+    submitHandler: function (e) {
+      console.log(e);
       var user = {
         name: $("#inputNome").val(),
         username: $("#inputEmail").val(),
@@ -97,13 +98,14 @@
           data: user,
           dataType: 'json',
           beforeSend: () => {
-            buttonSubmit.css('background-color', '#aaa');
-            buttonSubmit.prop('disabled', true);
+            $("#buttonSubmit").css('background-color', '#aaa');
+            $("#buttonSubmit").prop('disabled', true);
           }
         }).done(response => {
+          console.log(response);
           var { code, result } = response;
-          buttonSubmit.removeAttr('style');
-          buttonSubmit.prop('disabled', false);
+          $("#buttonSubmit").removeAttr('style');
+          $("#buttonSubmit").prop('disabled', false);
           if (Number(code) === 1) {
             window.location.assign("/login");
           }
