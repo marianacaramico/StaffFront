@@ -15,6 +15,7 @@ var profile = require('./routes/profile');
 var login = require('./routes/login');
 var signup = require('./routes/signup');
 var home = require('./routes/home');
+var search = require('./routes/search');
 
 var app = express();
 
@@ -51,6 +52,7 @@ app.use('/profile', profile);
 app.use('/login', login);
 app.use('/signup', signup);
 app.use('/home', home);
+app.use('/search', search);
 
 app.use('/logout', function(req, res, next) {
   req.session.userid = undefined;

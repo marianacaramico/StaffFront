@@ -1,0 +1,18 @@
+.search-btn {
+    background-color: #8659A3; 
+    color: #fff;    
+    cursor: pointer;
+    height: 38px;
+    border: 1px solid #8659A3;
+}
+
+.search-btn:hover {
+    background-color: #fff;
+    color: #8659A3;
+    border: 1px solid #8659A3;
+    cursor: pointer;
+}
+
+.form-control {
+    border: 1px solid #8659A3;
+}

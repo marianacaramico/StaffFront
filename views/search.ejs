@@ -1,0 +1,20 @@
+<html lang="pt-br">
+
+    <% include shared/header.ejs %>
+
+<body>
+    <!-- Navbar -->
+    <% include shared/navbarProfile.ejs %>
+    <form>
+        <div class="col-sm-10 mx-auto mt-4">
+            <div class="input-group mb-3">
+                <input type="text" id="search-text" name="search-text" class="form-control" placeholder="Digite aqui o que deseja pesquisar..." aria-label="Digite aqui o que deseja pesquisar..." aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                <button class="btn btn-outline-secondary search-btn" type="button" onclick="clickPesquisar()"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+</body>
