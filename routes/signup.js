@@ -12,9 +12,10 @@ router.get('*', function(req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
+    console.log(req);
     res.render("signup", {
         title: 'Cadastre-se para utilizar o Staff',
-        script: 'signup'
+        : 'signup'
     });
 });
 
