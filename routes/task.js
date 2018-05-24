@@ -157,7 +157,7 @@ router.get('/unassigned', function(req, res, next) {
                 "T.title, T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner = @userid) AND A.id_task IS NULL";
+                "WHERE (T.id_user_owner = @userid) AND (A.id_task IS NULL) AND (T.status = 'A')";
             var request = database.query(query, connection);
             var result = [];
             request.addParameter("userid", TYPES.Int, user_id);
@@ -208,7 +208,58 @@ router.get('/assigned', function(req, res, next) {
                 "T.title, T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T INNER JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner = @userid)";
+                "WHERE (T.id_user_owner = @userid) AND (T.status = 'A')";
+            var request = database.query(query, connection);
+            var result = [];
+            request.addParameter("userid", TYPES.Int, user_id);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    res.json({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    res.json({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+});
+
+router.get('/withyou', function(req, res, next) {
+
+    var database = new Database();
+
+    // definir como pegar o usuario corrente
+    // req.session.userid
+    var user_id = 1;
+
+    var connection = database.connect();
+
+    connection.on('connect', function(err) {
+        if (err) {
+            console.log('DEU UM ERRO!');
+            console.log(err);
+            return;
+        } else {
+            console.log('DEU CERTO!');
+
+            var query = "SELECT T.id_task_type, T.id_user_owner, " +
+                "T.title, T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner <> @userid) AND (A.id_user = @userid) AND (T.status = 'A')";
             var request = database.query(query, connection);
             var result = [];
             request.addParameter("userid", TYPES.Int, user_id);
