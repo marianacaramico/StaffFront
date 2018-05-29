@@ -17,7 +17,8 @@
     "morgan": "~1.8.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "tedious": "~2.6.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
