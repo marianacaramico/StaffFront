@@ -1,3 +1,4 @@
+*.jpeg
 
 # Created by https://www.gitignore.io/api/node
 
@@ -62,5 +63,3 @@ typings/
 .env
 
 # End of https://www.gitignore.io/api/node
-
-*.jpeg
