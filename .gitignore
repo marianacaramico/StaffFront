@@ -1,6 +1,7 @@
 *.jpeg
+package-lock.json
 
-# Created by https://www.gitignore.io/api/node
+# Created by https://www.gitignore.io/api/node,visualstudiocode
 
 ### Node ###
 # Logs
@@ -62,4 +63,13 @@ typings/
 # dotenv environment variables file
 .env
 
-# End of https://www.gitignore.io/api/node
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
+
+
+# End of https://www.gitignore.io/api/node,visualstudiocode
