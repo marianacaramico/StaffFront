@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Database = require('../helpers/Database');
 var TYPES = require('tedious').TYPES;
+var bcrypt = require('bcrypt');
 
 router.get('*', function(req, res, next) {
     if (req.session.userid) {
@@ -38,24 +39,32 @@ router.post('/', function (req, res, next) {
                     title: 'Ops, não conseguimos fazer o login'
                 });
             } else {
-                var query = "SELECT @id = id_user FROM dbo.TB_USER WHERE username = @username AND password = @password";
+                var query = "SELECT @id = id_user, @password = password FROM dbo.TB_USER WHERE username = @username";
                 var request = database.query(query, connection);
                 request.addParameter("username", TYPES.VarChar, username);
-                request.addParameter("password", TYPES.VarChar, password);
                 var result = {};
                 request.addOutputParameter('id', TYPES.Int);
+                request.addOutputParameter('password', TYPES.VarChar);
                 request.on('returnValue', function(parameterName, value, metadata) {
                     result[parameterName] = value;
                 });
                 request.on('requestCompleted', function() {
-                    if (result.id) {
-                        req.session.userid = result.id;
-                        res.redirect("/home");
-                    } else {
-                        res.render('erro-login', {
-                            title: 'Ops, não conseguimos fazer o login'
-                        });
-                    }
+                    bcrypt.compare(password, result.password, (err, comparison) => {
+                        if (comparison) {
+                            if (result.id) {
+                                req.session.userid = result.id;
+                                res.redirect("/home");
+                            } else {
+                                res.render('erro-login', {
+                                    title: 'Ops, não conseguimos fazer o login'
+                                });
+                            }
+                        } else {
+                            res.render('erro-login', {
+                                title: 'Ops, não conseguimos fazer o login'
+                            });
+                        }
+                    });
                 });
                 connection.execSql(request);
             }

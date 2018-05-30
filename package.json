@@ -18,7 +18,8 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "serve-favicon": "~2.4.2",
-    "tedious": "~2.6.1"
+    "tedious": "~2.6.1",
+    "bcrypt": "~2.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
