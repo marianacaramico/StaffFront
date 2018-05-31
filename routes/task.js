@@ -127,6 +127,16 @@ router.post('/create', function (req, res, next) {
     });
 });
 
+router.get('/edit', function (req, res, next) {
+    res.render('edit-task', {
+        title: 'Staff - Editando Uma Tarefa',
+        script: 'tasks'
+    });
+});
+
+router.post('/edit', function (req, res, next) {
+});
+
 router.get('/open', function (req, res, next) {
     res.render('open-tasks', {
         title: 'Tarefas em Aberto - Staff',
