@@ -2,7 +2,7 @@
     "use strict";
 
     $(document).ready(() => {
-        getTasks();
+        getUnassignedTasks();
         getAssignedTasks();
         getTasksWithYou();
         getFinishedTasks();
@@ -10,6 +10,7 @@
 
         if ( !isNull($("#createTaskForm")) ) {
             var form = $("#createTaskForm");
+
             form.validate({
                 rules: {
                     inputTitle: {
@@ -42,204 +43,39 @@
                         deadline: ($("#inputDeadline").val() || "").split("/").reverse().join("-"),
                         taskType: Number.parseInt($("#taskType").val()) || 0
                     };
-                    createTask(data);
+                    createTask(data, form);
                 }
             });
-            $.ajax({
-                url: '/task/types',
-                dataType: 'json'
-            }).done(result => {
-                var { code, tasks } = result;
+
+            (function () {
                 var taskTypeSelect = $("select#taskType");
-                taskTypeSelect.empty().append("<option value='' selected disabled>Selecione...</option>");
-                if (Number(code) === 1) {
-                    tasks.forEach(value => {
-                        var id = Number(value.id_task_type) || 0;
-                        if (id) {
-                            taskTypeSelect.append("<option value='" + id + "'>" + value.description + "</option>");
-                        }
-                    });
-                }
-            });
+
+                $.ajax({
+                    url: '/task/types',
+                    dataType: 'json',
+                    beforeSend: () => {
+                        taskTypeSelect.empty().append('<option value="" selected disabled>Carregando...</option>');
+                    }
+                }).done(result => {
+                    var { code, tasks } = result;
+                    taskTypeSelect.empty().append("<option value='' selected disabled>Selecione...</option>");
+                    if (Number(code) === 1) {
+                        tasks.forEach(value => {
+                            var id = Number(value.id_task_type) || 0;
+                            if (id) {
+                                taskTypeSelect.append("<option value='" + id + "'>" + value.description + "</option>");
+                            }
+                        });
+                    }
+                }).fail(err => {
+                    console.error('ERRO');
+                    taskTypeSelect.empty().append("<option value='' selected disabled>Selecione...</option>");
+                });
+            })();
         }
     });
 
-    function getTasks() {
-        var openTaskPersonal = $("#openTaskPersonal");
-
-        if (!isNull(openTaskPersonal)) {
-            return $.ajax({
-                url: '/task/unassigned',
-                dataType: 'json'
-            }).done(result => {
-                var { code, tasks } = result;
-                if (Number(code) === 1) {
-                    openTaskPersonal.empty();
-                    tasks.forEach(task => {
-                        openTaskPersonal.append(getRowPersonalTask(task));
-                    });
-                    return true;
-                }
-                openTaskPersonal.empty();
-                openTaskPersonal.append(getRowPersonalTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
-            }).fail(err => {
-                console.log('ERRO');
-                openTaskPersonal.empty();
-                openTaskPersonal.append(getRowPersonalTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-            });
-        }
-    }
-
-    function getTasksFinished() {
-        var finishedTaskPersonal = $("#finishedTaskPersonal");
-
-        if (!isNull(finishedTaskPersonal)) {
-            return $.ajax({
-                url: '/task/taskFinished',
-                dataType: 'json'
-            }).done(result => {
-                var { code, tasks } = result;
-                if (Number(code) === 1) {
-                    finishedTaskPersonal.empty();
-                    tasks.forEach(task => {
-                        finishedTaskPersonal.append(getRowAssignedTask(task));
-                    });
-                    return true;
-                }
-                finishedTaskPersonal.empty();
-                finishedTaskPersonal.append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
-            }).fail(err => {
-                console.log('ERRO');
-                finishedTaskPersonal.empty();
-                finishedTaskPersonal.append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-            });
-        }
-    }
-
-    function getAssignedTasks() {
-        var openTaskTaken = $("#openTaskTaken");
-
-        if (!isNull(openTaskTaken)) {
-            return $.ajax({
-                url: '/task/assigned',
-                dataType: 'json'
-            }).done(result => {
-                var { code, tasks } = result;
-                if (Number(code) === 1) {
-                    openTaskTaken.empty();
-                    tasks.forEach(task => {
-                        openTaskTaken.append(getRowAssignedTask(task));
-                    });
-                    return true;
-                }
-                openTaskTaken.empty();
-                openTaskTaken.append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
-            }).fail(err => {
-                console.log('ERRO');
-                openTaskTaken.empty();
-                openTaskTaken.append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-            });
-        }
-    }
-
-    function getFinishedTasks() {
-        var finishedTaskTaken = $("#finishedTaskTaken");
-
-        if (!isNull(finishedTaskTaken)) {
-            return $.ajax({
-                url: '/task/finishedTask',
-                dataType: 'json'
-            }).done(result => {
-                var { code, tasks } = result;
-                if (Number(code) === 1) {
-                    finishedTaskTaken.empty();
-                    tasks.forEach(task => {
-                        finishedTaskTaken.append(getRowAssignedTask(task));
-                    });
-                    return true;
-                }
-                finishedTaskTaken.empty();
-                finishedTaskTaken.append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
-            }).fail(err => {
-                console.log('ERRO');
-                finishedTaskTaken.empty();
-                finishedTaskTaken.append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-            });
-        }
-    }
-
-    function getTasksWithYou() {
-        var openTasksWithYou = $("#openTasksWithYou");
-
-        if (!isNull(openTasksWithYou)) {
-            return $.ajax({
-                url: '/task/withyou',
-                dataType: 'json'
-            }).done(result => {
-                var { code, tasks } = result;
-                if (Number(code) === 1) {
-                    openTasksWithYou.empty();
-                    tasks.forEach(task => {
-                        openTasksWithYou.append(getRowTasksWithYou(task));
-                    });
-                    return true;
-                }
-                openTasksWithYou.empty();
-                openTasksWithYou.append(getRowTasksWithYou({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
-            }).fail(err => {
-                console.log('ERRO');
-                openTasksWithYou.empty();
-                openTasksWithYou.append(getRowTasksWithYou({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-            });
-        }
-    }
-
-    function createTask(data = {}) {
+    function createTask(data = {}, form) {
         return $.ajax({
             url: "/task/create",
             method: "POST",
@@ -258,55 +94,205 @@
         });
     }
 
+    function getUnassignedTasks() {
+        var openTaskPersonal = $("#openTaskPersonal");
+
+        if (!isNull(openTaskPersonal)) {
+            return $.ajax({
+                url: '/task/unassigned',
+                dataType: 'json',
+                beforeSend: () => {
+                    openTaskPersonal.empty().append('<div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
+                }
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    openTaskPersonal.empty();
+                    tasks.forEach(task => {
+                        openTaskPersonal.append(getRowPersonalTask(task));
+                    });
+                    return true;
+                }
+                openTaskPersonal.empty().append(getRowPersonalTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                openTaskPersonal.empty().append(getRowPersonalTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
+    function getAssignedTasks() {
+        var openTaskTaken = $("#openTaskTaken");
+
+        if (!isNull(openTaskTaken)) {
+            return $.ajax({
+                url: '/task/assigned',
+                dataType: 'json',
+                beforeSend: () => {
+                    openTaskTaken.empty().append('<div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
+                }
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    openTaskTaken.empty();
+                    tasks.forEach(task => {
+                        openTaskTaken.append(getRowAssignedTask(task));
+                    });
+                    return true;
+                }
+                openTaskTaken.empty().append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                openTaskTaken.empty().append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
+    function getTasksWithYou() {
+        var openTasksWithYou = $("#openTasksWithYou");
+
+        if (!isNull(openTasksWithYou)) {
+            return $.ajax({
+                url: '/task/withyou',
+                dataType: 'json',
+                beforeSend: () => {
+                    openTasksWithYou.empty().append('<div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
+                }
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    openTasksWithYou.empty();
+                    tasks.forEach(task => {
+                        openTasksWithYou.append(getRowTasksWithYou(task));
+                    });
+                    return true;
+                }
+                openTasksWithYou.empty().append(getRowTasksWithYou({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                openTasksWithYou.empty().append(getRowTasksWithYou({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
+    function getTasksFinished() {
+        var finishedTaskPersonal = $("#finishedTaskPersonal");
+
+        if (!isNull(finishedTaskPersonal)) {
+            return $.ajax({
+                url: '/task/taskFinished',
+                dataType: 'json',
+                beforeSend: () => {
+                    finishedTaskPersonal.empty().append('<div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
+                }
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    finishedTaskPersonal.empty();
+                    tasks.forEach(task => {
+                        finishedTaskPersonal.append(getRowAssignedTask(task));
+                    });
+                    return true;
+                }
+                finishedTaskPersonal.empty().append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                finishedTaskPersonal.empty().append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
+    function getFinishedTasks() {
+        var finishedTaskTaken = $("#finishedTaskTaken");
+
+        if (!isNull(finishedTaskTaken)) {
+            return $.ajax({
+                url: '/task/finishedTask',
+                dataType: 'json',
+                beforeSend: () => {
+                    finishedTaskTaken.empty().append('<div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
+                }
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    finishedTaskTaken.empty();
+                    tasks.forEach(task => {
+                        finishedTaskTaken.append(getRowAssignedTask(task));
+                    });
+                    return true;
+                }
+                finishedTaskTaken.empty().append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                finishedTaskTaken.empty().append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
     function getRowPersonalTask(task = {}) {
         return (
             "<div class='row'>"
                 + "<div class='col-sm-12'>"
-                    + "<div class='col-sm-12'><p><b>" + (task.title || "") + "</b>"
-                    + '<a class="btn button pull-right" id="btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
-                    + '<a href="/task/edit" class="btn button pull-right" id="btnEdit"><i class="fa fa-pencil" aria-hidden="true"></i></a>'
+                    + "<div class='col-sm-12'><p>"
+                        + "<b>" + (task.title || "") + "</b>"
+                        + '<a href="javascript:void(0)" class="btn button pull-right btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
+                        + '<a href="/task/edit/' + (task.id_task || 0) + '" class="btn button pull-right btnEdit"><i class="fa fa-pencil" aria-hidden="true"></i></a>'
                     + '</p></div>'
                     + "<div class='col-sm-12'>"
-                        + "<div class='row'><div class='col-sm-12'><span class='col-sm-3 task-value'>R$ " + (task.value || 0).formatBrl() + "</span>"
-                        + "<span class='col-sm-9'><span class='pull-right'>Para terminar em: " + (task.due_date || "") + "</span></span></div></div><br />"
-                        + "<span class='col-sm-10 text-justify'>" + (task.description || "") + "</span>"
+                        + "<div class='row'><div class='col-sm-12'>"
+                            + "<span class='col-sm-3 task-value'>R$ " + (task.value || 0).formatBrl() + "</span>"
+                            + "<span class='col-sm-9'><span class='pull-right'>Para terminar em: " + Date.formatDate(task.due_date || "") + "</span></span>"
+                        + "</div></div><br />"
+                        + "<div class='row'><span class='col-sm-12 text-justify'>" + (task.description || "") + "</span></div>"
                     + "</div>"
                 + "</div>"
             + "</div><hr />"
         );
-    }
-
-    function getRowTasksWithYou(task = {}) {
-        return (
-            "<div class='row'>"
-            + "<div class='col-sm-1'>"
-                +"<div class='text-center'>"
-                    + "<span class='service-icon rounded-circle mx-auto text-center'>"
-                        + "<i class='fa fa-user' aria-hidden='true'></i>"
-                    + "</span>"                
-                + "</div>"
-            +"</div>"
-            + "<div class='col-sm-8'>"
-                + "<div class='col-sm-12'>"
-                    + "<p><b>" + (task.title || "") + "</b></p>"
-                + "</div>"
-                + "<div class='col-sm-12'>"
-                    + "<span class='col-sm-2 task-value'>R$ " + (task.value || 0).formatBrl() + "</span>"
-                    + "<span class='col-sm-10'>" + (task.description || "") + "</span>"
-                + "</div>"
-            + "</div>"
-            + "<div class='col-sm-3'>"
-                + "<div class='pull-right'>"
-                    + "<div style='margin-bottom:10px'>"
-                        + "<a href='#' class='btn btn-success mb-1'>"
-                            + "<i class='fa fa-check' aria-hidden='true'></i>"
-                            + "Terminei"
-                        + "</a>"
-                    + "</div>"
-                + "</div>"
-            + "</div>"
-        + "</div>"
-            );
     }
 
     function getRowAssignedTask(task = {}) {
@@ -329,14 +315,51 @@
                     + "</div> -->"
                     + "<div class='row'>"
                         + "<a class='mx-auto userProfileHyperlink' href='/user/" + (task.id_user_owner || 0) + "'>"
-                        + "<!-- <span class='service-icon rounded-circle text-center'>"
-                        + "<i class='fa fa-user' aria-hidden='true'></i> -->"
-                        + "<img class='service-icon rounded-circle' src='/img/baby-groot.jpg' />"
-                        + "</span>"
+                            + "<!-- <span class='service-icon rounded-circle text-center'>"
+                                + "<i class='fa fa-user' aria-hidden='true'></i>"
+                            + "</span> -->"
+                            + "<img class='service-icon rounded-circle' src='/img/baby-groot.jpg' />"
                         + "</a>"
-                    + " </div>"
+                    + "</div>"
                 + "</div>"
             + "</div><hr />"
+        );
+    }
+
+    function getRowTasksWithYou(task = {}) {
+        return (
+            "<div class='row'>"
+                + "<div class='col-sm-1 text-center'>"
+                    + "<div class='col-sm-12'>"
+                        +"<div class='row'>"
+                            + "<a class='mx-auto userProfileHyperlink' href='/user/" + (task.id_user_owner || 0) + "'>"
+                                + "<span class='service-icon rounded-circle text-center'>"
+                                    + "<i class='fa fa-user' aria-hidden='true'></i>"
+                                + "</span>"
+                            + "</a>"
+                        + "</div>"
+                    + "</div>"
+                +"</div>"
+                + "<div class='col-sm-8'>"
+                    + "<div class='col-sm-12'>"
+                        + "<p><b>" + (task.title || "") + "</b></p>"
+                    + "</div>"
+                    + "<div class='col-sm-12'>"
+                        + "<span class='col-sm-2 task-value'>R$ " + (task.value || 0).formatBrl() + "</span>"
+                        + "<span class='col-sm-10'>" + (task.description || "") + "</span>"
+                    + "</div>"
+                + "</div>"
+                + "<div class='col-sm-3'>"
+                    + "<div class='pull-right'>"
+                        + "<div style='margin-bottom:10px'>"
+                            + "<a href='#' class='btn btn-success mb-1'>"
+                                + "<i class='fa fa-check' aria-hidden='true'></i>"
+                                + "Terminei"
+                            + "</a>"
+                        + "</div>"
+                    + "</div>"
+                + "</div>"
+            + "</div>"
         );
     }
 })(window, document);

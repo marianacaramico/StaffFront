@@ -124,3 +124,17 @@ footer {
 .rounded-circle {
     border-radius: 50% !important;
 }
+
+.btnEdit, .btnErase {
+    background-color: #fff;
+    color: #8659a3;
+    border: 1px solid #8659a3;
+    cursor: pointer;
+}
+
+.btnEdit:hover, .btnErase:hover {
+    background-color: #8659a3;
+    color: #fff;
+    border: 1px solid #8659a3;
+    cursor: pointer;
+}

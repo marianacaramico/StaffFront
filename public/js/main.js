@@ -69,3 +69,13 @@ Number.prototype.formatBrl = function formatBrl() {
     value[0] = value[0].split(/(?=(?:\d{3})*$)/g).join(".");
     return value.join(",");
 }
+
+Date.formatDate = function formatDate(stringDate = "") {
+    var date = new Date(stringDate || null);
+    var fDate = [
+        ("0" + date.getDate()).slice(-2),
+        ("0" + (date.getMonth() + 1)).slice(-2),
+        date.getFullYear()
+    ];
+    return fDate[0] + "/" + fDate[1] + "/" + fDate[2];
+};

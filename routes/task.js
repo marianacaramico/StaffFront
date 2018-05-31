@@ -127,14 +127,24 @@ router.post('/create', function (req, res, next) {
     });
 });
 
-router.get('/edit', function (req, res, next) {
-    res.render('edit-task', {
-        title: 'Staff - Editando Uma Tarefa',
-        script: 'tasks'
-    });
+router.get('/edit/:id', function (req, res, next) {
+    var taskid = parseInt(req.params.id) || 0;
+
+    if (taskid) {
+        res.render('edit-task', {
+            title: 'Staff - Editando Uma Tarefa',
+            script: 'tasks'
+        });
+    } else {
+        next();
+    }
 });
 
 router.post('/edit', function (req, res, next) {
+    res.json({
+        code: 0,
+        result: 'Function not implemented'
+    });
 });
 
 router.get('/open', function (req, res, next) {
@@ -171,7 +181,7 @@ router.get('/unassigned', function(req, res, next) {
         } else {
             console.log('DEU CERTO!');
 
-            var query = "SELECT T.id_task_type, T.id_user_owner, " +
+            var query = "SELECT T.id_task, T.id_task_type, T.id_user_owner, " +
                 "T.title, T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
