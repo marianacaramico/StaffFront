@@ -135,6 +135,14 @@ router.get('/open', function (req, res, next) {
     });
 });
 
+router.get('/finished', function (req, res, next) {
+    res.render('finished-tasks', {
+        title: 'Tarefas Concluídas - Staff',
+        script: "tasks",
+        css: "tasks"
+    });
+});
+
 router.get('/unassigned', function(req, res, next) {
 
     var database = new Database();
