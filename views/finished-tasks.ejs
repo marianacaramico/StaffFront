@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <% include shared/header.ejs %>
+
+<body>
+    <!-- Navbar -->
+    <% include shared/navbarProfile.ejs %>
+
+    <section class="col-sm-12 taskWrapper" id="openTaskWrapper">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-around">
+
+                <div class="col-sm-5 openTaskBox">
+                    <h4 class="titleTarefas">Tarefas concluídas para você</h4>
+                    <hr />
+                    <div id="finishedTaskTaken"></div>
+                </div>
+
+                <div class="col-sm-5 openTaskBox">
+                    <h4 class="titleTarefas">Tarefas concluídas por você</h4>
+                    <hr />
+                    <div id="finishedTaskPersonal"></div>
+                </div>              
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <% include shared/footerProfile.ejs %>
+</body>
+</html>

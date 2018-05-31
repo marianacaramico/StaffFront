@@ -5,6 +5,8 @@
         getTasks();
         getAssignedTasks();
         getTasksWithYou();
+        getFinishedTasks();
+        getTasksFinished();
 
         if ( !isNull($("#createTaskForm")) ) {
             var form = $("#createTaskForm");
@@ -97,6 +99,41 @@
         }
     }
 
+    function getTasksFinished() {
+        var finishedTaskPersonal = $("#finishedTaskPersonal");
+
+        if (!isNull(finishedTaskPersonal)) {
+            return $.ajax({
+                url: '/task/taskFinished',
+                dataType: 'json'
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    finishedTaskPersonal.empty();
+                    tasks.forEach(task => {
+                        finishedTaskPersonal.append(getRowAssignedTask(task));
+                    });
+                    return true;
+                }
+                finishedTaskPersonal.empty();
+                finishedTaskPersonal.append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                finishedTaskPersonal.empty();
+                finishedTaskPersonal.append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
     function getAssignedTasks() {
         var openTaskTaken = $("#openTaskTaken");
 
@@ -124,6 +161,41 @@
                 console.log('ERRO');
                 openTaskTaken.empty();
                 openTaskTaken.append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+            });
+        }
+    }
+
+    function getFinishedTasks() {
+        var finishedTaskTaken = $("#finishedTaskTaken");
+
+        if (!isNull(finishedTaskTaken)) {
+            return $.ajax({
+                url: '/task/finishedTask',
+                dataType: 'json'
+            }).done(result => {
+                var { code, tasks } = result;
+                if (Number(code) === 1) {
+                    finishedTaskTaken.empty();
+                    tasks.forEach(task => {
+                        finishedTaskTaken.append(getRowAssignedTask(task));
+                    });
+                    return true;
+                }
+                finishedTaskTaken.empty();
+                finishedTaskTaken.append(getRowAssignedTask({
+                    title: "Nenhuma tarefa encontrada",
+                    value: 0.00,
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }));
+                return false;
+            }).fail(err => {
+                console.log('ERRO');
+                finishedTaskTaken.empty();
+                finishedTaskTaken.append(getRowAssignedTask({
                     title: "Nenhuma tarefa encontrada",
                     value: 0.00,
                     description: "Nenhuma tarefa pôde ser encontrada."
@@ -256,7 +328,7 @@
                         + "<i class='fa fa-lg fa-star-o' aria-hidden='true'></i>"
                     + "</div> -->"
                     + "<div class='row'>"
-                        + "<a class='mx-auto userProfileHyperlink' href='/user/2'>"
+                        + "<a class='mx-auto userProfileHyperlink' href='/user/" + (task.id_user_owner || 0) + "'>"
                         + "<!-- <span class='service-icon rounded-circle text-center'>"
                         + "<i class='fa fa-user' aria-hidden='true'></i> -->"
                         + "<img class='service-icon rounded-circle' src='/img/baby-groot.jpg' />"
