@@ -49,8 +49,11 @@ router.post('/', function (req, res, next) {
     });
 });
 
-router.put('/', function (req, res, next) {
-    res.json({ error: "Function not implemented" });
+router.get('*', function(req, res, next) {
+    res.status(404);
+    res.render('error', {
+        title: 'Erro'
+    });
 });
 
 module.exports = router;

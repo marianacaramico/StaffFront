@@ -163,6 +163,55 @@ function getTask(taskid, user_id, callbackFunctions = {}) {
     });
 }
 
+function getTasks(userid, description = "", callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: 'Failed to connect to database'
+            });
+        } else {
+            var query = "SELECT T.id_task, T.id_task_type, T.id_user_owner, " +
+                "T.title, T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner <> @userid) AND (A.id_task IS NULL) AND (T.status = 'A')";
+            if (description) query += " AND T.title LIKE CONCAT('%', @description, '%')";
+            var request = database.query(query, connection);
+            var result = [];
+            request.addParameter("userid", TYPES.Int, userid);
+            if (description) request.addParameter("description", TYPES.VarChar, description);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    callbackFunctions.onSuccess({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    callbackFunctions.onSuccess({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+}
+
 function getUnassigned(user_id, callbackFunctions = {}) {
     var database = new Database();
     var connection = database.connect();
@@ -303,6 +352,7 @@ var Task = {
     create,
     getAssigned,
     getTask,
+    getTasks,
     getUnassigned,
     getWithYou,
     types

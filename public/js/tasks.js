@@ -280,7 +280,7 @@
                             + '<a href="/task/edit/' + (task.id_task || 0) + '" class="btn button btnEdit"><i class="fa fa-pencil" aria-hidden="true"></i></a>'
                             + '<a href="javascript:void(0)" class="btn button btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
                         + "</span>"
-                        + '</p></div>'
+                    + '</p></div>'
                     + "<div class='col-sm-12'>"
                         + "<div class='row'><div class='col-sm-12'>"
                             + "<span class='col-sm-3 task-value'>R$ " + (task.value || 0).formatBrl() + "</span>"
