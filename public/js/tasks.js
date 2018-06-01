@@ -280,9 +280,11 @@
                 + "<div class='col-sm-12'>"
                     + "<div class='col-sm-12'><p>"
                         + "<b>" + (task.title || "") + "</b>"
-                        + '<a href="javascript:void(0)" class="btn button pull-right btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
-                        + '<a href="/task/edit/' + (task.id_task || 0) + '" class="btn button pull-right btnEdit"><i class="fa fa-pencil" aria-hidden="true"></i></a>'
-                    + '</p></div>'
+                        + "<span class='btn-group pull-right'>"
+                            + '<a href="/task/edit/' + (task.id_task || 0) + '" class="btn button btnEdit"><i class="fa fa-pencil" aria-hidden="true"></i></a>'
+                            + '<a href="javascript:void(0)" class="btn button btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
+                        + "</span>"
+                        + '</p></div>'
                     + "<div class='col-sm-12'>"
                         + "<div class='row'><div class='col-sm-12'>"
                             + "<span class='col-sm-3 task-value'>R$ " + (task.value || 0).formatBrl() + "</span>"

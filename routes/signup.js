@@ -1,14 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var TYPES = require('tedious').TYPES;
-var Database = require('../helpers/Database');
-var bcrypt = require('bcrypt');
+var User = require('../models/User');
 
 router.get('*', function(req, res, next) {
-    if (!req.session.userid) {
-        next();
+    if (req.session.userid) {
+        res.redirect("/home");
     } else {
-        res.redirect("/login");
+        next();
     }
 });
 
@@ -21,8 +19,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    var database = new Database();
-
     var name = req.body.name;
     var email = req.body.username;
     var password = req.body.password;
@@ -34,70 +30,21 @@ router.post('/', function (req, res, next) {
     var cidade = req.body.cidade;
     var estado = req.body.estado;
 
-    var connection = database.connect();
+    if (!(name && email && password && cpf && cep && rua && numero && bairro && cidade && estado)) {
+        console.log("DADOS INVÁLIDOS");
+        return res.json({
+            code: 0,
+            result: "Dados inválidos"
+        });
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
+    User.signup(name, email, password, cpf, cep, rua, numero, bairro, cidade, estado, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
             console.log(err);
-            return;
-        } else {
-            if(name == null || email == null || password == null || cpf == null || cep == null ||
-                rua  == null || numero == null || bairro == null || cidade == null || estado == null) {
-                console.log("Dados inválidos");
-                res.json({
-                    code: 0,
-                    result: "Dados inválidos",
-                });
-            } else {
-                bcrypt.hash(password, 16, (err, passwordHash) => {
-                    var queryVerify = "SELECT * FROM dbo.TB_USER WHERE username = @username";
-                    var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
-                        if (!rowCount) {
-                            var query = "INSERT INTO dbo.TB_USER(name, username, password, cpf, cep, rua, numero, bairro, cidade, estado) VALUES (@name, @username, @password, @cpf, @cep, @rua, @numero, @bairro, @cidade, @estado); SELECT @@identity";
-                            var request = database.query(query, connection, function(err, rowCount, rows) {
-                                if (err) {
-                                    res.json({
-                                        code: 0,
-                                        result: err
-                                    });
-                                } else {
-                                    if (rowCount) {
-                                        res.json({
-                                            code: 1,
-                                            result: "Usuário cadastrado com sucesso"
-                                        });
-                                    } else {
-                                        res.json({
-                                            code: 0,
-                                            result: "Algo deu errado!"
-                                        });
-                                    }
-                                }
-                                connection.close();
-                            });
-                            request.addParameter('name', TYPES.VarChar, name);
-                            request.addParameter('username', TYPES.VarChar, email);
-                            request.addParameter('password', TYPES.VarChar, passwordHash);
-                            request.addParameter('cpf', TYPES.VarChar, cpf);
-                            request.addParameter('cep', TYPES.VarChar, cep);
-                            request.addParameter('rua', TYPES.VarChar, rua);
-                            request.addParameter('numero ', TYPES.VarChar, numero);
-                            request.addParameter('bairro', TYPES.VarChar, bairro);
-                            request.addParameter('cidade', TYPES.VarChar, cidade);
-                            request.addParameter('estado', TYPES.VarChar, estado);
-                            connection.execSql(request);
-                        } else {
-                            connection.close();
-                            res.json({
-                                code: 0,
-                                result: "E-mail já cadastrado"
-                            });
-                        }
-                    });
-                    requestVerify.addParameter("username", TYPES.VarChar, email);
-                    connection.execSql(requestVerify);
-                });
-            }
+            res.json(responseJson);
         }
     });
 });

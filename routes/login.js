@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Database = require('../helpers/Database');
-var TYPES = require('tedious').TYPES;
-var bcrypt = require('bcrypt');
+var User = require('../models/User');
 
 router.get('*', function(req, res, next) {
     if (req.session.userid) {
@@ -19,55 +17,26 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    var database = new Database();
-
     var username = req.body.inputEmail;
     var password = req.body.inputSenha;
 
-    var connection = database.connect();
+    if (!(username && password)) {
+        console.log("NAO MANDOU USERNAME OU SENHA");
+        return res.json({
+            code: 2,
+            result: "Invalid parameters"
+        });
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
-            console.log('DEU UM ERRO!');
-            console.log(err);
-            return;
-        } else {
-            console.log('DEU CERTO!');
-            if((username == null) || (password == null)) {
-                console.log('NAO MANDOU USER OU SENHA, MANÉ');
-                res.render('erro-login', {
-                    title: 'Ops, não conseguimos fazer o login'
-                });
-            } else {
-                var query = "SELECT @id = id_user, @password = password FROM dbo.TB_USER WHERE username = @username";
-                var request = database.query(query, connection);
-                request.addParameter("username", TYPES.VarChar, username);
-                var result = {};
-                request.addOutputParameter('id', TYPES.Int);
-                request.addOutputParameter('password', TYPES.VarChar);
-                request.on('returnValue', function(parameterName, value, metadata) {
-                    result[parameterName] = value;
-                });
-                request.on('requestCompleted', function() {
-                    bcrypt.compare(password, result.password, (err, comparison) => {
-                        if (comparison) {
-                            if (result.id) {
-                                req.session.userid = result.id;
-                                res.redirect("/home");
-                            } else {
-                                res.render('erro-login', {
-                                    title: 'Ops, não conseguimos fazer o login'
-                                });
-                            }
-                        } else {
-                            res.render('erro-login', {
-                                title: 'Ops, não conseguimos fazer o login'
-                            });
-                        }
-                    });
-                });
-                connection.execSql(request);
-            }
+    User.login(username, password, {
+        onSuccess: function onSuccess(response) {
+            req.session.userid = response.result.session_id;
+            res.redirect(response.result.redirect);
+        },
+        onFail: function onFail(error, responseJson = null) {
+            console.log("DEU ERRO!");
+            console.log(error);
+            res.json(responseJson);
         }
     });
 });

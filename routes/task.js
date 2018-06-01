@@ -1,7 +1,6 @@
 var express = require('express');
+var Task = require('../models/Task');
 var router = express.Router();
-var Database = require('../helpers/Database');
-var TYPES = require('tedious').TYPES;
 
 /* GET Task */
 router.get('*', function(req, res, next) {
@@ -52,8 +51,6 @@ router.get('/create', function (req, res, next) {
 });
 
 router.post('/create', function (req, res, next) {
-    var database = new Database();
-
     var _deadline = new Date(req.body.deadline || "");
 
     var title = req.body.title;
@@ -63,66 +60,21 @@ router.post('/create', function (req, res, next) {
     var userid = parseInt(req.session.userid) || 0;
     var taskType = parseInt(req.body.taskType) || 0;
 
-    var connection = database.connect();
+    if(!(title && description && value >= 0 && deadline && userid > 0 && taskType > 0)) {
+        console.log(title, description, value, deadline, userid, taskType);
+        return res.json({
+            code: 0,
+            result: "Dados inválidos"
+        });
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
+    Task.create(title, description, value, deadline, userid, taskType, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
             console.log(err);
-            return;
-        } else {
-            if(!(title && description && value >= 0 && deadline && userid > 0 && taskType > 0)) {
-                console.log(title, description, value, deadline, userid, taskType);
-                res.json({
-                    code: 0,
-                    result: "Dados inválidos"
-                });
-            } else {
-                var queryVerify = "SELECT id_user FROM dbo.TB_USER WHERE id_user = @userid";
-                var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
-                    if (rowCount) {
-                        var query = "INSERT INTO dbo.TB_TASK(id_task_type, id_user_owner, title, description, creation_date, due_date, value, status) VALUES (@taskType, @userid, @title, @description, GETDATE(), @deadline, @value, 'A'); SELECT @id = @@identity";
-                        var responseJson = {
-                            code: 0,
-                            result: 'Function uninitialized'
-                        };
-                        var request = database.query(query, connection, function(err, rowCount, rows) {
-                            if (err) {
-                                responseJson.code = 0;
-                                responseJson.result = err;
-                            } else {
-                                if (rowCount) {
-                                    responseJson.code = 1;
-                                    responseJson.result = "Tarefa cadastrada com sucesso";
-                                } else {
-                                    responseJson.code = 0;
-                                    responseJson.result = "Algo deu errado!";
-                                }
-                            }
-                            res.json(responseJson);
-                            connection.close();
-                        });
-                        request.addParameter('taskType', TYPES.Int, taskType);
-                        request.addParameter('userid', TYPES.Int, userid);
-                        request.addParameter('title', TYPES.VarChar, title);
-                        request.addParameter('description', TYPES.VarChar, description);
-                        request.addParameter('deadline', TYPES.Date, deadline);
-                        request.addParameter('value', TYPES.Float, value);
-                        request.addOutputParameter('id', TYPES.Int);
-                        request.on('returnValue', function(parameterName, value, metadata) {
-                            responseJson[parameterName] = value;
-                        });
-                        connection.execSql(request);
-                    } else {
-                        connection.close();
-                        res.json({
-                            code: 0,
-                            result: "Usuário inválido"
-                        });
-                    }
-                });
-                requestVerify.addParameter("userid", TYPES.Int, userid);
-                connection.execSql(requestVerify);
-            }
+            res.json(responseJson);
         }
     });
 });
@@ -130,7 +82,7 @@ router.post('/create', function (req, res, next) {
 router.get('/edit/:id', function (req, res, next) {
     var taskid = parseInt(req.params.id) || 0;
 
-    if (taskid) {
+    if (taskid > 0) {
         res.render('edit-task', {
             title: 'Staff - Editando Uma Tarefa',
             script: 'tasks'
@@ -164,249 +116,113 @@ router.get('/finished', function (req, res, next) {
 });
 
 router.get('/unassigned', function(req, res, next) {
-
-    var database = new Database();
-
     // definir como pegar o usuario corrente
     // req.session.userid
     var user_id = 1;
 
-    var connection = database.connect();
+    if (!user_id) {
+        return res.json({
+            code: 0,
+            result: 'Usuário não encontrado'
+        });
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
-            console.log('DEU UM ERRO!');
+    Task.getUnassigned(user_id, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
+            console.log("DEU UM ERRO!");
             console.log(err);
-            return;
-        } else {
-            console.log('DEU CERTO!');
-
-            var query = "SELECT T.id_task, T.id_task_type, T.id_user_owner, " +
-                "T.title, T.description, T.creation_date, " +
-                "T.due_date, T.value, T.status " +
-                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner = @userid) AND (A.id_task IS NULL) AND (T.status = 'A')";
-            var request = database.query(query, connection);
-            var result = [];
-            request.addParameter("userid", TYPES.Int, user_id);
-            request.on('row', function (columns) {
-                var _obj = {};
-                columns.forEach(column => {
-                    _obj[column.metadata.colName] = column.value;
-                });
-                result.push(_obj);
-            });
-            request.on('requestCompleted', function () {
-                if (result.length) {
-                    res.json({
-                        code: 1,
-                        tasks: result
-                    });
-                } else {
-                    res.json({
-                        code: 0,
-                        result: "Nenhum registro encontrado"
-                    });
-                }
-            });
-            connection.execSql(request);
+            res.json(responseJson);
         }
     });
 });
 
 router.get('/assigned', function(req, res, next) {
-
-    var database = new Database();
-
     // definir como pegar o usuario corrente
     // req.session.userid
     var user_id = 1;
 
-    var connection = database.connect();
+    if (!user_id) {
+        return res.json({
+            code: 0,
+            result: "Usuário não encontrado!"
+        });
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
+    Task.getAssigned(user_id, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
             console.log('DEU UM ERRO!');
             console.log(err);
-            return;
-        } else {
-            console.log('DEU CERTO!');
-
-            var query = "SELECT T.id_task_type, T.id_user_owner, " +
-                "T.title, T.description, T.creation_date, " +
-                "T.due_date, T.value, T.status " +
-                "FROM TB_TASK T INNER JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner = @userid) AND (T.status = 'A')";
-            var request = database.query(query, connection);
-            var result = [];
-            request.addParameter("userid", TYPES.Int, user_id);
-            request.on('row', function (columns) {
-                var _obj = {};
-                columns.forEach(column => {
-                    _obj[column.metadata.colName] = column.value;
-                });
-                result.push(_obj);
-            });
-            request.on('requestCompleted', function () {
-                if (result.length) {
-                    res.json({
-                        code: 1,
-                        tasks: result
-                    });
-                } else {
-                    res.json({
-                        code: 0,
-                        result: "Nenhum registro encontrado"
-                    });
-                }
-            });
-            connection.execSql(request);
+            res.json(responseJson);
         }
     });
 });
 
 router.get('/withyou', function(req, res, next) {
-
-    var database = new Database();
-
     // definir como pegar o usuario corrente
     // req.session.userid
     var user_id = 1;
 
-    var connection = database.connect();
+    if (!user_id) {
+        return res.json({
+            code: 0,
+            result: "Usuário não encontrado!"
+        });
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
+    Task.getWithYou(user_id, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
             console.log('DEU UM ERRO!');
             console.log(err);
-            return;
-        } else {
-            console.log('DEU CERTO!');
-
-            var query = "SELECT T.id_task_type, T.id_user_owner, " +
-                "T.title, T.description, T.creation_date, " +
-                "T.due_date, T.value, T.status " +
-                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner <> @userid) AND (A.id_user = @userid) AND (T.status = 'A')";
-            var request = database.query(query, connection);
-            var result = [];
-            request.addParameter("userid", TYPES.Int, user_id);
-            request.on('row', function (columns) {
-                var _obj = {};
-                columns.forEach(column => {
-                    _obj[column.metadata.colName] = column.value;
-                });
-                result.push(_obj);
-            });
-            request.on('requestCompleted', function () {
-                if (result.length) {
-                    res.json({
-                        code: 1,
-                        tasks: result
-                    });
-                } else {
-                    res.json({
-                        code: 0,
-                        result: "Nenhum registro encontrado"
-                    });
-                }
-            });
-            connection.execSql(request);
+            res.json(responseJson);
         }
     });
 });
 
 router.get('/types', function(req, res, next) {
-
-    var database = new Database();
-
-    var connection = database.connect();
-
-    connection.on('connect', function(err) {
-        if (err) {
-            console.log('DEU UM ERRO!');
+    Task.types({
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
             console.log(err);
-            return;
-        } else {
-            console.log('DEU CERTO!');
-
-            var query = "SELECT T.id_task_type, T.description FROM TB_TASK_TYPE T";
-            var request = database.query(query, connection);
-            var result = [];
-            request.on('row', function (columns) {
-                var _obj = {};
-                columns.forEach(column => {
-                    _obj[column.metadata.colName] = column.value;
-                });
-                result.push(_obj);
-            });
-            request.on('requestCompleted', function () {
-                if (result.length) {
-                    res.json({
-                        code: 1,
-                        tasks: result
-                    });
-                } else {
-                    res.json({
-                        code: 0,
-                        result: "Nenhum registro encontrado"
-                    });
-                }
-            });
-            connection.execSql(request);
+            res.json(responseJson);
         }
     });
 });
 
 router.get('/:id', function (req, res, next) {
     var taskid = parseInt(req.params.id) || 0;
-    var database = new Database();
 
     // definir como pegar o usuario corrente
     // req.session.userid
     var user_id = 1;
 
-    var connection = database.connect();
+    if (!(user_id && taskid > 0)) {
+        next();
+    }
 
-    connection.on('connect', function(err) {
-        if (err) {
-            console.log('DEU UM ERRO!');
+    Task.getTask(taskid, user_id, {
+        onSuccess: function onSuccess(response) {
+            if (response.code == 1) {
+                res.json(response);
+            } else {
+                next();
+            }
+        },
+        onFail: function onFail(err, responseJson) {
             console.log(err);
-            return;
-        } else {
-            console.log('DEU CERTO!');
-
-            var query = "SELECT T.id_task, T.id_task_type, T.id_user_owner, " +
-                "T.title, T.description, T.creation_date, " +
-                "T.due_date, T.value, T.status " +
-                "FROM TB_TASK T WHERE (T.id_task = @taskid)";
-            var request = database.query(query, connection);
-            var result = [];
-            request.addParameter("taskid", TYPES.Int, taskid);
-            request.on('row', function (columns) {
-                var _obj = {};
-                columns.forEach(column => {
-                    _obj[column.metadata.colName] = column.value;
-                });
-                result.push(_obj);
-            });
-            request.on('requestCompleted', function () {
-                if (result.length) {
-                    res.json({
-                        code: 1,
-                        tasks: result
-                    });
-                } else {
-                    res.json({
-                        code: 0,
-                        result: "Nenhum registro encontrado"
-                    });
-                }
-            });
-            connection.execSql(request);
+            res.json(responseJson);
         }
     });
-
 });
 
 router.get('*', function(req, res, next) {

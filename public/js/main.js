@@ -70,12 +70,12 @@ Number.prototype.formatBrl = function formatBrl() {
     return value.join(",");
 }
 
-Date.formatDate = function formatDate(stringDate = "") {
-    var date = new Date(stringDate || null);
+Date.formatDate = function formatDate(stringDate) {
+    var date = new Date(stringDate || "");
     var fDate = [
-        ("0" + date.getDate()).slice(-2),
-        ("0" + (date.getMonth() + 1)).slice(-2),
-        date.getFullYear()
+        ("0" + (date.getDate() || 0)).slice(-2),
+        ("0" + ((date.getMonth() + 1) || 0)).slice(-2),
+        (date.getFullYear() || "0000")
     ];
     return fDate[0] + "/" + fDate[1] + "/" + fDate[2];
 };
