@@ -81,11 +81,26 @@ router.post('/create', function (req, res, next) {
 
 router.get('/edit/:id', function (req, res, next) {
     var taskid = parseInt(req.params.id) || 0;
+    var userid = parseInt(req.session.userid) || 0;
 
-    if (taskid > 0) {
-        res.render('edit-task', {
-            title: 'Staff - Editando Uma Tarefa',
-            script: 'tasks'
+    if (taskid > 0 && userid > 0) {
+        Task.getTask(taskid, userid, {
+            onSuccess: function onSuccess(response) {
+                if (response.code == 1) {
+                    res.render('edit-task', {
+                        title: 'Staff - Editando Uma Tarefa',
+                        script: 'tasks',
+                        task: response.task
+                    });
+                } else {
+                    next();
+                }
+            },
+            onFail: function onFail(err, responseJson) {
+                console.log("ERRO NA TASK");
+                console.log(err);
+                next();
+            }
         });
     } else {
         next();

@@ -17,35 +17,35 @@
     </section>
     <section id="formulario">
       <div class="container text-left col-md-6">
-        <form id="createTaskForm">
+        <form id="createTaskForm" data-taskid="<%= task.id_task %>">
           <div class="form-group">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Título da tarefa">
+                <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="Título da tarefa" value="<%= task.title %>">
               </div>
             </div>
           </div>
           <div class="form-group">
             <div class="row">
               <div class="col-3">
-                <input type="text" class="form-control" id="inputPrice" name="inputPrice" placeholder="$$$" data-inputmask-placeholder="" data-inputmask-regex="^\d+(?:,\d{1,2})?$">
+                <input type="text" class="form-control" id="inputPrice" name="inputPrice" placeholder="$$$" data-inputmask-placeholder="" data-inputmask-regex="^\d+(?:,\d{1,2})?$" data-value="<%= task.value %>">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="inputDeadline" name="inputDeadline" placeholder="Prazo" data-inputmask-mask="99/99/9999">
+                <input type="text" class="form-control" id="inputDeadline" name="inputDeadline" placeholder="Prazo" data-inputmask-mask="99/99/9999" data-value="<%= task.due_date %>">
               </div>
             </div>
           </div>
           <div class="form-group">
             <div class="row">
               <div class="col">
-                <select class="form-control" name="taskType" id="taskType"></select>
+                <select class="form-control" name="taskType" id="taskType" data-value="<%= task.id_task_type %>"></select>
               </div>
             </div>
           </div>
           <div class="form-group">
             <span class="row">
               <div class="col">
-                <textarea class="form-control" id="inputDescription" name="inputDescription" placeholder="Descrição da tarefa" rows="3" maxlength="8000"></textarea>
+                <textarea class="form-control" id="inputDescription" name="inputDescription" placeholder="Descrição da tarefa" rows="3" maxlength="8000"><%= task.description %></textarea>
               </div>
             </span>
           </div>

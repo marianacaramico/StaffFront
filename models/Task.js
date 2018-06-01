@@ -138,20 +138,18 @@ function getTask(taskid, user_id, callbackFunctions = {}) {
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T WHERE (T.id_task = @taskid)";
             var request = database.query(query, connection);
-            var result = [];
+            var result = {};
             request.addParameter("taskid", TYPES.Int, taskid);
             request.on('row', function (columns) {
-                var _obj = {};
                 columns.forEach(column => {
-                    _obj[column.metadata.colName] = column.value;
+                    result[column.metadata.colName] = column.value;
                 });
-                result.push(_obj);
             });
             request.on('requestCompleted', function () {
-                if (result.length) {
+                if (result.id_task) {
                     callbackFunctions.onSuccess({
                         code: 1,
-                        tasks: result
+                        task: result
                     });
                 } else {
                     callbackFunctions.onSuccess({

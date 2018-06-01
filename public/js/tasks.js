@@ -43,7 +43,7 @@
                         deadline: ($("#inputDeadline").val() || "").split("/").reverse().join("-"),
                         taskType: Number.parseInt($("#taskType").val()) || 0
                     };
-                    createTask(data, form);
+                    submitTask(data, form);
                 }
             });
 
@@ -66,33 +66,29 @@
                                 taskTypeSelect.append("<option value='" + id + "'>" + value.description + "</option>");
                             }
                         });
+                        if (form.data("taskid")) {
+                            var task_type_id = Number(taskTypeSelect.data("value")) || "";
+                            taskTypeSelect.val(task_type_id);
+                        }
                     }
                 }).fail(err => {
                     console.error('ERRO');
                     taskTypeSelect.empty().append("<option value='' selected disabled>Selecione...</option>");
                 });
             })();
+
+            (function () {
+                var inputValue = form.find("#inputPrice");
+                var inputDeadline = form.find("#inputDeadline");
+                if (form.data("taskid")) {
+                    var value = window.parseFloat(inputValue.data("value")).formatBrl();
+                    var deadline = Date.formatDate(inputDeadline.data("value"));
+                    inputValue.val(value);
+                    inputDeadline.val(deadline);
+                }
+            })();
         }
     });
-
-    function createTask(data = {}, form) {
-        return $.ajax({
-            url: "/task/create",
-            method: "POST",
-            dataType: "json",
-            data: data
-        }).done(response => {
-            var { code, result, id } = response;
-            if (id) {
-                window.location.assign("/task/" + id);
-            } else {
-                window.alert(result || "Erro!");
-            }
-        }).fail(error => {
-            console.log(error);
-            window.alert("Erro na Requisição!");
-        });
-    }
 
     function getUnassignedTasks() {
         var openTaskPersonal = $("#openTaskPersonal");
@@ -363,5 +359,33 @@
                 + "</div>"
             + "</div>"
         );
+    }
+
+    function submitTask(data = {}, form) {
+        var ajaxUrl = "/task";
+        var taskid = form.data("taskid");
+
+        if (taskid) {
+            ajaxUrl += "/edit/" + taskid;
+        } else {
+            ajaxUrl += "/create";
+        }
+
+        return $.ajax({
+            url: ajaxUrl,
+            method: "POST",
+            dataType: "json",
+            data: data
+        }).done(response => {
+            var { code, result, id } = response;
+            if (id) {
+                window.location.assign("/task/open");
+            } else {
+                window.alert(result || "Erro!");
+            }
+        }).fail(error => {
+            console.log(error);
+            window.alert("Erro na Requisição!");
+        });
     }
 })(window, document);
