@@ -138,3 +138,7 @@ footer {
     border: 1px solid #8659a3;
     cursor: pointer;
 }
+
+.cursor-pointer {
+	cursor: pointer;
+}

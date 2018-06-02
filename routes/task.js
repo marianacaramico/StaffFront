@@ -43,6 +43,29 @@ router.get('/', function (req, res, next) {
     res.json(result);
 });
 
+router.get('/accept/:id', function (req, res, next) {
+    var taskid = parseInt(req.params.id) || 0;
+    var userid = parseInt(req.session.userid) || 0;
+
+    if (taskid > 0 && userid > 0) {
+        Task.acceptTask(taskid, userid, {
+            onSuccess: function onSuccess(response) {
+                res.json(response);
+            },
+            onFail: function onFail(err, responseJson) {
+                console.log("ERRO");
+                console.log(err);
+                res.json(responseJson);
+            }
+        });
+    } else {
+        res.json({
+            code: 0,
+            result: "Invalid parameters"
+        });
+    }
+});
+
 router.get('/create', function (req, res, next) {
     res.render('create-task', {
         title: 'Staff - Solicitar Nova Tarefa',

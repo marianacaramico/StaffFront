@@ -4,6 +4,8 @@
     cursor: pointer;
     height: 38px;
     border: 1px solid #8659A3;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .search-btn:hover {

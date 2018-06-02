@@ -9,6 +9,71 @@ function validFunction(param) {
     }
 }
 
+function acceptTask(taskid, userid, callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: "Failed to connect to database"
+            });
+        } else {
+            var queryVerify = "SELECT T.id_task FROM TB_TASK T " +
+                "LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE T.id_task = @taskid " +
+                "AND (T.id_user_owner <> @userid) AND (A.id_task IS NULL) AND (T.status = 'A') " +
+                "AND CAST(T.due_date AS DATE) >= CAST(GETDATE() AS DATE)";
+            var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
+                if (rowCount) {
+                    var query = "INSERT INTO TB_AGREEMENT(id_task, id_user, creation_date, conclusion_date, receipt) VALUES(@taskid, @userid, GETDATE(), GETDATE(), 'Eu faço!'); SELECT @id = @@identity";
+                    var responseJson = {
+                        code: 0,
+                        result: 'Function uninitialized'
+                    };
+                    var request = database.query(query, connection, function(err, rowCount, rows) {
+                        if (err) {
+                            responseJson.code = 0;
+                            responseJson.result = err;
+                        } else {
+                            if (rowCount) {
+                                responseJson.code = 1;
+                                responseJson.result = "Tarefa aceita!";
+                            } else {
+                                responseJson.code = 0;
+                                responseJson.result = "Algo deu errado!";
+                            }
+                        }
+                        connection.close();
+                        callbackFunctions.onSuccess(responseJson);
+                    });
+                    request.addParameter('taskid', TYPES.Int, taskid);
+                    request.addParameter('userid', TYPES.Int, userid);
+                    // request.addParameter('receipt', Types.VarChar, receipt);
+                    request.addOutputParameter('id', TYPES.Int);
+                    request.on('returnValue', function(parameterName, value, metadata) {
+                        responseJson[parameterName] = value;
+                    });
+                    connection.execSql(request);
+                } else {
+                    connection.close();
+                    callbackFunctions.onSuccess({
+                        code: 0,
+                        result: "Tarefa não encontrada!"
+                    });
+                }
+            });
+            requestVerify.addParameter("userid", TYPES.Int, userid);
+            requestVerify.addParameter("taskid", TYPES.Int, taskid);
+            connection.execSql(requestVerify);
+        }
+    });
+}
+
 function create(title, description, value, deadline, userid, taskType, callbackFunctions = {}) {
     var database = new Database();
     var connection = database.connect();
@@ -181,7 +246,8 @@ function getTasks(userid, description = "", callbackFunctions = {}) {
                 "T.title, T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner <> @userid) AND (A.id_task IS NULL) AND (T.status = 'A')";
+                "WHERE (T.id_user_owner <> @userid) AND (A.id_task IS NULL) AND (T.status = 'A') " +
+                "AND CAST(T.due_date AS DATE) >= CAST(GETDATE() AS DATE)";
             if (description) query += " AND T.title LIKE CONCAT('%', @description, '%')";
             var request = database.query(query, connection);
             var result = [];
@@ -349,6 +415,7 @@ function types(callbackFunctions = {}) {
 }
 
 var Task = {
+    acceptTask,
     create,
     getAssigned,
     getTask,

@@ -24,13 +24,35 @@ router.get('/', function (req, res, next) {
                 title: "Pesquisa - Staff",
                 script: "search",
                 css: ["search", "tasks"],
-                tasks: (response.code == 1) ? response.tasks : []
+                tasks: (response.code == 1) ? response.tasks : [{
+                    title: "Nenhuma tarefa encontrada",
+                    description: "Nenhuma tarefa pôde ser encontrada."
+                }]
             };
             res.render('search', data);
         },
         onFail: function onFail(err) {
             console.log(err);
             next();
+        }
+    });
+});
+
+router.get('/filter', function (req, res, next) {
+    var userid = parseInt(req.session.userid) || 0;
+    var description = req.query.description || "";
+
+    if (!userid) {
+        res.redirect('/login');
+    }
+
+    Task.getTasks(userid, description, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
+            console.log(err);
+            res.json(responseJson);
         }
     });
 });
