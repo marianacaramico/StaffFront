@@ -4,6 +4,34 @@ function isNull(element) {
     return element == null || element === false || (typeof element === typeof Object() && element.length === 0);
 }
 
+function printErrorMessage(message) {
+    if ( window.isNull($("#modalError")) ) {
+        var modal = '<div class="modal modal-danger fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'
+            + '<div class="modal-dialog" role="document">'
+                + '<div class="modal-content">'
+                    + '<div class="modal-header">'
+                    + '<h5 class="modal-title" id="exampleModalLabel">Erro!</h5>'
+                    + '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                        + '<span aria-hidden="true">&times;</span>'
+                    + '</button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                        + '<p id="modalErrorMessage">' + message + '</p>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                    + '<button type="button" class="btn btn-outline cursor-pointer" data-dismiss="modal">Fechar</button>'
+                    + '</div>'
+                + '</div>'
+            + '</div>'
+        + '</div>';
+        $("body").prepend(modal);
+        $("#modalError").modal("show");
+    } else {
+        $("#modalErrorMessage").text(message);
+        $("#modalError").modal("show");
+    }
+}
+
 $.validator.addMethod("dateBr", function dateBR(value, element) {
     var regex = /^\d{2}\/\d{2}\/\d{4}$/;
     if(value.match(regex)) {

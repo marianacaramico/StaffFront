@@ -36,6 +36,7 @@
                 },
                 errorClass: "text-danger",
                 submitHandler: form => {
+                    $(form).submit(e => e.preventDefault());
                     var data = {
                         title: $("#inputTitle").val() || "",
                         description: $("#inputDescription").val() || "",
@@ -362,12 +363,16 @@
     }
 
     function submitTask(data = {}, form) {
+        var verb = "";
+
         var ajaxUrl = "/task";
-        var taskid = form.data("taskid");
+        var taskid = $(form).data("taskid");
 
         if (taskid) {
+            verb = "editar";
             ajaxUrl += "/edit/" + taskid;
         } else {
+            verb = "cadastrar";
             ajaxUrl += "/create";
         }
 
@@ -377,15 +382,16 @@
             dataType: "json",
             data: data
         }).done(response => {
-            var { code, result, id } = response;
-            if (id) {
+            var { code, result } = response;
+            if (Number(code) === 1) {
                 window.location.assign("/task/open");
             } else {
-                window.alert(result || "Erro!");
+                window.printErrorMessage(result || "Ops! Não pudemos " + verb + " sua tarefa.");
             }
         }).fail(error => {
             console.log(error);
-            window.alert("Erro na Requisição!");
+            var { result } = error.responseJSON || {};
+            window.printErrorMessage(result || "Ops! Não pudemos " + verb + " sua tarefa.");
         });
     }
 })(window, document);

@@ -25,15 +25,19 @@
 
             $.ajax({
                 url: "/task/accept/" + taskid,
-                dataType: "JSON"
+                dataType: "json"
             }).done(response => {
                 console.log(response);
                 var { code, result } = response;
                 if (Number(code) === 1) {
                     window.location.replace("/task/open");
+                } else {
+                    window.printErrorMessage(result || "Ops! Não pudemos vincular esta tarefa a você.");
                 }
             }).fail(err => {
                 console.log(err);
+                var { result } = err.responseJSON || {};
+                window.printErrorMessage(result || "Ops! Não pudemos vincular esta tarefa a você.");
             });
         });
 
