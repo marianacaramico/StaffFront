@@ -137,6 +137,97 @@ function create(title, description, value, deadline, userid, taskType, callbackF
     });
 }
 
+function finish(taskid, userid, callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: "Failed to connect to database"
+            });
+        } else {
+            connection.beginTransaction(function (err) {
+                if (err) {
+                    callbackFunctions.onFail(err, {
+                        code: 0,
+                        result: 'Unable to begin transaction'
+                    });
+                } else {
+                    var queryUpdateTask = "UPDATE TB_TASK " +
+                        "SET status = 'F' " +
+                        "WHERE id_task = @taskid";
+                    var requestUpdateTask = database.query(queryUpdateTask, connection, function (err, rowCount, rows) {
+                        if (rowCount) {
+                            var queryUpdateAgreement = "UPDATE TB_AGREEMENT " +
+                                "SET conclusion_date = GETDATE() " +
+                                "WHERE id_task = @taskid " +
+                                "AND id_user = @userid";
+                            var requestUpdateAgreement = database.query(queryUpdateAgreement, connection, function (err, rowCount, rows) {
+                                if (rowCount) {
+                                    connection.commitTransaction(function (err) {
+                                        connection.close();
+                                        if (err) {
+                                            callbackFunctions.onFail(err, {
+                                                code: 0,
+                                                result: "Transaction commit failed"
+                                            });
+                                        } else {
+                                            callbackFunctions.onSuccess({
+                                                code: 1,
+                                                result: "Alterações salvas com sucesso!"
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    connection.rollbackTransaction(function (err) {
+                                        connection.close();
+                                        if (err) {
+                                            callbackFunctions.onFail(err, {
+                                                code: 0,
+                                                result: "Transaction rollback failed"
+                                            });
+                                        } else {
+                                            callbackFunctions.onSuccess({
+                                                code: 0,
+                                                result: "Nenhuma alteração foi realizada"
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                            requestUpdateAgreement.addParameter('taskid', TYPES.Int, taskid);
+                            requestUpdateAgreement.addParameter('userid', TYPES.Int, userid);
+                            connection.execSql(requestUpdateAgreement);
+                        } else {
+                            connection.rollbackTransaction(function (err) {
+                                connection.close();
+                                if (err) {
+                                    callbackFunctions.onFail(err, {
+                                        code: 0,
+                                        result: "Transaction failed"
+                                    });
+                                } else {
+                                    callbackFunctions.onSuccess({
+                                        code: 0,
+                                        result: "Nenhuma alteração foi realizada"
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    requestUpdateTask.addParameter("taskid", TYPES.Int, taskid);
+                    connection.execSql(requestUpdateTask);
+                }
+            });
+        }
+    });
+}
+
 function getAssigned(user_id, callbackFunctions = {}) {
     var database = new Database();
     var connection = database.connect();
@@ -151,14 +242,61 @@ function getAssigned(user_id, callbackFunctions = {}) {
                 result: 'Failed to connect to database'
             });
         } else {
-            var query = "SELECT T.id_task_type, T.id_user_owner, " +
-                "T.title, T.description, T.creation_date, " +
+            var query = "SELECT A.id_user, T.title, " +
+                "T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T INNER JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
                 "WHERE (T.id_user_owner = @userid) AND (T.status = 'A')";
             var request = database.query(query, connection);
             var result = [];
             request.addParameter("userid", TYPES.Int, user_id);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    callbackFunctions.onSuccess({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    callbackFunctions.onSuccess({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+}
+
+function getMyFinishedTasks(userid, callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: 'Failed to connect to database'
+            });
+        } else {
+            var query = "SELECT A.id_user, T.title, " +
+                "T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T INNER JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner = @userid) AND (T.status = 'F')";
+            var request = database.query(query, connection);
+            var result = [];
+            request.addParameter("userid", TYPES.Int, userid);
             request.on('row', function (columns) {
                 var _obj = {};
                 columns.forEach(column => {
@@ -278,6 +416,53 @@ function getTasks(userid, description = "", callbackFunctions = {}) {
     });
 }
 
+function getTasksFinishedByMe(userid, callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: 'Failed to connect to database'
+            });
+        } else {
+            var query = "SELECT T.id_user_owner, T.title, " +
+                "T.description, T.creation_date, " +
+                "T.due_date, T.value, T.status " +
+                "FROM TB_TASK T INNER JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (A.id_user = @userid) AND (T.status = 'F')";
+            var request = database.query(query, connection);
+            var result = [];
+            request.addParameter("userid", TYPES.Int, userid);
+            request.on('row', function (columns) {
+                var _obj = {};
+                columns.forEach(column => {
+                    _obj[column.metadata.colName] = column.value;
+                });
+                result.push(_obj);
+            });
+            request.on('requestCompleted', function () {
+                if (result.length) {
+                    callbackFunctions.onSuccess({
+                        code: 1,
+                        tasks: result
+                    });
+                } else {
+                    callbackFunctions.onSuccess({
+                        code: 0,
+                        result: "Nenhum registro encontrado"
+                    });
+                }
+            });
+            connection.execSql(request);
+        }
+    });
+}
+
 function getUnassigned(user_id, callbackFunctions = {}) {
     var database = new Database();
     var connection = database.connect();
@@ -339,7 +524,7 @@ function getWithYou(user_id, callbackFunctions = {}) {
                 result: 'Failed to connect to database'
             });
         } else {
-            var query = "SELECT T.id_task_type, T.id_user_owner, " +
+            var query = "SELECT T.id_task, T.id_task_type, T.id_user_owner, " +
                 "T.title, T.description, T.creation_date, " +
                 "T.due_date, T.value, T.status " +
                 "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
@@ -417,9 +602,12 @@ function types(callbackFunctions = {}) {
 var Task = {
     acceptTask,
     create,
+    finish,
     getAssigned,
+    getMyFinishedTasks,
     getTask,
     getTasks,
+    getTasksFinishedByMe,
     getUnassigned,
     getWithYou,
     types
