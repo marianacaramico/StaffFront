@@ -12,7 +12,8 @@ router.get('*', function(req, res, next) {
 
 router.get('/', function (req, res, next) {
     res.render('login', {
-        title: 'Entre em sua conta para usar o Staff'
+        title: 'Entre em sua conta para usar o Staff',
+        script: "login"
     });
 });
 
@@ -31,7 +32,7 @@ router.post('/', function (req, res, next) {
     User.login(username, password, {
         onSuccess: function onSuccess(response) {
             req.session.userid = response.result.session_id;
-            res.redirect(response.result.redirect);
+            res.json(response);
         },
         onFail: function onFail(error, responseJson = null) {
             console.log("DEU ERRO!");
