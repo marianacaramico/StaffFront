@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var TYPES = require('tedious').TYPES;
-var Database = require('../helpers/Database');
+var Task = require('../models/Task');
+var User = require('../models/User');
 
 router.get('*', function (req, res, next) {
     if (!req.session.userid) {
@@ -13,37 +13,54 @@ router.get('*', function (req, res, next) {
 
 /* GET USER */
 router.get('/:id', function (req, res, next) {
-    var id = parseInt(req.params.id) || 0;
-    var result = {};
+    var userid = parseInt(req.params.id) || 0;
+    var myUserid = parseInt(req.session.userid);
 
-    var database = new Database();
-    var connection = database.connect();
-    connection.on('connect', function(err) {
-        if (err) {
+    if (!myUserid) {
+        return next();
+    }
+
+    User.getUser(userid, {
+        onSuccess: function onSuccess(response) {
+            if (Number(response.code) === 1) {
+                Task.getUnassigned(userid, {
+                    onSuccess: function taskSuccess(responseSuccess) {
+                        Task.getTasksFinishedByMe(userid, {
+                            onSuccess: function onInnerSuccess(innerSuccess) {
+                                res.render('user', {
+                                    title: response.result.name + " - Staff",
+                                    css: ["user", "tasks"],
+                                    script: "search",
+                                    result: response.result,
+                                    isMyProfile: userid === myUserid,
+                                    openTasks: responseSuccess.tasks || [{
+                                        title: "Nenhuma tarefa encontrada",
+                                        description: "Nenhuma tarefa pôde ser encontrada."
+                                    }],
+                                    finishedTasks: innerSuccess.tasks || [{
+                                        title: "Nenhuma tarefa encontrada",
+                                        description: "Nenhuma tarefa pôde ser encontrada."
+                                    }]
+                                });
+                            },
+                            onFail: function onInnerFail(err, responseJson) {
+                                console.log(err);
+                                next();
+                            }
+                        });
+                    },
+                    onFail: function taskFail(err, responseJson) {
+                        console.log(err);
+                        next();
+                    }
+                });
+            } else {
+                next();
+            }
+        },
+        onFail: function onFail(err, responseJson) {
             console.log(err);
             next();
-        } else {
-            var queryString = "SELECT @id = id_user, @name = name, @username = username FROM dbo.TB_USER WHERE id_user = " + id;
-            var request = database.query(queryString, connection);
-            request.addOutputParameter('id', TYPES.Int);
-            request.addOutputParameter('name', TYPES.VarChar);
-            request.addOutputParameter('username', TYPES.VarChar);
-            request.on('returnValue', function(parameterName, value, metadata) {
-                result[parameterName] = value;
-            });
-            request.on('requestCompleted', function() {
-                if (result.id) {
-                    res.render('user', {
-                        title: result.name + " - Staff",
-                        css: "user",
-                        script: "tasks",
-                        result: result
-                    });
-                } else {
-                    next();
-                }
-            });
-            connection.execSql(request);
         }
     });
 });
