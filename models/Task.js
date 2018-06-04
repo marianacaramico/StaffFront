@@ -116,12 +116,81 @@ function create(title, description, value, deadline, userid, taskType, callbackF
                     request.addParameter('userid', TYPES.Int, userid);
                     request.addParameter('title', TYPES.VarChar, title);
                     request.addParameter('description', TYPES.VarChar, description);
-                    request.addParameter('deadline', TYPES.Date, deadline);
+                    request.addParameter('deadline', TYPES.DateTime, deadline);
                     request.addParameter('value', TYPES.Float, value);
                     request.addOutputParameter('id', TYPES.Int);
                     request.on('returnValue', function(parameterName, value, metadata) {
                         responseJson[parameterName] = value;
                     });
+                    connection.execSql(request);
+                } else {
+                    connection.close();
+                    callbackFunctions.onSuccess({
+                        code: 0,
+                        result: "Usuário inválido"
+                    });
+                }
+            });
+            requestVerify.addParameter("userid", TYPES.Int, userid);
+            connection.execSql(requestVerify);
+        }
+    });
+}
+
+function edit(taskid, userid, title, description, value, deadline, taskType, callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: "Failed to connect to database"
+            });
+        } else {
+            var queryVerify = "SELECT T.id_task " +
+                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner = @userid) AND (A.id_task IS NULL) AND (T.status = 'A')";
+            var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
+                if (rowCount) {
+                    var query = "UPDATE TB_TASK " +
+                        "SET id_task_type = @taskType, " +
+                            "title = @title, " +
+                            "description = @description, " +
+                            "due_date = @deadline, " +
+                            "value = @value " +
+                        "WHERE id_task = @taskid " +
+                        "AND id_user_owner = @userid";
+                    var responseJson = {
+                        code: 0,
+                        result: 'Function uninitialized'
+                    };
+                    var request = database.query(query, connection, function(err, rowCount, rows) {
+                        if (err) {
+                            responseJson.code = 0;
+                            responseJson.result = err;
+                        } else {
+                            if (rowCount) {
+                                responseJson.code = 1;
+                                responseJson.result = "Tarefa editada com sucesso";
+                            } else {
+                                responseJson.code = 0;
+                                responseJson.result = "Algo deu errado!";
+                            }
+                        }
+                        connection.close();
+                        callbackFunctions.onSuccess(responseJson);
+                    });
+                    request.addParameter('taskType', TYPES.Int, taskType);
+                    request.addParameter('title', TYPES.VarChar, title);
+                    request.addParameter('description', TYPES.VarChar, description);
+                    request.addParameter('deadline', TYPES.DateTime, deadline);
+                    request.addParameter('value', TYPES.Float, value);
+                    request.addParameter('taskid', TYPES.Int, taskid);
+                    request.addParameter('userid', TYPES.Int, userid);
                     connection.execSql(request);
                 } else {
                     connection.close();
@@ -602,6 +671,7 @@ function types(callbackFunctions = {}) {
 var Task = {
     acceptTask,
     create,
+    edit,
     finish,
     getAssigned,
     getMyFinishedTasks,

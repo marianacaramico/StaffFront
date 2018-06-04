@@ -107,3 +107,7 @@ Date.formatDate = function formatDate(stringDate) {
     ];
     return fDate[0] + "/" + fDate[1] + "/" + fDate[2];
 };
+
+Date.unformatDate = function unformatDate(stringDate) {
+    return stringDate.split("/").reverse().join("-") + " 00:00:00";
+}

@@ -41,7 +41,7 @@
                         title: $("#inputTitle").val() || "",
                         description: $("#inputDescription").val() || "",
                         value: Number.parseFloat($("#inputPrice").val().replace(",", ".") || ""),
-                        deadline: ($("#inputDeadline").val() || "").split("/").reverse().join("-"),
+                        deadline: Date.unformatDate($("#inputDeadline").val() || ""),
                         taskType: Number.parseInt($("#taskType").val()) || 0
                     };
                     submitTask(data, form);

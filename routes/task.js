@@ -130,10 +130,34 @@ router.get('/edit/:id', function (req, res, next) {
     }
 });
 
-router.post('/edit', function (req, res, next) {
-    res.json({
-        code: 0,
-        result: 'Function not implemented'
+router.post('/edit/:id', function (req, res, next) {
+    var taskid = parseInt(req.params.id) || 0;
+    var userid = parseInt(req.session.userid) || 0;
+
+    var _deadline = new Date(req.body.deadline || "");
+
+    var title = req.body.title;
+    var description = req.body.description;
+    var value = parseFloat(req.body.value) || 0;
+    var deadline = _deadline.getDate() ? _deadline : new Date();
+    var taskType = parseInt(req.body.taskType) || 0;
+
+    if(!(taskid > 0 && userid > 0 && title && description && value >= 0 && deadline && taskType > 0)) {
+        console.log(taskid, userid, title, description, value, deadline, taskType);
+        return res.json({
+            code: 0,
+            result: "Dados inválidos"
+        });
+    }
+
+    Task.edit(taskid, userid, title, description, value, deadline, taskType, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
+            console.log(err);
+            res.json(responseJson);
+        }
     });
 });
 
