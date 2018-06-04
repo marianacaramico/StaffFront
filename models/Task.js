@@ -153,7 +153,8 @@ function edit(taskid, userid, title, description, value, deadline, taskType, cal
         } else {
             var queryVerify = "SELECT T.id_task " +
                 "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
-                "WHERE (T.id_user_owner = @userid) AND (A.id_task IS NULL) AND (T.status = 'A')";
+                "WHERE (T.id_user_owner = @userid) AND (A.id_task IS NULL) AND (T.status = 'A') " +
+                "AND (T.id_task = @taskid)";
             var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
                 if (rowCount) {
                     var query = "UPDATE TB_TASK " +
@@ -201,6 +202,7 @@ function edit(taskid, userid, title, description, value, deadline, taskType, cal
                 }
             });
             requestVerify.addParameter("userid", TYPES.Int, userid);
+            requestVerify.addParameter("taskid", TYPES.Int, taskid);
             connection.execSql(requestVerify);
         }
     });
