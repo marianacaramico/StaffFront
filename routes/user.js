@@ -23,33 +23,21 @@ router.get('/:id', function (req, res, next) {
     User.getUser(userid, {
         onSuccess: function onSuccess(response) {
             if (Number(response.code) === 1) {
-                Task.getUnassigned(userid, {
-                    onSuccess: function taskSuccess(responseSuccess) {
-                        Task.getTasksFinishedByMe(userid, {
-                            onSuccess: function onInnerSuccess(innerSuccess) {
-                                res.render('user', {
-                                    title: response.result.name + " - Staff",
-                                    css: ["user", "tasks"],
-                                    script: "search",
-                                    result: response.result,
-                                    isMyProfile: userid === myUserid,
-                                    openTasks: responseSuccess.tasks || [{
-                                        title: "Nenhuma tarefa encontrada",
-                                        description: "Nenhuma tarefa pôde ser encontrada."
-                                    }],
-                                    finishedTasks: innerSuccess.tasks || [{
-                                        title: "Nenhuma tarefa encontrada",
-                                        description: "Nenhuma tarefa pôde ser encontrada."
-                                    }]
-                                });
-                            },
-                            onFail: function onInnerFail(err, responseJson) {
-                                console.log(err);
-                                next();
-                            }
+                Task.getTasksFinishedByMe(userid, {
+                    onSuccess: function onInnerSuccess(innerSuccess) {
+                        res.render('user', {
+                            title: response.result.name + " - Staff",
+                            css: ["user", "tasks"],
+                            script: ["search", "tasks"],
+                            result: response.result,
+                            isMyProfile: userid === myUserid,
+                            finishedTasks: innerSuccess.tasks || [{
+                                title: "Nenhuma tarefa encontrada",
+                                description: "Nenhuma tarefa pôde ser encontrada."
+                            }]
                         });
                     },
-                    onFail: function taskFail(err, responseJson) {
+                    onFail: function onInnerFail(err, responseJson) {
                         console.log(err);
                         next();
                     }

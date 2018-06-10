@@ -38,41 +38,7 @@
                         <div class="col-sm-12 openTaskBox">
                             <h4>Título</h4>
                             <hr />
-                            <div id="openTaskPersonal">
-                                <% for (var task of openTasks) { %>
-                                    <div class="row">
-                                        <div class="col-sm-9">
-                                            <div class="col-sm-12">
-                                                <div><b><%= (task.title || "") %></b></div>
-                                                <div><p>Para terminar em: <span class="task-duedate" data-value="<%= (task.due_date || "") %>"></span></p></div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <span class="col-sm-2 task-value" data-value="<%= (task.value || 0) %>"></span>
-                                                <span class="col-sm-10"><%= (task.description || "") %></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="pull-right">
-                                                <div style="margin-bottom:10px;">
-                                                    <% if (isMyProfile) { %>
-                                                        <span class="btn-group pull-right">
-                                                            <a href="/task/edit/<%= (task.id_task || 0) %>" class="btn button btnEdit">
-                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                            </a>
-                                                            <a href="javascript:void(0)" class="btn button btnErase">
-                                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                                            </a>
-                                                        </span>
-                                                    <% } else { %>
-                                                        <button type="button" data-taskid="<%= (task.id_task || 0) %>" class="btn btn-success cursor-pointer btnAcceptTask"><i class="fa fa-check" aria-hidden="true"></i> Eu faço!</button>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                <% } %>
-                            </div>
+                            <div id="openTaskPersonal"></div>
                         </div>
                     </div>
                 </div>
@@ -123,6 +89,9 @@
                 <div class="col-sm-1"></div>
             </section>
         </div>
+
+        <!-- Modal Excluir -->
+        <% include shared/modal-excluir.ejs %>
 
         <!-- Footer -->
         <% include shared/footer.ejs %>

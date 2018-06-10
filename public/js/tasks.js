@@ -26,13 +26,17 @@
                     },
                     taskType: {
                         required: true
+                    },
+                    inputDescription: {
+                        required: true
                     }
                 },
                 messages: {
                     inputTitle: "Insira um título para sua tarefa!",
                     inputPrice: "Insira o valor que será pago pela tarefa!",
                     inputDeadline: "Insira o prazo máximo da tarefa!",
-                    taskType: "Selecione o tipo da tarefa!"
+                    taskType: "Selecione o tipo da tarefa!",
+                    inputDescription: "Insira uma descrição para sua tarefa!"
                 },
                 errorClass: "text-danger",
                 submitHandler: form => {
@@ -108,6 +112,7 @@
                     tasks.forEach(task => {
                         openTaskPersonal.append(getRowPersonalTask(task));
                     });
+                    window.bindDeleteTaskButton(getUnassignedTasks);
                 } else {
                     openTaskPersonal.empty().append(getRowTasksNotFound());
                 }
@@ -239,7 +244,7 @@
                         + "<b>" + (task.title || "") + "</b>"
                         + "<span class='btn-group pull-right'>"
                             + '<a href="/task/edit/' + (task.id_task || 0) + '" class="btn button btnEdit"><i class="fa fa-pencil" aria-hidden="true"></i></a>'
-                            + '<a href="javascript:void(0)" class="btn button btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
+                            + '<a href="#" data-taskid="' + (task.id_task || 0) + '" class="btn button btnErase"><i class="fa fa-times" aria-hidden="true"></i></a>'
                         + "</span>"
                     + '</p></div>'
                     + "<div class='col-sm-12'>"

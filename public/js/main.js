@@ -1,5 +1,36 @@
 "use strict";
 
+function bindDeleteTaskButton(callback = function(){}) {
+    $(".btnErase").click(e => {
+        e.preventDefault();
+        var taskid = $(e.currentTarget).data("taskid");
+        var modal = $("#modalExcluirTarefa");
+        if (!window.isNull(modal)) {
+            modal.modal("show");
+        }
+        modal.find("#btnExcluirTarefa").off().click(ev => {
+            ev.preventDefault();
+            $.ajax({
+                url: "/task/delete/" + taskid,
+                dataType: 'json'
+            }).done(response => {
+                if (Number(response.code) === 1) {
+                    callback();
+                } else {
+                    modal.on("hidden.bs.modal", function handleModalHidden() {
+                        window.printErrorMessage(response.result || "Erro ao deletar a tarefa!");
+                    });
+                }
+                modal.modal("hide");
+            }).fail(err => {
+                console.error("ERRO!");
+                var { result } = err.responseJSON || {};
+                window.printErrorMessage(result || "Erro ao deletar a tarefa!"); 
+            });
+        });
+    });
+}
+
 function getRowTasksNotFound() {
     return (
         "<div class='row'>"

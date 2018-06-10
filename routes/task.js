@@ -102,6 +102,26 @@ router.post('/create', function (req, res, next) {
     });
 });
 
+router.get('/delete/:id', function (req, res, next) {
+    var taskid = parseInt(req.params.id) || 0;
+    var userid = parseInt(req.session.userid) || 0;
+
+    if (taskid > 0 && userid > 0) {
+        Task.deleteTask(taskid, userid, {
+            onSuccess: function onSuccess(response) {
+                res.json(response);
+            },
+            onFail: function onFail(err, responseJson) {
+                console.log("ERRO NA TASK");
+                console.log(err);
+                res.json(responseJson);
+            }
+        });
+    } else {
+        next();
+    }
+});
+
 router.get('/edit/:id', function (req, res, next) {
     var taskid = parseInt(req.params.id) || 0;
     var userid = parseInt(req.session.userid) || 0;

@@ -13,6 +13,7 @@
                 var task_duedate = Date.formatDate($value.data("value") || "");
                 $value.text(task_duedate);
             });
+            window.bindDeleteTaskButton();
         })();
 
         $("body").on("click", ".btnAcceptTask", e => {

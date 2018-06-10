@@ -137,6 +137,68 @@ function create(title, description, value, deadline, userid, taskType, callbackF
     });
 }
 
+function deleteTask(taskid, userid, callbackFunctions = {}) {
+    var database = new Database();
+    var connection = database.connect();
+
+    callbackFunctions.onSuccess = validFunction(callbackFunctions.onSuccess);
+    callbackFunctions.onFail = validFunction(callbackFunctions.onFail);
+
+    connection.on('connect', function(err) {
+        if (err) {
+            callbackFunctions.onFail(err, {
+                code: 0,
+                result: "Failed to connect to database"
+            });
+        } else {
+            var queryVerify = "SELECT T.id_task " +
+                "FROM TB_TASK T LEFT JOIN TB_AGREEMENT A ON T.id_task = A.id_task " +
+                "WHERE (T.id_user_owner = @userid) AND (A.id_task IS NULL) AND (T.status = 'A') " +
+                "AND (T.id_task = @taskid)";
+            var requestVerify = database.query(queryVerify, connection, function(err, rowCount, rows) {
+                if (rowCount) {
+                    var query = "UPDATE TB_TASK " +
+                        "SET status = 'C' " +
+                        "WHERE id_task = @taskid " +
+                        "AND id_user_owner = @userid";
+                    var responseJson = {
+                        code: 0,
+                        result: 'Function uninitialized'
+                    };
+                    var request = database.query(query, connection, function(err, rowCount, rows) {
+                        if (err) {
+                            responseJson.code = 0;
+                            responseJson.result = err;
+                        } else {
+                            if (rowCount) {
+                                responseJson.code = 1;
+                                responseJson.result = "Tarefa deletada com sucesso";
+                            } else {
+                                responseJson.code = 0;
+                                responseJson.result = "Algo deu errado!";
+                            }
+                        }
+                        connection.close();
+                        callbackFunctions.onSuccess(responseJson);
+                    });
+                    request.addParameter('taskid', TYPES.Int, taskid);
+                    request.addParameter('userid', TYPES.Int, userid);
+                    connection.execSql(request);
+                } else {
+                    connection.close();
+                    callbackFunctions.onSuccess({
+                        code: 0,
+                        result: "Usuário inválido"
+                    });
+                }
+            });
+            requestVerify.addParameter("userid", TYPES.Int, userid);
+            requestVerify.addParameter("taskid", TYPES.Int, taskid);
+            connection.execSql(requestVerify);
+        }
+    });
+}
+
 function edit(taskid, userid, title, description, value, deadline, taskType, callbackFunctions = {}) {
     var database = new Database();
     var connection = database.connect();
@@ -673,6 +735,7 @@ function types(callbackFunctions = {}) {
 var Task = {
     acceptTask,
     create,
+    deleteTask,
     edit,
     finish,
     getAssigned,
