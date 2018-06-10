@@ -67,17 +67,11 @@
                     tasksSearch.append(getTasksSearchRow(task));
                 });
             } else {
-                tasksSearch.empty().append(getTasksSearchRow({
-                    title: "Nenhuma tarefa encontrada",
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
+                tasksSearch.empty().append(getRowTasksNotFound());
             }
         }).fail(err => {
             console.log(err);
-            tasksSearch.empty().append(getTasksSearchRow({
-                title: "Nenhuma tarefa encontrada",
-                description: "Nenhuma tarefa pôde ser encontrada."
-            }));
+            tasksSearch.empty().append(getRowTasksNotFound());
         });
     }
 

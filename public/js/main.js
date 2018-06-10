@@ -1,5 +1,25 @@
 "use strict";
 
+function getRowTasksNotFound() {
+    return (
+        "<div class='row'>"
+            + "<div class='col-sm-9'>"
+                + "<div class='col-sm-12'><p><b>Nenhuma tarefa encontrada!</b></p></div>"
+                + "<div class='col-sm-12'>"
+                    + "<div class='row'><span class='col-sm-12 text-justify'>Nenhuma tarefa pôde ser encontrada.</span></div>"
+                + "</div>"
+            + "</div>"
+            + "<div class='col-sm-3 text-center'>"
+                + "<div class='row'>"
+                    + "<span class='mx-auto'>"
+                        + "<img class='service-icon rounded-circle' src='/img/sadface-icon.png' />"
+                    + "</span>"
+                + "</div>"
+            + "</div>"
+        + "</div><hr />"
+    );
+}
+
 function isNull(element) {
     return element == null || element === false || (typeof element === typeof Object() && element.length === 0);
 }

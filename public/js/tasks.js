@@ -108,21 +108,12 @@
                     tasks.forEach(task => {
                         openTaskPersonal.append(getRowPersonalTask(task));
                     });
-                    return true;
+                } else {
+                    openTaskPersonal.empty().append(getRowTasksNotFound());
                 }
-                openTaskPersonal.empty().append(getRowPersonalTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
             }).fail(err => {
                 console.log('ERRO');
-                openTaskPersonal.empty().append(getRowPersonalTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
+                openTaskPersonal.empty().append(getRowTasksNotFound());
             });
         }
     }
@@ -144,21 +135,12 @@
                     tasks.forEach(task => {
                         openTaskTaken.append(getRowAssignedTask(task));
                     });
-                    return true;
+                } else {
+                    openTaskTaken.empty().append(getRowTasksNotFound());
                 }
-                openTaskTaken.empty().append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
             }).fail(err => {
                 console.log('ERRO');
-                openTaskTaken.empty().append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
+                openTaskTaken.empty().append(getRowTasksNotFound());
             });
         }
     }
@@ -185,21 +167,12 @@
                             closeTask(taskid);
                         });
                     });
-                    return true;
+                } else {
+                    openTasksWithYou.empty().append(getRowTasksNotFound());
                 }
-                openTasksWithYou.empty().append(getRowTasksWithYou({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
             }).fail(err => {
                 console.log('ERRO');
-                openTasksWithYou.empty().append(getRowTasksWithYou({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0.00,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
+                openTasksWithYou.empty().append(getRowTasksNotFound());
             });
         }
     }
@@ -221,21 +194,12 @@
                     tasks.forEach(task => {
                         finishedTaskTaken.append(getRowAssignedTask(task));
                     });
-                    return true;
+                } else {
+                    finishedTaskTaken.empty().append(getRowTasksNotFound());
                 }
-                finishedTaskTaken.empty().append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
             }).fail(err => {
                 console.log('ERRO');
-                finishedTaskTaken.empty().append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
+                finishedTaskTaken.empty().append(getRowTasksNotFound());
             });
         }
     }
@@ -257,21 +221,12 @@
                     tasks.forEach(task => {
                         finishedTaskPersonal.append(getRowAssignedTask(task));
                     });
-                    return true;
+                } else {
+                    finishedTaskPersonal.empty().append(getRowTasksNotFound());
                 }
-                finishedTaskPersonal.empty().append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
-                return false;
             }).fail(err => {
                 console.log('ERRO');
-                finishedTaskPersonal.empty().append(getRowAssignedTask({
-                    title: "Nenhuma tarefa encontrada",
-                    value: 0,
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }));
+                finishedTaskPersonal.empty().append(getRowTasksNotFound());
             });
         }
     }

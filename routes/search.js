@@ -24,10 +24,7 @@ router.get('/', function (req, res, next) {
                 title: "Pesquisa - Staff",
                 script: "search",
                 css: ["search", "tasks"],
-                tasks: (response.code == 1) ? response.tasks : [{
-                    title: "Nenhuma tarefa encontrada",
-                    description: "Nenhuma tarefa pôde ser encontrada."
-                }]
+                tasks: (response.code == 1) ? response.tasks : []
             };
             res.render('search', data);
         },
