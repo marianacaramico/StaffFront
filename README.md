@@ -6,7 +6,7 @@ Trabalho da disciplina de Pesquisa e Inovação
 
 # Cronograma
 
-![cronograma](https://github.com/marianacaramico/StaffFront/blob/master/cronograma.png)
+![cronograma](https://github.com/marianacaramico/StaffFront/blob/master/doc/cronograma.png)
 
 
 # Atores
@@ -19,7 +19,7 @@ Trabalho da disciplina de Pesquisa e Inovação
 
 04. Realizador - usuário que realiza uma tarefa
 
-![diagrama-atores](https://github.com/marianacaramico/StaffFront/blob/master/diagrama-atores.jpeg)
+![diagrama-atores](https://github.com/marianacaramico/StaffFront/blob/master/doc/diagrama-atores.jpeg)
 
 
 # Casos de uso
@@ -44,7 +44,7 @@ Trabalho da disciplina de Pesquisa e Inovação
 
 10. Solicitar realização de tarefa - permite cadastrar uma nova tarefa disponivel para que um usuário realizador estime
 
-![diagrama-casos-de-uso](https://github.com/marianacaramico/StaffFront/blob/master/diagrama-casos-de-uso.jpeg)
+![diagrama-casos-de-uso](https://github.com/marianacaramico/StaffFront/blob/master/doc/diagrama-casos-de-uso.jpeg)
 
 
 # Sitemap
@@ -69,7 +69,7 @@ Trabalho da disciplina de Pesquisa e Inovação
 
 10. Avaliar tarefa - formulário para avaliação de uma tarefa realizada
 
-![diagrama-robustness](https://github.com/marianacaramico/StaffFront/blob/master/diagrama-robustness.jpeg)
+![diagrama-robustness](https://github.com/marianacaramico/StaffFront/blob/master/doc/diagrama-robustness.jpeg)
 
 
 # Classes / modelo
@@ -84,4 +84,4 @@ PAYMENT
 
 TASKESTIMATE
 
-![diagrama-classes](https://github.com/marianacaramico/StaffFront/blob/master/diagrama-classes.jpeg)
+![diagrama-classes](https://github.com/marianacaramico/StaffFront/blob/master/doc/diagrama-classes.jpeg)
