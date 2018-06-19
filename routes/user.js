@@ -31,10 +31,8 @@ router.get('/:id', function (req, res, next) {
                             script: ["search", "tasks"],
                             result: response.result,
                             isMyProfile: userid === myUserid,
-                            finishedTasks: innerSuccess.tasks || [{
-                                title: "Nenhuma tarefa encontrada",
-                                description: "Nenhuma tarefa pôde ser encontrada."
-                            }]
+                            finishedTasks: innerSuccess.tasks || [],
+                            userid
                         });
                     },
                     onFail: function onInnerFail(err, responseJson) {

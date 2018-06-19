@@ -286,6 +286,28 @@ router.get('/unassigned', function(req, res, next) {
     });
 });
 
+router.get('/unassigned/:id', function(req, res, next) {
+    var user_id = parseInt(req.params.id);
+
+    if (!user_id) {
+        return res.json({
+            code: 0,
+            result: 'Usuário não encontrado'
+        });
+    }
+
+    Task.getUnassigned(user_id, {
+        onSuccess: function onSuccess(response) {
+            res.json(response);
+        },
+        onFail: function onFail(err, responseJson) {
+            console.log("DEU UM ERRO!");
+            console.log(err);
+            res.json(responseJson);
+        }
+    });
+});
+
 router.get('/assigned', function(req, res, next) {
     var user_id = parseInt(req.session.userid);
 

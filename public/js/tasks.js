@@ -97,10 +97,22 @@
 
     function getUnassignedTasks() {
         var openTaskPersonal = $("#openTaskPersonal");
+        var openTasks = $("#openTasks");
+        var openTasksExists = !window.isNull(openTasks);
+
+        if (openTasksExists) {
+            openTaskPersonal = openTasks;
+        }
 
         if (!isNull(openTaskPersonal)) {
+            var ajaxUrl = '/task/unassigned/';
+
+            if (openTasksExists) {
+                ajaxUrl += window.parseInt(openTasks.data("id")) || 0;
+            }
+
             return $.ajax({
-                url: '/task/unassigned',
+                url: ajaxUrl,
                 dataType: 'json',
                 beforeSend: () => {
                     openTaskPersonal.empty().append('<div class="text-center"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></div>');
@@ -110,7 +122,11 @@
                 if (Number(code) === 1) {
                     openTaskPersonal.empty();
                     tasks.forEach(task => {
-                        openTaskPersonal.append(getRowPersonalTask(task));
+                        if (openTasksExists) {
+                            openTaskPersonal.append(getTasksSearchRow(task));
+                        } else {
+                            openTaskPersonal.append(getRowPersonalTask(task));
+                        }
                     });
                     window.bindDeleteTaskButton(getUnassignedTasks);
                 } else {
@@ -376,5 +392,39 @@
             var { result } = error.responseJSON || {};
             window.printErrorMessage(result || "Ops! Não pudemos " + verb + " sua tarefa.");
         });
+    }
+
+    function getTasksSearchRow(task) {
+        return ('<div class="row">'
+            + '<div class="col-sm-1 text-center">'
+                + '<div class="col-sm-12">'
+                    + '<div class="row">'
+                        + '<a class="mx-auto userProfileHyperlink" href="/user/' + (task.id_user_owner || 0) + '">'
+                            + '<span class="service-icon rounded-circle text-center">'
+                                + '<i class="fa fa-user" aria-hidden="true"></i>'
+                            + '</span>'
+                        + '</a>'
+                    + '</div>'
+                + '</div>'
+            + '</div>'
+            + '<div class="col-sm-8">'
+                + '<div class="col-sm-12">'
+                    + '<div><b>' + (task.title || "") + '</b></div>'
+                    + '<div><p>Para terminar em: ' + Date.formatDate(task.due_date || "") + '</p></div>'
+                + '</div>'
+                + '<div class="col-sm-12">'
+                    + '<span class="col-sm-2 task-value">R$ ' + window.parseFloat(task.value || 0).formatBrl() + '</span>'
+                    + '<span class="col-sm-10">' + (task.description || "") + '</span>'
+                + '</div>'
+            + '</div>'
+            + '<div class="col-sm-3">'
+                + '<div class="pull-right">'
+                    + '<div style="margin-bottom:10px;">'
+                        + '<button type="button" data-taskid="' + (task.id_task || 0) + '" class="btn btn-success cursor-pointer btnAcceptTask"><i class="fa fa-check" aria-hidden="true"></i> Eu faço!</button>'
+                    + '</div>'
+                + '</div>'
+            + '</div>'
+        + '</div>'
+        + '<hr />');
     }
 })(window, document);
